@@ -128,15 +128,15 @@
             <h2 style="font-family: var(--font-tech); color: #fff; font-size: 20px; margin-bottom: 6px;">INSTRUCTOR GATEWAY</h2>
             <p style="color: var(--muted); font-size: 12px; margin-bottom: 25px;">Enter administrative credentials to access student telemetry records.</p>
             
-            <form onsubmit="handleAdminLogin(event)">
+            <form onsubmit="handleAdminLogin(event)" autocomplete="off">
                 <div style="margin-bottom: 15px;">
                     <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">USERNAME</label>
-                    <input type="text" id="adminUser" required placeholder="Enter username" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+                    <input type="text" id="adminUser" required value="" placeholder="Enter username" autocomplete="off" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
                 </div>
 
                 <div style="margin-bottom: 25px;">
                     <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">PASSWORD</label>
-                    <input type="password" id="adminPass" required placeholder="Enter password" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+                    <input type="password" id="adminPass" required value="" placeholder="Enter password" autocomplete="new-password" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
                 </div>
 
                 <button type="submit" class="primary-button" style="width: 100%; font-size: 12px;">AUTHORIZE ACCESS ➔</button>
