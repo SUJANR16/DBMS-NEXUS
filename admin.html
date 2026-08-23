@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Command Center | DBMS NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+        }
+        .stat-card span {
+            font-size: 11px;
+            color: var(--muted);
+            font-family: var(--font-tech);
+        }
+        .stat-card h2 {
+            font-family: var(--font-tech);
+            color: var(--primary);
+            font-size: 28px;
+            margin-top: 5px;
+        }
+        .table-panel {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: monospace;
+            margin-top: 15px;
+        }
+        .table-panel th, .table-panel td {
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 13px;
+        }
+        .table-panel th {
+            background: rgba(0, 234, 255, 0.1);
+            color: var(--primary);
+            font-family: var(--font-tech);
+            font-size: 11px;
+        }
+        .action-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-right: 5px;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .action-btn.delete:hover {
+            border-color: var(--danger, #ff4d4d);
+            color: var(--danger, #ff4d4d);
+        }
+        .chart-container {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+        .bar-graph {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            height: 160px;
+            margin-top: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .bar-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .bar-fill {
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,234,255,0.2), var(--primary));
+            border-radius: 6px 6px 0 0;
+            transition: height 0.5s ease;
+        }
+        .bar-label {
+            font-family: var(--font-tech);
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+        /* Admin Login Overlay */
+        #adminLoginOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 5, 13, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ADMIN LOGIN GATEWAY -->
+    <div id="adminLoginOverlay">
+        <div class="feature-card" style="width: min(420px, 95vw); padding: 35px; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; text-align: left;">
+            <span class="topic-pill" style="margin-bottom: 10px; display: inline-block;">SECURITY PROTOCOL</span>
+            <h2 style="font-family: var(--font-tech); color: #fff; font-size: 20px; margin-bottom: 6px;">INSTRUCTOR GATEWAY</h2>
+            <p style="color: var(--muted); font-size: 12px; margin-bottom: 25px;">Enter administrative credentials to access student telemetry records.</p>
+            
+            <form onsubmit="handleAdminLogin(event)">
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">USERNAME</label>
+                    <input type="text" id="adminUser" required placeholder="prismgroups" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">PASSWORD</label>
+                    <input type="password" id="adminPass" required placeholder="PRISMGROUPS" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+                </div>
+
+                <button type="submit" class="primary-button" style="width: 100%; font-size: 12px;">AUTHORIZE ACCESS ➔</button>
+            </form>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="index.html" style="font-size: 11px; color: var(--muted); text-decoration: none;">← Return to Student Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="background-effects">
+        <div class="grid-background"></div>
+        <div class="orb orb-two"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="index.html" class="brand">
+            <div class="brand-logo"><span>DB</span></div>
+            <div class="brand-text"><strong>DBMS</strong><span>NEXUS</span></div>
+        </a>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <span style="font-family: var(--font-tech); font-size: 11px; color: var(--accent);">INSTRUCTOR MODE</span>
+            <a href="index.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">STUDENT VIEW</a>
+        </div>
+    </header>
+
+    <main style="max-width: 1100px; margin: 120px auto 80px; padding: 0 5%;">
+        <span class="topic-pill">ADMINISTRATIVE PROTOCOL</span>
+        <h1 style="font-family: var(--font-tech); color: #fff; margin: 10px 0 25px;">STUDENT ANALYTICS & MONITOR</h1>
+
+        <!-- STATS SUMMARY -->
+        <div class="admin-grid">
+            <div class="stat-card">
+                <span>TOTAL REGISTERED STUDENTS</span>
+                <h2 id="statTotalStudents">0</h2>
+            </div>
+            <div class="stat-card">
+                <span>AVERAGE TOTAL XP</span>
+                <h2 id="statAvgXP">0 XP</h2>
+            </div>
+            <div class="stat-card">
+                <span>ACTIVE MODULE STAGE</span>
+                <h2>CH 1 - 4</h2>
+            </div>
+        </div>
+
+        <!-- VISUAL GRAPH -->
+        <div class="chart-container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="color: var(--primary); font-size: 15px; font-family: var(--font-tech);">CHAPTER COMPLETION PERFORMANCE GRAPH</h3>
+                <span style="font-size: 11px; color: var(--muted);">Avg Score per Chapter</span>
+            </div>
+            <div class="bar-graph" id="performanceGraph">
+                <div class="bar-col"><div class="bar-fill" id="bar1" style="height: 0%;"></div><span class="bar-label">CH 1</span></div>
+                <div class="bar-col"><div class="bar-fill" id="bar2" style="height: 0%;"></div><span class="bar-label">CH 2</span></div>
+                <div class="bar-col"><div class="bar-fill" id="bar3" style="height: 0%;"></div><span class="bar-label">CH 3</span></div>
+                <div class="bar-col"><div class="bar-fill" id="bar4" style="height: 0%;"></div><span class="bar-label">CH 4</span></div>
+            </div>
+        </div>
+
+        <!-- STUDENTS TABLE -->
+        <div class="feature-card" style="padding: 24px; background: var(--panel); border: 1px solid var(--border); border-radius: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: var(--primary); font-size: 16px; font-family: var(--font-tech);">Enrolled Student Database Records</h3>
+                <button onclick="fetchStudents()" class="secondary-button" style="min-height: 32px; font-size: 11px;">↻ REFRESH DATA</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="table-panel" id="studentTable">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Total XP</th>
+                            <th>Ch 1</th>
+                            <th>Ch 2</th>
+                            <th>Ch 3</th>
+                            <th>Ch 4</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <tr><td colspan="8" style="text-align: center; color: var(--muted);">Loading student records...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- STUDENT DETAILS / EDIT MODAL -->
+    <div class="modal-overlay" id="adminModal" style="display: none;">
+        <div class="isolated-modal-card" style="width: min(460px, 95vw); padding: 30px; text-align: left; background: var(--panel); border: 1px solid var(--border); border-radius: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 234, 255, 0.2); padding-bottom: 10px; margin-bottom: 20px;">
+                <span style="font-family: var(--font-tech); font-size: 10px; color: var(--primary); letter-spacing: 2px;" id="modalTitle">STUDENT DOSSIER</span>
+                <button onclick="closeAdminModal()" style="background: none; border: none; color: #fff; font-size: 22px; cursor: pointer;">×</button>
+            </div>
+            <div id="modalBodyContent" style="color: #fff; font-size: 13px; line-height: 1.6;"></div>
+        </div>
+    </div>
+
+    <!-- FIREBASE MODULE SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAAy-3Xd5qTwtZKupFjjkzrquzWb3bMXqk",
+          authDomain: "dbms-nexus.firebaseapp.com",
+          projectId: "dbms-nexus",
+          storageBucket: "dbms-nexus.firebasestorage.app",
+          messagingSenderId: "305987976340",
+          appId: "1:305987976340:web:d69d12dd17499bb0d18881",
+          measurementId: "G-XQGCZ1WVEY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let cachedStudents = [];
+
+        // Check Session Storage for Admin Auth
+        if (sessionStorage.getItem("dbms_admin_auth") === "true") {
+            document.getElementById("adminLoginOverlay").style.display = "none";
+            fetchStudents();
+        }
+
+        window.handleAdminLogin = function(e) {
+            e.preventDefault();
+            const u = document.getElementById("adminUser").value.trim();
+            const p = document.getElementById("adminPass").value.trim();
+
+            if (u === "prismgroups" && p === "PRISMGROUPS") {
+                sessionStorage.setItem("dbms_admin_auth", "true");
+                document.getElementById("adminLoginOverlay").style.display = "none";
+                fetchStudents();
+            } else {
+                alert("Invalid Administrator Credentials. Access Denied.");
+            }
+        };
+
+        window.fetchStudents = async function() {
+            const tbody = document.getElementById("studentTableBody");
+            try {
+                const querySnap = await getDocs(collection(db, "students"));
+                cachedStudents = [];
+                let totalXP = 0;
+                let chScores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+                let count = 0;
+
+                querySnap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    data.id = docSnap.id;
+                    cachedStudents.push(data);
+                    
+                    totalXP += (data.totalXP || 0);
+                    chScores[1] += (data.scores?.[1] || 0);
+                    chScores[2] += (data.scores?.[2] || 0);
+                    chScores[3] += (data.scores?.[3] || 0);
+                    chScores[4] += (data.scores?.[4] || 0);
+                    count++;
+                });
+
+                document.getElementById("statTotalStudents").innerText = count;
+                document.getElementById("statAvgXP").innerText = count > 0 ? Math.round(totalXP / count) + " XP" : "0 XP";
+
+                if (count > 0) {
+                    document.getElementById("bar1").style.height = Math.round(chScores[1] / count) + "%";
+                    document.getElementById("bar2").style.height = Math.round(chScores[2] / count) + "%";
+                    document.getElementById("bar3").style.height = Math.round(chScores[3] / count) + "%";
+                    document.getElementById("bar4").style.height = Math.round(chScores[4] / count) + "%";
+                }
+
+                let html = "";
+                cachedStudents.forEach(st => {
+                    html += `
+                        <tr>
+                            <td><strong style="color: #fff;">${st.name || 'Anonymous'}</strong></td>
+                            <td>${st.email}</td>
+                            <td style="color: var(--accent);">${st.totalXP || 0} XP</td>
+                            <td>${st.scores?.[1] || 0}%</td>
+                            <td>${st.scores?.[2] || 0}%</td>
+                            <td>${st.scores?.[3] || 0}%</td>
+                            <td>${st.scores?.[4] || 0}%</td>
+                            <td>
+                                <button class="action-btn" onclick="viewStudent('${st.id}')">View</button>
+                                <button class="action-btn" onclick="editStudent('${st.id}')">Edit</button>
+                                <button class="action-btn delete" onclick="deleteStudent('${st.id}')">Del</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html || '<tr><td colspan="8" style="text-align: center; color: var(--muted);">No student records found in cloud database.</td></tr>';
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="8" style="color: var(--danger, #ff4d4d);">Error loading data: ${err.message}</td></tr>`;
+            }
+        };
+
+        window.viewStudent = function(id) {
+            const st = cachedStudents.find(s => s.id === id);
+            if (!st) return;
+
+            document.getElementById("modalTitle").innerText = "STUDENT DOSSIER // VIEW";
+            document.getElementById("modalBodyContent").innerHTML = `
+                <p><strong>Full Name:</strong> ${st.name || 'N/A'}</p>
+                <p><strong>Email Address:</strong> ${st.email}</p>
+                <p><strong>Total Accumulated XP:</strong> <span style="color: var(--accent);">${st.totalXP || 0} XP</span></p>
+                <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+                <p style="font-family: var(--font-tech); color: var(--primary); margin-bottom: 8px;">CHAPTER PERFORMANCE SCORES:</p>
+                <p>Chapter 01: ${st.scores?.[1] || 0}%</p>
+                <p>Chapter 02: ${st.scores?.[2] || 0}%</p>
+                <p>Chapter 03: ${st.scores?.[3] || 0}%</p>
+                <p>Chapter 04: ${st.scores?.[4] || 0}%</p>
+                <button onclick="closeAdminModal()" class="primary-button" style="width: 100%; margin-top: 20px; font-size: 12px;">CLOSE DOSSIER</button>
+            `;
+            document.getElementById("adminModal").style.display = "flex";
+        };
+
+        window.editStudent = function(id) {
+            const st = cachedStudents.find(s => s.id === id);
+            if (!st) return;
+
+            document.getElementById("modalTitle").innerText = "EDIT STUDENT // RECORD";
+            document.getElementById("modalBodyContent").innerHTML = `
+                <form onsubmit="submitEditStudent(event, '${st.id}')">
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">STUDENT NAME</label>
+                        <input type="text" id="editName" value="${st.name || ''}" style="width: 100%; padding: 9px; border-radius: 6px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">TOTAL XP</label>
+                        <input type="number" id="editXP" value="${st.totalXP || 0}" style="width: 100%; padding: 9px; border-radius: 6px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+                    </div>
+                    <button type="submit" class="primary-button" style="width: 100%; margin-top: 15px; font-size: 12px;">UPDATE RECORD ➔</button>
+                </form>
+            `;
+            document.getElementById("adminModal").style.display = "flex";
+        };
+
+        window.submitEditStudent = async function(e, id) {
+            e.preventDefault();
+            const newName = document.getElementById("editName").value;
+            const newXP = parseInt(document.getElementById("editXP").value) || 0;
+
+            try {
+                const userRef = doc(db, "students", id);
+                await updateDoc(userRef, {
+                    name: newName,
+                    totalXP: newXP
+                });
+                alert("Student record updated successfully!");
+                closeAdminModal();
+                fetchStudents();
+            } catch (err) {
+                alert("Update failed: " + err.message);
+            }
+        };
+
+        window.deleteStudent = async function(id) {
+            if (!confirm("Are you sure you want to delete this student record from the cloud database?")) return;
+            try {
+                await deleteDoc(doc(db, "students", id));
+                alert("Student record deleted.");
+                fetchStudents();
+            } catch (err) {
+                alert("Deletion error: " + err.message);
+            }
+        };
+
+        window.closeAdminModal = function() {
+            document.getElementById("adminModal").style.display = "none";
+        };
+    </script>
+</body>
+</html>
