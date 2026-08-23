@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 04: Intermediate SQL | DBMS NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .sql-code-block {
+            background: #02050d;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-family: monospace;
+            font-size: 12.5px;
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .sql-code-block b {
+            color: #ff2bd6;
+        }
+        .sql-code-block i {
+            color: #ffc857;
+            font-style: normal;
+        }
+        .topic-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px;
+            background: rgba(0, 234, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-family: var(--font-tech);
+            font-size: 8.5px;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+        .formula-card {
+            background: rgba(124, 60, 255, 0.04);
+            border: 1px solid rgba(124, 60, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            font-family: monospace;
+            border: 1px solid var(--border);
+            margin-top: 8px;
+        }
+        .data-table th {
+            background: rgba(0, 234, 255, 0.12);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 6px 8px;
+            text-align: left;
+        }
+        .data-table td {
+            border: 1px solid var(--border);
+            padding: 5px 8px;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body data-chapter-id="4">
+
+    <div class="background-effects">
+        <div class="grid-background"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="index.html" class="brand">
+            <div class="brand-logo"><span>DB</span></div>
+            <div class="brand-text"><strong>DBMS</strong><span>NEXUS</span></div>
+        </a>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="chapter3.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">← CH 03</a>
+            <a href="index.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">CORE</a>
+            <a href="index.html" class="primary-button" style="min-height: 38px; padding: 0 16px;">CORE MENU →</a>
+        </div>
+    </header>
+
+    <main style="max-width: 1100px; margin: 120px auto 80px; padding: 0 5%;" class="chapter-hero">
+        
+        <div class="section-heading" style="text-align: left; margin-bottom: 40px;">
+            <span class="section-label">CURRICULUM PROTOCOL // MODULE 04 (SLIDES 01–55 COMPLETE)</span>
+            <h1 style="font-family: var(--font-tech); font-size: clamp(30px, 4vw, 52px); margin: 12px 0; color: #fff;">
+                CHAPTER 4: <strong style="color: var(--primary);">INTERMEDIATE SQL</strong>
+            </h1>
+            <p style="color: var(--muted); font-size: 15px; max-width: 850px; line-height: 1.8;">
+                Exhaustive syllabus covering Chapter 4 (Slides 1–55): Joined Relations (Natural Join, Inner Join, Left/Right/Full Outer Joins), Join Types vs. Conditions (<code>natural</code>, <code>on &lt;predicate&gt;</code>, <code>using</code>), View Management (Virtual Relations, View Definitions, Parameterized Views, Dependent &amp; Recursive Views, Materialized Views), View Updatability Constraints, SQL Transactions (ACID, Commit/Rollback, Atomicity &amp; Isolation), Single-Relation Integrity Constraints (Not Null, Primary Key, Unique, Check), Referential Integrity (Foreign Keys, Cascading Actions: <code>cascade</code>, <code>set null</code>, <code>set default</code>), Constraint Violations &amp; Deferred Checking during Transactions, Complex Check Predicates with Subqueries, Assertions (<code>create assertion</code>), Built-in Temporal Types (<code>date</code>, <code>time</code>, <code>timestamp</code>, <code>interval</code>), Large-Object Types (<code>blob</code>, <code>clob</code>), User-Defined Types (<code>create type</code>), User-Defined Domains (<code>create domain</code>), Index Creation (<code>create index</code>), and Advanced Database Authorization (Privileges, View Authorization, References Privilege, <code>with grant option</code>, Cascading/Restricted Revocation, and Role Hierarchies).
+            </p>
+        </div>
+
+        <!-- SECTION 1: JOIN EXPRESSIONS OVERVIEW -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 02–05</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                1. Joined Relations &amp; Natural Join
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Join Operations:</b> Take two relations and return another relation as a result.<br>
+                    • <b>Natural Join:</b> Matches tuples with the same values for all common attributes and retains only one copy of each common column.<br>
+                    • <b>Multi-Table Natural Joins:</b> Sequential evaluation syntax: <code>select A1, A2, ... from r1 natural join r2 natural join .. natural join rn where P;</code>
+                </p>
+                <div class="sql-code-block">
+<b>select</b> name, course_id<br>
+<b>from</b> student <b>natural join</b> takes;
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: STUDENT NATURAL JOIN TAKES TABLE -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 06 &amp; 07</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                2. Relation Tables: student, takes &amp; Result of student natural join takes
+            </h2>
+            <div style="overflow-x: auto;" class="feature-card">
+                <span style="font-size: 11px; color: var(--primary); display: block; margin-bottom: 8px;">Result Table: student natural join takes [Slide 07]</span>
+                <table class="data-table">
+                    <tr><th>ID</th><th>name</th><th>dept_name</th><th>tot_cred</th><th>course_id</th><th>sec_id</th><th>semester</th><th>year</th><th>grade</th></tr>
+                    <tr><td>00128</td><td>Zhang</td><td>Comp. Sci.</td><td>102</td><td>CS-101</td><td>1</td><td>Fall</td><td>2017</td><td>A</td></tr>
+                    <tr><td>00128</td><td>Zhang</td><td>Comp. Sci.</td><td>102</td><td>CS-347</td><td>1</td><td>Fall</td><td>2017</td><td>A-</td></tr>
+                    <tr><td>12345</td><td>Shankar</td><td>Comp. Sci.</td><td>32</td><td>CS-101</td><td>1</td><td>Fall</td><td>2017</td><td>C</td></tr>
+                    <tr><td>12345</td><td>Shankar</td><td>Comp. Sci.</td><td>32</td><td>CS-190</td><td>2</td><td>Spring</td><td>2017</td><td>A</td></tr>
+                    <tr><td>12345</td><td>Shankar</td><td>Comp. Sci.</td><td>32</td><td>CS-315</td><td>1</td><td>Spring</td><td>2018</td><td>A</td></tr>
+                    <tr><td>12345</td><td>Shankar</td><td>Comp. Sci.</td><td>32</td><td>CS-347</td><td>1</td><td>Fall</td><td>2017</td><td>A</td></tr>
+                    <tr><td>19991</td><td>Brandt</td><td>History</td><td>80</td><td>HIS-351</td><td>1</td><td>Spring</td><td>2018</td><td>B</td></tr>
+                    <tr><td>23121</td><td>Chavez</td><td>Finance</td><td>110</td><td>FIN-201</td><td>1</td><td>Spring</td><td>2018</td><td>C+</td></tr>
+                    <tr><td>44553</td><td>Peltier</td><td>Physics</td><td>56</td><td>PHY-101</td><td>1</td><td>Fall</td><td>2017</td><td>B-</td></tr>
+                    <tr><td>45678</td><td>Levy</td><td>Physics</td><td>46</td><td>CS-101</td><td>1</td><td>Fall</td><td>2017</td><td>F</td></tr>
+                    <tr><td>45678</td><td>Levy</td><td>Physics</td><td>46</td><td>CS-101</td><td>1</td><td>Spring</td><td>2018</td><td>B+</td></tr>
+                    <tr><td>45678</td><td>Levy</td><td>Physics</td><td>46</td><td>CS-319</td><td>1</td><td>Spring</td><td>2018</td><td>B</td></tr>
+                    <tr><td>54321</td><td>Williams</td><td>Comp. Sci.</td><td>54</td><td>CS-101</td><td>1</td><td>Fall</td><td>2017</td><td>A-</td></tr>
+                    <tr><td>54321</td><td>Williams</td><td>Comp. Sci.</td><td>54</td><td>CS-190</td><td>2</td><td>Spring</td><td>2017</td><td>B+</td></tr>
+                    <tr><td>55739</td><td>Sanchez</td><td>Music</td><td>38</td><td>MU-199</td><td>1</td><td>Spring</td><td>2018</td><td>A-</td></tr>
+                    <tr><td>76543</td><td>Brown</td><td>Comp. Sci.</td><td>58</td><td>CS-101</td><td>1</td><td>Fall</td><td>2017</td><td>A</td></tr>
+                    <tr><td>76543</td><td>Brown</td><td>Comp. Sci.</td><td>58</td><td>CS-319</td><td>2</td><td>Spring</td><td>2018</td><td>A</td></tr>
+                    <tr><td>76653</td><td>Aoi</td><td>Elec. Eng.</td><td>60</td><td>EE-181</td><td>1</td><td>Spring</td><td>2017</td><td>C</td></tr>
+                    <tr><td>98765</td><td>Bourikas</td><td>Elec. Eng.</td><td>98</td><td>CS-101</td><td>1</td><td>Fall</td><td>2017</td><td>C-</td></tr>
+                    <tr><td>98765</td><td>Bourikas</td><td>Elec. Eng.</td><td>98</td><td>CS-315</td><td>1</td><td>Spring</td><td>2018</td><td>B</td></tr>
+                    <tr><td>98988</td><td>Tanaka</td><td>Biology</td><td>120</td><td>BIO-101</td><td>1</td><td>Summer</td><td>2017</td><td>A</td></tr>
+                    <tr><td>98988</td><td>Tanaka</td><td>Biology</td><td>120</td><td>BIO-301</td><td>1</td><td>Summer</td><td>2018</td><td>null</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 3: OUTER JOINS (LEFT, RIGHT, FULL) -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 10–14</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--warning);">
+                3. Outer Joins (Left, Right, Full) &amp; Relational Algebra Notations
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Outer Join:</b> An extension of the join operation that avoids loss of information by adding tuples from one relation that do not match tuples in the other relation, padding missing attributes with <code>null</code>.<br>
+                    • <b>Left Outer Join (<code>course ⟕ prereq</code>) [Slide 12]:</b> Preserves all tuples from left relation (<code>course</code>).<br>
+                    • <b>Right Outer Join (<code>course ⟖ prereq</code>) [Slide 13]:</b> Preserves all tuples from right relation (<code>prereq</code>).<br>
+                    • <b>Full Outer Join (<code>course ⟗ prereq</code>) [Slide 14]:</b> Preserves all tuples from both relations.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
+                    <div>
+                        <span style="font-size: 11px; color: var(--primary);">Right Outer Join Table [Slide 13]:</span>
+                        <table class="data-table">
+                            <tr><th>course_id</th><th>title</th><th>dept_name</th><th>credits</th><th>prereq_id</th></tr>
+                            <tr><td>BIO-301</td><td>Genetics</td><td>Biology</td><td>4</td><td>BIO-101</td></tr>
+                            <tr><td>CS-190</td><td>Game Design</td><td>Comp. Sci.</td><td>4</td><td>CS-101</td></tr>
+                            <tr><td>CS-347</td><td><i>null</i></td><td><i>null</i></td><td><i>null</i></td><td>CS-101</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <span style="font-size: 11px; color: var(--secondary);">Full Outer Join Table [Slide 14]:</span>
+                        <table class="data-table">
+                            <tr><th>course_id</th><th>title</th><th>dept_name</th><th>credits</th><th>prereq_id</th></tr>
+                            <tr><td>BIO-301</td><td>Genetics</td><td>Biology</td><td>4</td><td>BIO-101</td></tr>
+                            <tr><td>CS-190</td><td>Game Design</td><td>Comp. Sci.</td><td>4</td><td>CS-101</td></tr>
+                            <tr><td>CS-315</td><td>Robotics</td><td>Comp. Sci.</td><td>3</td><td><i>null</i></td></tr>
+                            <tr><td>CS-347</td><td><i>null</i></td><td><i>null</i></td><td><i>null</i></td><td>CS-101</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: JOIN TYPES & JOIN CONDITIONS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 15 &amp; 16</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                4. Join Types vs. Join Conditions
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <h4 style="color: var(--primary); font-size: 13px; margin-bottom: 6px;">Join Types [Slide 15]</h4>
+                        <ul style="font-size: 12.5px; color: var(--muted); line-height: 1.8; padding-left: 18px;">
+                            <li><code>inner join</code></li>
+                            <li><code>left outer join</code></li>
+                            <li><code>right outer join</code></li>
+                            <li><code>full outer join</code></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--secondary); font-size: 13px; margin-bottom: 6px;">Join Conditions [Slide 15]</h4>
+                        <ul style="font-size: 12.5px; color: var(--muted); line-height: 1.8; padding-left: 18px;">
+                            <li><code>natural</code></li>
+                            <li><code>on &lt;predicate&gt;</code></li>
+                            <li><code>using (A1, A2, ..., An)</code></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sql-code-block" style="margin-top: 12px;">
+<b>select</b> *<br>
+<b>from</b> course <b>full outer join</b> prereq <b>using</b> (course_id);
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: VIEWS, MATERIALIZED VIEWS & UPDATABILITY -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 19–28</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                5. Views, Dependencies, Materialized Views &amp; View Updates
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>View:</b> A virtual relation that is not part of the conceptual model but made visible to users. Used to hide sensitive attributes (e.g. salary).<br>
+                    • <b>Syntax:</b> <code>create view v as &lt;query expression&gt;;</code><br>
+                    • <b>Dependencies [Slides 22 &amp; 23]:</b> $v_1$ depends directly on $v_2$ if $v_2$ is in the definition of $v_1$. Recursive if $v$ depends on itself.<br>
+                    • <b>Materialized Views [Slide 24]:</b> Views that are physically stored on disk when defined. Must be maintained (refreshed) when base tables update.<br>
+                    • <b>Updatable View Criteria [Slide 28]:</b><br>
+                    &nbsp;&nbsp;1. The <code>from</code> clause has only one database relation.<br>
+                    &nbsp;&nbsp;2. The <code>select</code> clause contains only attribute names (no expressions, aggregates, or <code>distinct</code>).<br>
+                    &nbsp;&nbsp;3. Any attribute not listed in <code>select</code> can be set to <code>null</code>.<br>
+                    &nbsp;&nbsp;4. The query does not have a <code>group by</code> or <code>having</code> clause.
+                </p>
+                <div class="sql-code-block">
+<b>create view</b> faculty <b>as</b><br>
+&nbsp;&nbsp;<b>select</b> ID, name, dept_name<br>
+&nbsp;&nbsp;<b>from</b> instructor;
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: TRANSACTIONS & SINGLE-RELATION CONSTRAINTS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 29–34</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--success);">
+                6. Transactions &amp; Single-Relation Integrity Constraints
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Transactions [Slide 29]:</b> Sequence of query/update statements executed as an atomic unit. Ends with <code>commit work</code> (permanent) or <code>rollback work</code> (undone).<br>
+                    • <b>Integrity Constraints [Slides 30–33]:</b> Guard against accidental damage and preserve data consistency.<br>
+                    &nbsp;&nbsp;- <code>not null</code>: Prohibits null values (e.g., <code>name varchar(20) not null</code>).<br>
+                    &nbsp;&nbsp;- <code>primary key (A1..An)</code>: Uniquely identifies tuples (implicitly not null).<br>
+                    &nbsp;&nbsp;- <code>unique (A1..An)</code>: Specifies candidate keys (<b>candidate keys are permitted to be null</b>, in contrast to primary keys).<br>
+                    &nbsp;&nbsp;- <code>check (P)</code>: Validates predicate condition $P$ on every tuple (e.g., <code>check (semester in ('Fall', 'Winter', 'Spring', 'Summer'))</code>).
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 7: REFERENTIAL INTEGRITY, CASCADING & ADVANCED CONSTRAINTS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 35–40</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                7. Referential Integrity, Cascading Actions &amp; Assertions
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Referential Integrity [Slides 35 &amp; 36]:</b> Foreign key in referencing relation must match the primary key of the referenced relation.<br>
+                    • <b>Cascading Actions [Slide 37]:</b> When a constraint is violated on delete/update, SQL allows automated cascades instead of rejection:<br>
+                    &nbsp;&nbsp;- <code>on delete cascade</code> / <code>on update cascade</code>: Deletes/updates child rows automatically.<br>
+                    &nbsp;&nbsp;- <code>on delete set null</code> / <code>on delete set default</code>: Replaces references with null or default value.<br>
+                    • <b>Integrity Violations During Transactions [Slide 38]:</b> Handled by inserting parents before children, using null initial values, or <b>deferring constraint checking</b> to transaction end.<br>
+                    • <b>Complex Check Conditions [Slide 39]:</b> <code>check (time_slot_id in (select time_slot_id from time_slot))</code>.<br>
+                    • <b>Assertions [Slide 40]:</b> Predicates expressing global conditions the entire database must always satisfy:<br>
+                    &nbsp;&nbsp;<code>create assertion &lt;assertion-name&gt; check (&lt;predicate&gt;);</code>
+                </p>
+                <div class="sql-code-block">
+<b>create table</b> course (<br>
+&nbsp;&nbsp;course_id <b>varchar</b>(8),<br>
+&nbsp;&nbsp;dept_name <b>varchar</b>(20),<br>
+&nbsp;&nbsp;<b>primary key</b> (course_id),<br>
+&nbsp;&nbsp;<b>foreign key</b> (dept_name) <b>references</b> department<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>on delete cascade</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>on update cascade</b><br>
+);
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: BUILT-IN TEMPORAL, LARGE-OBJECT & USER-DEFINED TYPES -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 41–44</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                8. Built-in Data Types, Large Objects, User-Defined Types &amp; Domains
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Temporal Types [Slide 41]:</b><br>
+                    &nbsp;&nbsp;- <code>date</code>: 4-digit year, month, day (e.g., <code>date '2005-7-27'</code>).<br>
+                    &nbsp;&nbsp;- <code>time</code>: Hours, minutes, seconds (e.g., <code>time '09:00:30'</code>).<br>
+                    &nbsp;&nbsp;- <code>timestamp</code>: Combination of date plus time of day.<br>
+                    &nbsp;&nbsp;- <code>interval</code>: Period of time (e.g., <code>interval '1' day</code>). Subtracting timestamps produces an interval.<br>
+                    • <b>Large-Object Types (LOBs) [Slide 42]:</b> Stored as objects where queries return a <b>pointer</b> rather than the large data itself:<br>
+                    &nbsp;&nbsp;- <code>blob</code>: Binary Large Object (uninterpreted binary data like photos, videos, CAD files).<br>
+                    &nbsp;&nbsp;- <code>clob</code>: Character Large Object (large collections of character data).<br>
+                    • <b>User-Defined Types [Slide 43]:</b> Created using <code>create type</code> construct (e.g., <code>create type Dollars as numeric(12,2) final;</code>).<br>
+                    • <b>User-Defined Domains [Slide 44]:</b> Created using <code>create domain</code> construct in SQL-92. Domains can have constraints (like <code>not null</code> or <code>check</code>) specified directly on them:
+                </p>
+                <div class="sql-code-block">
+<b>create domain</b> person_name <b>char</b>(20) <b>not null</b>;<br><br>
+<b>create domain</b> degree_level <b>varchar</b>(10)<br>
+&nbsp;&nbsp;<b>constraint</b> degree_level_test<br>
+&nbsp;&nbsp;<b>check</b> (<b>value in</b> (<i>'Bachelors'</i>, <i>'Masters'</i>, <i>'Doctorate'</i>));
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: INDEX CREATION & OPTIMIZATION -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 45 &amp; 46</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                9. Index Creation &amp; Query Optimization
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Purpose:</b> Many queries reference only a small proportion of records in a table. It is inefficient for the system to read every record to find records with a particular value.<br>
+                    • <b>Index:</b> A data structure on an attribute that allows the database system to find matching tuples efficiently without scanning all records.<br>
+                    • <b>Command Syntax:</b> <code>create index &lt;name&gt; on &lt;relation-name&gt; (attribute);</code>
+                </p>
+                <div class="sql-code-block">
+<b>create index</b> studentID_index <b>on</b> student(ID);<br><br>
+<i>-- The following query executes efficiently using the index:</i><br>
+<b>select</b> * <b>from</b> student <b>where</b> ID = <i>'12345'</i>;
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10: AUTHORIZATION, PRIVILEGES, VIEWS & ROLES -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 47–55</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                10. Authorization, Privileges, View Security, Roles &amp; Transfer
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Privileges [Slides 47 &amp; 48]:</b> <code>select</code>, <code>insert</code>, <code>update</code>, <code>delete</code>, <code>index</code>, <code>resources</code>, <code>alteration</code>, <code>drop</code>.<br>
+                    • <b>Authorization on Views [Slide 54]:</b> A user granted access on a view (e.g. <code>geo_staff</code> on <code>geo_instructor</code>) does <b>not</b> need permission on the underlying table (<code>instructor</code>). The creator of the view must have permissions on the underlying table.<br>
+                    • <b>References Privilege [Slide 55]:</b> <code>grant reference (dept_name) on department to Mariano;</code> allows Mariano to create foreign keys referencing <code>department</code>.<br>
+                    • <b>Transfer of Privileges (<code>with grant option</code>) [Slide 55]:</b> Allows a user to grant the privilege to other users.<br>
+                    • <b>Revocation Variants [Slide 55]:</b><br>
+                    &nbsp;&nbsp;- <code>revoke select on department from Amit, Satoshi cascade;</code> (Cascades revoke to dependent grantees).<br>
+                    &nbsp;&nbsp;- <code>revoke select on department from Amit, Satoshi restrict;</code> (Fails if cascade is required).<br>
+                    • <b>Roles [Slides 52 &amp; 53]:</b> <code>create role instructor;</code> &rarr; <code>grant instructor to dean;</code> (creates hierarchical privilege chains).
+                </p>
+                <div class="sql-code-block">
+<b>grant select on</b> department <b>to</b> Amit <b>with grant option</b>;<br>
+<b>grant reference</b> (dept_name) <b>on</b> department <b>to</b> Mariano;<br>
+<b>revoke select on</b> department <b>from</b> Amit, Satoshi <b>cascade</b>;
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 11: FORMULA CHEATSHEET -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--accent); color: var(--accent);">FORMULA CHEATSHEET</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                📐 Chapter 04 Core Formulas &amp; Syntax Rules Cheatsheet
+            </h2>
+            <div class="formula-card">
+                <strong style="color: var(--primary); font-size: 13px;">1. Outer Join Relational Algebra Operators:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    • Left Outer Join: $r \leftouterjoin s$<br>
+                    • Right Outer Join: $r \rightouterjoin s$<br>
+                    • Full Outer Join: $r \fullouterjoin s$
+                </p>
+            </div>
+            <div class="formula-card">
+                <strong style="color: var(--secondary); font-size: 13px;">2. Updatable View Criteria:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    Single table in FROM + No aggregates/expressions/distinct + No GROUP BY/HAVING + Unselected columns allow NULL.
+                </p>
+            </div>
+            <div class="formula-card">
+                <strong style="color: var(--warning); font-size: 13px;">3. Candidate Key vs Primary Key Nullability:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    <code>PRIMARY KEY</code> &rarr; Never permits NULL.<br>
+                    <code>UNIQUE</code> (Candidate Key) &rarr; Permitted to contain NULL values unless explicitly declared NOT NULL.
+                </p>
+            </div>
+            <div class="formula-card">
+                <strong style="color: var(--success); font-size: 13px;">4. Authorization Transfer &amp; Revoke Syntax:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    <code>GRANT &lt;priv&gt; ON &lt;rel&gt; TO &lt;user&gt; WITH GRANT OPTION;</code><br>
+                    <code>REVOKE &lt;priv&gt; ON &lt;rel&gt; FROM &lt;user&gt; [CASCADE | RESTRICT];</code>
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 12: MEMORY ANCHORS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--accent); color: var(--accent);">EXAM REVISION</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                🧠 Chapter 04 Memory Anchors
+            </h2>
+            <div id="memoryKeywordsDeck"></div>
+        </section>
+
+        <!-- SECTION 13: INTERACTIVE MINIGAME -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">INTERACTIVE LAB</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                🎮 Mini-Game: Database Control Matrix
+            </h2>
+            <div class="feature-card" id="chapterGameArea"></div>
+        </section>
+
+        <!-- SECTION 14: TOPIC PRACTICE QUIZ -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--warning); color: var(--warning);">TOPIC SELF-CHECK</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--warning);">
+                📝 Chapter 04 Topic Practice Quiz
+            </h2>
+            <div class="feature-card" id="practiceQuizArea"></div>
+        </section>
+
+        <!-- SECTION 15: OFFICIAL EXAMINATION ARENA -->
+        <section style="padding: 20px 0 60px;">
+            <span class="topic-pill" style="border-color: var(--secondary); color: var(--secondary);">MASTERY VERIFICATION</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                ⚡ Chapter 04 Official Examination Arena
+            </h2>
+            <p style="color: var(--muted); font-size: 13px; margin-bottom: 15px;">
+                Complete this proctored 15-question battle assessment to complete your SQL mastery.
+            </p>
+            <div id="quizArena"></div>
+        </section>
+
+    </main>
+
+    <div style="position: fixed; bottom: 25px; left: 25px; display: flex; gap: 10px; z-index: 999;">
+        <select onchange="NexusVoice.setGender(this.value)" style="background: var(--panel); color: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-family: var(--font-tech); font-size: 10px;">
+            <option value="female">♀ Female Voice</option>
+            <option value="male">♂ Male Voice</option>
+        </select>
+        <button onclick="document.getElementById('lensModal').classList.add('active')" class="secondary-button" style="min-height: 36px; padding: 0 12px; font-size: 10px;">📷 LENS</button>
+    </div>
+
+    <div class="modal-overlay" id="lensModal">
+        <div class="lock-modal" style="width: min(550px, 95vw); text-align: left;">
+            <button class="modal-close" onclick="document.getElementById('lensModal').classList.remove('active')">×</button>
+            <span class="modal-label">NEXUS LENS</span>
+            <h2 style="color: var(--primary); font-size: 20px;">📷 OPTICAL SCHEMA EXPLAINER</h2>
+            <input type="file" id="lensUpload" accept="image/*" onchange="NexusLens.analyzeImage(this)" style="display: none;">
+            <button onclick="document.getElementById('lensUpload').click()" class="primary-button" style="width: 100%; margin: 15px 0;">UPLOAD SCHEMA / SLIDE</button>
+            <img id="lensPreviewImg" style="display: none; max-width: 100%; height: 160px; object-fit: contain; border-radius: 8px; margin-bottom: 10px;" />
+            <div id="lensResultBox"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay unlock-overlay" id="unlockModal">
+        <div class="unlock-modal">
+            <div class="unlock-energy"></div>
+            <div class="unlock-lock">🔒</div>
+            <h2 id="unlockTitle">DECRYPTING NEXT PROTOCOL...</h2>
+            <div class="unlock-progress-track"><div class="unlock-progress-fill" id="unlockProgress"></div></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMessage"></span></div>
+
+    <script src="js/progress.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/vision.js"></script>
+    <script src="js/chapter.js"></script>
+    <script src="js/practice.js"></script>
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initChapter(4);
+            initPracticeQuiz(4);
+            renderQuiz(4);
+        });
+    </script>
+</body>
+</html>

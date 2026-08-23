@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 02: Relational Model & Relational Algebra | DBMS NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .diagram-container {
+            background: #020612;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            margin: 18px 0;
+            overflow-x: auto;
+        }
+        .diagram-container svg text {
+            font-family: var(--font-tech), sans-serif;
+            fill: var(--text);
+        }
+        .topic-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px;
+            background: rgba(0, 234, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-family: var(--font-tech);
+            font-size: 8.5px;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+        .algebra-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(124, 60, 255, 0.2);
+            border: 1px solid var(--secondary);
+            color: var(--primary);
+            font-family: var(--font-tech);
+            font-size: 16px;
+            font-weight: 800;
+            margin-right: 10px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            font-family: monospace;
+            border: 1px solid var(--border);
+            margin-top: 8px;
+        }
+        .data-table th {
+            background: rgba(0, 234, 255, 0.12);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 6px 8px;
+            text-align: left;
+        }
+        .data-table td {
+            border: 1px solid var(--border);
+            padding: 5px 8px;
+            color: var(--text);
+        }
+        .formula-card {
+            background: rgba(124, 60, 255, 0.04);
+            border: 1px solid rgba(124, 60, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body data-chapter-id="2">
+
+    <div class="background-effects">
+        <div class="grid-background"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="index.html" class="brand">
+            <div class="brand-logo"><span>DB</span></div>
+            <div class="brand-text"><strong>DBMS</strong><span>NEXUS</span></div>
+        </a>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="chapter1.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">← CH 01</a>
+            <a href="index.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">CORE</a>
+            <a href="chapter3.html" class="primary-button" style="min-height: 38px; padding: 0 16px;">NEXT: CH 03 →</a>
+        </div>
+    </header>
+
+    <main style="max-width: 1100px; margin: 120px auto 80px; padding: 0 5%;" class="chapter-hero">
+        
+        <div class="section-heading" style="text-align: left; margin-bottom: 40px;">
+            <span class="section-label">CURRICULUM PROTOCOL // MODULE 02 (SLIDES 01–33 COMPLETE)</span>
+            <h1 style="font-family: var(--font-tech); font-size: clamp(30px, 4vw, 52px); margin: 12px 0; color: #fff;">
+                INTRO TO RELATIONAL MODEL &amp; <strong style="color: var(--primary);">RELATIONAL ALGEBRA</strong>
+            </h1>
+            <p style="color: var(--muted); font-size: 15px; max-width: 850px; line-height: 1.8;">
+                Exhaustive Chapter 2 syllabus: Structure of Relational Databases, Attributes &amp; Domains, Unordered Tuples, Schemas vs. Instances, Key Hierarchy (Superkey, Candidate Key, Primary Key, Foreign Key), Complete 11-Relation University Schema Diagram, Pure Query Languages (Relational Algebra, TRC, DRC), the 6 Basic Relational Algebra Operators ($\sigma, \Pi, \cup, -, \times, \rho$), Theta Joins ($\bowtie_\theta$), Assignment ($\leftarrow$), Aggregate Operations ($\mathcal{G}$ / $\Upsilon$), Group-By Aggregations, and Equivalent Query Optimization rules with complete formula cheatsheets and potential exam questions.
+            </p>
+        </div>
+
+        <!-- SECTION 1: RELATIONAL STRUCTURE -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 03–06</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                1. Structure of Relational Databases &amp; Unordered Tuples
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Attributes (Columns):</b> Named property headers of a relation (e.g., <code>ID, name, dept_name, salary</code>).<br>
+                    • <b>Tuples (Rows):</b> Individual records stored within the relation.<br>
+                    • <b>Domain:</b> The set of allowed values for each attribute. Attribute values are normally required to be <b>atomic</b> (indivisible).<br>
+                    • <b>The Null Value:</b> A special value that is a member of every domain, indicating that the value is "unknown". It causes complications in the definition of many operations.<br>
+                    • <b>Relations are Unordered:</b> The physical order of tuples is completely irrelevant (tuples may be stored in an arbitrary order).
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="feature-card">
+                    <span style="font-family: var(--font-tech); font-size: 10px; color: var(--primary);">Figure 2.1: The instructor relation (Attributes &amp; Tuples) [Slide 03]</span>
+                    <table class="data-table">
+                        <tr><th>ID</th><th>name</th><th>dept_name</th><th>salary</th></tr>
+                        <tr><td>10101</td><td>Srinivasan</td><td>Comp. Sci.</td><td>65000</td></tr>
+                        <tr><td>12121</td><td>Wu</td><td>Finance</td><td>90000</td></tr>
+                        <tr><td>15151</td><td>Mozart</td><td>Music</td><td>40000</td></tr>
+                        <tr><td>22222</td><td>Einstein</td><td>Physics</td><td>95000</td></tr>
+                        <tr><td>32343</td><td>El Said</td><td>History</td><td>60000</td></tr>
+                        <tr><td>33456</td><td>Gold</td><td>Physics</td><td>87000</td></tr>
+                        <tr><td>45565</td><td>Katz</td><td>Comp. Sci.</td><td>75000</td></tr>
+                        <tr><td>58583</td><td>Califieri</td><td>History</td><td>62000</td></tr>
+                        <tr><td>76543</td><td>Singh</td><td>Finance</td><td>80000</td></tr>
+                        <tr><td>76766</td><td>Crick</td><td>Biology</td><td>72000</td></tr>
+                        <tr><td>83821</td><td>Brandt</td><td>Comp. Sci.</td><td>92000</td></tr>
+                        <tr><td>98345</td><td>Kim</td><td>Elec. Eng.</td><td>80000</td></tr>
+                    </table>
+                </div>
+
+                <div class="feature-card">
+                    <span style="font-family: var(--font-tech); font-size: 10px; color: var(--secondary);">Figure 2.4: instructor relation with unordered tuples [Slide 06]</span>
+                    <table class="data-table">
+                        <tr><th style="background: rgba(124, 60, 255, 0.15); color: var(--secondary);">ID</th><th style="background: rgba(124, 60, 255, 0.15); color: var(--secondary);">name</th><th style="background: rgba(124, 60, 255, 0.15); color: var(--secondary);">dept_name</th><th style="background: rgba(124, 60, 255, 0.15); color: var(--secondary);">salary</th></tr>
+                        <tr><td>22222</td><td>Einstein</td><td>Physics</td><td>95000</td></tr>
+                        <tr><td>12121</td><td>Wu</td><td>Finance</td><td>90000</td></tr>
+                        <tr><td>32343</td><td>El Said</td><td>History</td><td>60000</td></tr>
+                        <tr><td>45565</td><td>Katz</td><td>Comp. Sci.</td><td>75000</td></tr>
+                        <tr><td>98345</td><td>Kim</td><td>Elec. Eng.</td><td>80000</td></tr>
+                        <tr><td>76766</td><td>Crick</td><td>Biology</td><td>72000</td></tr>
+                        <tr><td>10101</td><td>Srinivasan</td><td>Comp. Sci.</td><td>65000</td></tr>
+                        <tr><td>58583</td><td>Califieri</td><td>History</td><td>62000</td></tr>
+                        <tr><td>83821</td><td>Brandt</td><td>Comp. Sci.</td><td>92000</td></tr>
+                        <tr><td>15151</td><td>Mozart</td><td>Music</td><td>40000</td></tr>
+                        <tr><td>33456</td><td>Gold</td><td>Physics</td><td>87000</td></tr>
+                        <tr><td>76543</td><td>Singh</td><td>Finance</td><td>80000</td></tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: KEYS & SCHEMAS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 07 &amp; 08</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                2. Database Schema, Database Instance &amp; Key Definitions
+            </h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="feature-card">
+                    <h3 style="color: var(--warning); font-size: 14px;">Database Schema vs Instance</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.7;">
+                        • <b>Database Schema:</b> The logical structure of the database.<br>
+                        <i>Example Schema:</i> <code>instructor (ID, name, dept_name, salary)</code><br>
+                        • <b>Database Instance:</b> A snapshot of the data in the database at a given instant in time.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: var(--accent); font-size: 14px;">Foreign Key Constraint</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.7;">
+                        A value in a <b>referencing relation</b> must appear in the <b>referenced relation</b>.<br>
+                        <i>Example:</i> <code>dept_name</code> in <code>instructor</code> references <code>dept_name</code> of the <code>department</code> table.
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                <div class="feature-card" style="border-top: 3px solid var(--secondary);">
+                    <h3 style="color: var(--secondary); font-size: 14px;">Superkey</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        Let $K \subseteq R$. $K$ is a <b>superkey</b> of $R$ if values for $K$ are sufficient to identify a unique tuple of each possible relation $r(R)$.<br>
+                        <i>Example:</i> <code>{ID}</code> and <code>{ID, name}</code> are both superkeys of <code>instructor</code>.
+                    </p>
+                </div>
+                <div class="feature-card" style="border-top: 3px solid var(--primary);">
+                    <h3 style="color: var(--primary); font-size: 14px;">Candidate Key</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        A superkey $K$ is a <b>candidate key</b> if $K$ is <b>minimal</b> (no proper subset of $K$ is a superkey).<br>
+                        <i>Example:</i> <code>{ID}</code> is a candidate key for <code>instructor</code>.
+                    </p>
+                </div>
+                <div class="feature-card" style="border-top: 3px solid var(--success);">
+                    <h3 style="color: var(--success); font-size: 14px;">Primary Key</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        One of the candidate keys selected by the database designer as the principal identifier. Primary key attributes can never be null[cite: 1].
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SCHEMA DIAGRAM -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDE 09</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                3. Schema Diagram for University Database (All 11 Relations)
+            </h2>
+            <div class="diagram-container">
+                <span style="font-family: var(--font-tech); font-size: 11px; color: var(--primary); display: block; margin-bottom: 12px;">
+                    Figure 2.8: Complete Schema Diagram for University Database [Slide 09]
+                </span>
+                
+                <svg viewBox="0 0 950 440" style="width: 100%; min-width: 800px; height: auto;">
+                    <rect x="220" y="20" width="130" height="95" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="220" y="20" width="130" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="285" y="34" font-size="10" text-anchor="middle" font-weight="bold">takes</text>
+                    <text x="228" y="50" font-size="8" text-decoration="underline">ID</text>
+                    <text x="228" y="62" font-size="8" text-decoration="underline">course_id</text>
+                    <text x="228" y="74" font-size="8" text-decoration="underline">sec_id, semester, year</text>
+                    <text x="228" y="86" font-size="8">grade</text>
+
+                    <rect x="580" y="20" width="130" height="95" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="580" y="20" width="130" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="645" y="34" font-size="10" text-anchor="middle" font-weight="bold">student</text>
+                    <text x="588" y="52" font-size="8" text-decoration="underline">ID</text>
+                    <text x="588" y="64" font-size="8">name</text>
+                    <text x="588" y="76" font-size="8">dept_name</text>
+                    <text x="588" y="88" font-size="8">tot_cred</text>
+
+                    <rect x="760" y="140" width="110" height="60" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="760" y="140" width="110" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="815" y="154" font-size="10" text-anchor="middle" font-weight="bold">advisor</text>
+                    <text x="768" y="172" font-size="8" text-decoration="underline">s_id</text>
+                    <text x="768" y="184" font-size="8">i_id</text>
+
+                    <rect x="20" y="140" width="140" height="110" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="20" y="140" width="140" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="90" y="154" font-size="10" text-anchor="middle" font-weight="bold">section</text>
+                    <text x="28" y="172" font-size="8" text-decoration="underline">course_id, sec_id,</text>
+                    <text x="28" y="182" font-size="8" text-decoration="underline">semester, year</text>
+                    <text x="28" y="196" font-size="8">building</text>
+                    <text x="28" y="208" font-size="8">room_number</text>
+                    <text x="28" y="220" font-size="8">time_slot_id</text>
+
+                    <rect x="420" y="140" width="120" height="85" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="420" y="140" width="120" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="480" y="154" font-size="10" text-anchor="middle" font-weight="bold">course</text>
+                    <text x="428" y="172" font-size="8" text-decoration="underline">course_id</text>
+                    <text x="428" y="184" font-size="8">title</text>
+                    <text x="428" y="196" font-size="8">dept_name</text>
+                    <text x="428" y="208" font-size="8">credits</text>
+
+                    <rect x="580" y="140" width="130" height="85" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="580" y="140" width="130" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="645" y="154" font-size="10" text-anchor="middle" font-weight="bold">department</text>
+                    <text x="588" y="172" font-size="8" text-decoration="underline">dept_name</text>
+                    <text x="588" y="184" font-size="8">building</text>
+                    <text x="588" y="196" font-size="8">budget</text>
+
+                    <rect x="420" y="260" width="120" height="65" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="420" y="260" width="120" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="480" y="274" font-size="10" text-anchor="middle" font-weight="bold">prereq</text>
+                    <text x="428" y="292" font-size="8" text-decoration="underline">course_id</text>
+                    <text x="428" y="304" font-size="8" text-decoration="underline">prereq_id</text>
+
+                    <rect x="620" y="280" width="130" height="90" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="620" y="280" width="130" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="685" y="294" font-size="10" text-anchor="middle" font-weight="bold">instructor</text>
+                    <text x="628" y="312" font-size="8" text-decoration="underline">ID</text>
+                    <text x="628" y="324" font-size="8">name</text>
+                    <text x="628" y="336" font-size="8">dept_name</text>
+                    <text x="628" y="348" font-size="8">salary</text>
+
+                    <rect x="230" y="280" width="130" height="90" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="230" y="280" width="130" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="295" y="294" font-size="10" text-anchor="middle" font-weight="bold">teaches</text>
+                    <text x="238" y="312" font-size="8" text-decoration="underline">ID, course_id, sec_id,</text>
+                    <text x="238" y="324" font-size="8" text-decoration="underline">semester, year</text>
+
+                    <rect x="20" y="280" width="140" height="75" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="20" y="280" width="140" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="90" y="294" font-size="10" text-anchor="middle" font-weight="bold">classroom</text>
+                    <text x="28" y="312" font-size="8" text-decoration="underline">building, room_number</text>
+                    <text x="28" y="324" font-size="8">capacity</text>
+
+                    <rect x="230" y="160" width="130" height="85" rx="6" fill="rgba(0,234,255,0.06)" stroke="#00eaff" stroke-width="1.5"/>
+                    <rect x="230" y="160" width="130" height="20" rx="6" fill="rgba(0,234,255,0.2)"/>
+                    <text x="295" y="174" font-size="10" text-anchor="middle" font-weight="bold">time_slot</text>
+                    <text x="238" y="192" font-size="8" text-decoration="underline">time_slot_id, day, start_time</text>
+                    <text x="238" y="204" font-size="8">end_time</text>
+
+                    <path d="M 580 52 L 350 52" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 220 65 L 160 172" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 160 182 L 420 172" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 540 196 L 580 172" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 645 280 L 645 225" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 230 312 L 160 200" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 360 312 L 620 312" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 760 170 L 710 170" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 815 140 L 815 65 L 710 65" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 420 280 L 390 280 L 390 172 L 420 172" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 20 208 L 0 208 L 0 312 L 20 312" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                    <path d="M 160 220 L 230 192" stroke="#00eaff" stroke-width="1.2" fill="none"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SECTION 4: 6 RELATIONAL OPERATORS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 10–21</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                4. Relational Algebra (6 Basic Operators + Theta Join)
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <!-- Select -->
+                <div class="feature-card">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <span class="algebra-badge">σ</span>
+                        <h3 style="color: var(--primary); font-size: 14px;">Select Operation ($\sigma_p(r)$) [Slides 12, 13]</h3>
+                    </div>
+                    <p style="font-size: 13px; color: var(--muted);">
+                        Filters tuples satisfying predicate $p$. Connectives: $\wedge, \vee, \neg$.<br>
+                        <code>σ dept_name="Physics" (instructor)</code>
+                    </p>
+                    <table class="data-table">
+                        <tr><th>ID</th><th>name</th><th>dept_name</th><th>salary</th></tr>
+                        <tr><td>22222</td><td>Einstein</td><td>Physics</td><td>95000</td></tr>
+                        <tr><td>33456</td><td>Gold</td><td>Physics</td><td>87000</td></tr>
+                    </table>
+                </div>
+
+                <!-- Project -->
+                <div class="feature-card">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <span class="algebra-badge">Π</span>
+                        <h3 style="color: var(--secondary); font-size: 14px;">Project Operation ($\Pi_L(r)$) [Slides 14, 15]</h3>
+                    </div>
+                    <p style="font-size: 13px; color: var(--muted);">
+                        Extracts specified columns and <b>removes duplicates</b>.<br>
+                        <code>Π ID, name, salary (instructor)</code>
+                    </p>
+                    <table class="data-table">
+                        <tr><th>ID</th><th>name</th><th>salary</th></tr>
+                        <tr><td>10101</td><td>Srinivasan</td><td>65000</td></tr>
+                        <tr><td>12121</td><td>Wu</td><td>90000</td></tr>
+                        <tr><td>15151</td><td>Mozart</td><td>40000</td></tr>
+                        <tr><td>22222</td><td>Einstein</td><td>95000</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Join Table -->
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <span class="algebra-badge">⋈</span>
+                    <h3 style="color: var(--success); font-size: 14px;">Theta Join ($r \bowtie_\theta s = \sigma_\theta(r \times s)$) [Slides 20, 21]</h3>
+                </div>
+                <p style="font-size: 13px; color: var(--muted);">
+                    <code>instructor ⋈ instructor.ID=teaches.ID teaches</code>
+                </p>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <tr>
+                            <th>instructor.ID</th><th>name</th><th>dept_name</th><th>salary</th>
+                            <th>teaches.ID</th><th>course_id</th><th>sec_id</th><th>semester</th><th>year</th>
+                        </tr>
+                        <tr><td>10101</td><td>Srinivasan</td><td>Comp. Sci.</td><td>65000</td><td>10101</td><td>CS-101</td><td>1</td><td>Fall</td><td>2017</td></tr>
+                        <tr><td>10101</td><td>Srinivasan</td><td>Comp. Sci.</td><td>65000</td><td>10101</td><td>CS-315</td><td>1</td><td>Spring</td><td>2018</td></tr>
+                        <tr><td>12121</td><td>Wu</td><td>Finance</td><td>90000</td><td>12121</td><td>FIN-201</td><td>1</td><td>Spring</td><td>2018</td></tr>
+                        <tr><td>22222</td><td>Einstein</td><td>Physics</td><td>95000</td><td>22222</td><td>PHY-101</td><td>1</td><td>Fall</td><td>2017</td></tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: SET OPERATIONS, ASSIGNMENT & AGGREGATES -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 22–33</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                5. Set Operations, Aggregates &amp; Query Optimization
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="feature-card">
+                    <h3 style="color: var(--warning); font-size: 14px;">Set Operations ($\cup, \cap, -$) [Slides 22–26]</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>Conditions:</b> Must have the <b>same arity</b> and <b>compatible domains</b>.<br>
+                        • <i>Union ($\cup$):</i> In Fall 2017 OR Spring 2018.<br>
+                        • <i>Intersection ($\cap$):</i> In Fall 2017 AND Spring 2018.<br>
+                        • <i>Difference ($-$):</i> In Fall 2017 but NOT in Spring 2018.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h3 style="color: var(--accent); font-size: 14px;">Assignment ($\leftarrow$) &amp; Rename ($\rho$) [Slides 27, 28]</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>$\leftarrow$:</b> Assigns query results to temporary relation variables.<br>
+                        • <b>$\rho_x(E)$:</b> Renames relation expression $E$ as $x$.<br>
+                        • <b>$\rho_{x(A_1, \dots, A_n)}(E)$:</b> Renames relation and its attributes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Aggregates and Group By (Slides 29, 30, 31) -->
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <h3 style="color: var(--primary); font-size: 14px;">Aggregate Functions ($\mathcal{G}$ or $\Upsilon$) [Slides 29–31]</h3>
+                <p style="font-size: 13px; color: var(--muted); margin: 6px 0 10px;">
+                    Functions operate on multisets of values: <code>avg, min, max, sum, count</code>.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <span style="font-size: 12px; color: var(--primary);">Basic Aggregate Example [Slide 30]:</span>
+                        <code style="display:block; background:#02050d; padding:8px; border-radius:6px; margin-top:4px; font-size:11px; border:1px solid var(--border);">
+                            ϒ avg(salary) (instructor)
+                        </code>
+                        <code style="display:block; background:#02050d; padding:8px; border-radius:6px; margin-top:4px; font-size:11px; border:1px solid var(--border);">
+                            ϒ count(course_id) (σ year=2018 (section))
+                        </code>
+                    </div>
+                    <div>
+                        <span style="font-size: 12px; color: var(--secondary);">Group By Example [Slide 31]:</span>
+                        <code style="display:block; background:#02050d; padding:8px; border-radius:6px; margin-top:4px; font-size:11px; border:1px solid rgba(124,60,255,0.3);">
+                            dept_name ϒ avg(salary) (instructor)
+                        </code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equivalent Queries (Slides 32, 33) -->
+            <div class="feature-card">
+                <h3 style="color: var(--secondary); font-size: 14px;">Equivalent Queries &amp; Query Optimization [Slides 32, 33]</h3>
+                <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                    Two queries are equivalent if they produce the same result on any legal database instance:<br>
+                    • <b>Rule 1:</b> $\sigma_{\theta_1 \wedge \theta_2}(R) \equiv \sigma_{\theta_1}(\sigma_{\theta_2}(R))$<br>
+                    • <b>Rule 2 (Selection Pushdown):</b> $\sigma_{\text{dept}="Physics"}(\text{instructor} \bowtie \text{teaches}) \equiv (\sigma_{\text{dept}="Physics"}(\text{instructor})) \bowtie \text{teaches}$
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 6: FORMULA & EQUIVALENCE CHEATSHEET -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--accent); color: var(--accent);">FORMULA CHEATSHEET</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                📐 Chapter 02 Core Formulas &amp; Definitions Cheatsheet
+            </h2>
+            
+            <div class="formula-card">
+                <strong style="color: var(--primary); font-size: 13px;">1. The 6 Primitive Relational Algebra Operators:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    Selection ($\sigma_p(r)$), Projection ($\Pi_L(r)$), Cartesian Product ($r \times s$), Union ($r \cup s$), Set Difference ($r - s$), Rename ($\rho_x(E)$).
+                </p>
+            </div>
+
+            <div class="formula-card">
+                <strong style="color: var(--secondary); font-size: 13px;">2. Theta Join Definition:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    $r \bowtie_\theta s = \sigma_\theta(r \times s)$
+                </p>
+            </div>
+
+            <div class="formula-card">
+                <strong style="color: var(--success); font-size: 13px;">3. Set Intersection Derived from Difference:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    $r \cap s = r - (r - s)$
+                </p>
+            </div>
+
+            <div class="formula-card">
+                <strong style="color: var(--warning); font-size: 13px;">4. Generalized Aggregate Grouping Formula:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    $_{G_1, G_2, \dots, G_n}\mathcal{G}_{F_1(A_1), F_2(A_2), \dots, F_m(A_m)}(E)$ where $G$ are group-by attributes and $F$ are aggregate functions.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 7: MEMORY ANCHORS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--accent); color: var(--accent);">EXAM REVISION</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                🧠 Chapter 02 Memory Anchors
+            </h2>
+            <div id="memoryKeywordsDeck"></div>
+        </section>
+
+        <!-- SECTION 8: INTERACTIVE MINIGAME -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">INTERACTIVE LAB</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                🎮 Mini-Game: Relational Algebra Slicer
+            </h2>
+            <div class="feature-card" id="chapterGameArea"></div>
+        </section>
+
+        <!-- SECTION 9: TOPIC PRACTICE QUIZ -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--warning); color: var(--warning);">TOPIC SELF-CHECK</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--warning);">
+                📝 Chapter 02 Topic Practice Quiz
+            </h2>
+            <div class="feature-card" id="practiceQuizArea"></div>
+        </section>
+
+        <!-- SECTION 10: OFFICIAL EXAMINATION ARENA -->
+        <section style="padding: 20px 0 60px;">
+            <span class="topic-pill" style="border-color: var(--secondary); color: var(--secondary);">MASTERY VERIFICATION</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                ⚡ Chapter 02 Official Examination Arena
+            </h2>
+            <p style="color: var(--muted); font-size: 13px; margin-bottom: 15px;">
+                Complete this proctored 15-question battle assessment to unlock Chapter 03.
+            </p>
+            <div id="quizArena"></div>
+        </section>
+
+    </main>
+
+    <div style="position: fixed; bottom: 25px; left: 25px; display: flex; gap: 10px; z-index: 999;">
+        <select onchange="NexusVoice.setGender(this.value)" style="background: var(--panel); color: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-family: var(--font-tech); font-size: 10px;">
+            <option value="female">♀ Female Voice</option>
+            <option value="male">♂ Male Voice</option>
+        </select>
+        <button onclick="document.getElementById('lensModal').classList.add('active')" class="secondary-button" style="min-height: 36px; padding: 0 12px; font-size: 10px;">📷 LENS</button>
+    </div>
+
+    <div class="modal-overlay" id="lensModal">
+        <div class="lock-modal" style="width: min(550px, 95vw); text-align: left;">
+            <button class="modal-close" onclick="document.getElementById('lensModal').classList.remove('active')">×</button>
+            <span class="modal-label">NEXUS LENS</span>
+            <h2 style="color: var(--primary); font-size: 20px;">📷 OPTICAL SCHEMA EXPLAINER</h2>
+            <input type="file" id="lensUpload" accept="image/*" onchange="NexusLens.analyzeImage(this)" style="display: none;">
+            <button onclick="document.getElementById('lensUpload').click()" class="primary-button" style="width: 100%; margin: 15px 0;">UPLOAD SCHEMA / SLIDE</button>
+            <img id="lensPreviewImg" style="display: none; max-width: 100%; height: 160px; object-fit: contain; border-radius: 8px; margin-bottom: 10px;" />
+            <div id="lensResultBox"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay unlock-overlay" id="unlockModal">
+        <div class="unlock-modal">
+            <div class="unlock-energy"></div>
+            <div class="unlock-lock">🔒</div>
+            <h2 id="unlockTitle">DECRYPTING NEXT PROTOCOL...</h2>
+            <div class="unlock-progress-track"><div class="unlock-progress-fill" id="unlockProgress"></div></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMessage"></span></div>
+
+    <script src="js/progress.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/vision.js"></script>
+    <script src="js/chapter.js"></script>
+    <script src="js/practice.js"></script>
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initChapter(2);
+            initPracticeQuiz(2);
+            renderQuiz(2);
+        });
+    </script>
+</body>
+</html>

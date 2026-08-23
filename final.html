@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Arena | DBMS NEXUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="grid-background"></div>
+        <div class="orb orb-one"></div>
+        <div class="orb orb-three"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="index.html" class="brand">
+            <div class="brand-logo"><span>DB</span></div>
+            <div class="brand-text"><strong>DBMS</strong><span>NEXUS</span></div>
+        </a>
+        <a href="index.html" class="secondary-button" style="min-height: 38px; padding: 0 14px;">← EXIT ARENA</a>
+    </header>
+
+    <main style="max-width: 900px; margin: 120px auto; padding: 0 5%; text-align: center;">
+        <span class="section-label">ENDGAME PROTOCOL</span>
+        <h1 style="font-family: var(--font-tech); font-size: clamp(28px, 5vw, 48px); margin: 12px 0;">GRAND DATABASE ARENA</h1>
+        <p style="color: var(--muted); margin-bottom: 30px;">Consolidated final challenge spanning all four chapters[cite: 7, 8, 9, 10].</p>
+        
+        <div id="quizArena" style="text-align: left;"></div>
+    </main>
+
+    <div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMessage"></span></div>
+
+    <script src="js/progress.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/vision.js"></script>
+    <script src="js/chapter.js"></script>
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            renderQuiz(0);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 03: Introduction to SQL | DBMS NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .sql-code-block {
+            background: #02050d;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-family: monospace;
+            font-size: 12.5px;
+            color: var(--primary);
+            line-height: 1.6;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .sql-code-block b {
+            color: #ff2bd6;
+        }
+        .sql-code-block i {
+            color: #ffc857;
+            font-style: normal;
+        }
+        .topic-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px;
+            background: rgba(0, 234, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-family: var(--font-tech);
+            font-size: 8.5px;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+        .formula-card {
+            background: rgba(124, 60, 255, 0.04);
+            border: 1px solid rgba(124, 60, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            font-family: monospace;
+            border: 1px solid var(--border);
+            margin-top: 8px;
+        }
+        .data-table th {
+            background: rgba(0, 234, 255, 0.12);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 6px 8px;
+            text-align: left;
+        }
+        .data-table td {
+            border: 1px solid var(--border);
+            padding: 5px 8px;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body data-chapter-id="3">
+
+    <div class="background-effects">
+        <div class="grid-background"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
+    </div>
+
+    <header class="navbar">
+        <a href="index.html" class="brand">
+            <div class="brand-logo"><span>DB</span></div>
+            <div class="brand-text"><strong>DBMS</strong><span>NEXUS</span></div>
+        </a>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="chapter2.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">← CH 02</a>
+            <a href="index.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">CORE</a>
+            <a href="chapter4.html" class="primary-button" style="min-height: 38px; padding: 0 16px;">NEXT: CH 04 →</a>
+        </div>
+    </header>
+
+    <main style="max-width: 1100px; margin: 120px auto 80px; padding: 0 5%;" class="chapter-hero">
+        
+        <div class="section-heading" style="text-align: left; margin-bottom: 40px;">
+            <span class="section-label">CURRICULUM PROTOCOL // MODULE 03 (SLIDES 01–57 COMPLETE)</span>
+            <h1 style="font-family: var(--font-tech); font-size: clamp(30px, 4vw, 52px); margin: 12px 0; color: #fff;">
+                CHAPTER 3: <strong style="color: var(--primary);">INTRODUCTION TO SQL</strong>
+            </h1>
+            <p style="color: var(--muted); font-size: 15px; max-width: 850px; line-height: 1.8;">
+                Exhaustive syllabus covering Chapter 3 (Slides 1–57): SQL Parts (DML, Integrity, View Definition, Transaction Control, Embedded/Dynamic SQL, Authorization), DDL Domain Types, Table Creation &amp; Integrity Constraints, Basic Query Structure (select, from, where), Rename Operations (as), Self-Joins, String Matching &amp; Escapes, Ordering Displays, Where Predicates (between, tuple comparisons), Set Operations, 3-Valued NULL Logic, Aggregate Functions, GROUP BY, HAVING Clause, Nested Subqueries in WHERE, FROM, and SELECT clauses, Set Comparisons (SOME, ALL), Set Membership (IN, NOT IN), Empty Relation Tests (EXISTS, NOT EXISTS), Uniqueness Tests (UNIQUE), Temporary Relations (WITH Clause), Scalar Subqueries, and Full Database Modifications (Deletions with subqueries, Insertions with subqueries, Updates with scalar subqueries and CASE statements).
+            </p>
+        </div>
+
+        <!-- SECTION 1: SQL PARTS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDE 03</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                1. Overview of SQL Parts
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Data-Manipulation Language (DML):</b> Provides the ability to query information from the database and to insert tuples into, delete tuples from, and modify tuples in the database.<br>
+                    • <b>Integrity:</b> The DDL includes commands for specifying integrity constraints.<br>
+                    • <b>View Definition:</b> The DDL includes commands for defining views.<br>
+                    • <b>Transaction Control:</b> Includes commands for specifying the beginning and ending of transactions.<br>
+                    • <b>Embedded SQL and Dynamic SQL:</b> Define how SQL statements can be embedded within general-purpose programming languages.<br>
+                    • <b>Authorization:</b> Includes commands for specifying access rights to relations and views.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DDL & DOMAIN TYPES -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 04 &amp; 05</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                2. Data Definition Language (DDL) &amp; Domain Types
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    The SQL data-definition language (DDL) allows specification of the schema for each relation, domain types, integrity constraints, indices, security/authorization, and physical storage on disk.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px;">
+                    <div style="background: rgba(0,234,255,0.04); border: 1px solid var(--border); padding: 12px; border-radius: 10px;">
+                        <b style="color: var(--primary);">char(n)</b>
+                        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Fixed length character string, with user-specified length $n$.</p>
+                    </div>
+                    <div style="background: rgba(0,234,255,0.04); border: 1px solid var(--border); padding: 12px; border-radius: 10px;">
+                        <b style="color: var(--primary);">varchar(n)</b>
+                        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Variable length character strings, with user-specified maximum length $n$.</p>
+                    </div>
+                    <div style="background: rgba(124,60,255,0.04); border: 1px solid rgba(124,60,255,0.3); padding: 12px; border-radius: 10px;">
+                        <b style="color: var(--secondary);">int / smallint</b>
+                        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Integer and small integer (finite subsets of integers with machine-dependent precision).</p>
+                    </div>
+                    <div style="background: rgba(32,255,155,0.04); border: 1px solid rgba(32,255,155,0.3); padding: 12px; border-radius: 10px;">
+                        <b style="color: var(--success);">numeric(p, d)</b>
+                        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Fixed point number with precision $p$ digits and $d$ digits to right of decimal (e.g., <code>numeric(3,1)</code> allows <code>44.5</code>, but not <code>444.5</code> or <code>0.32</code>).</p>
+                    </div>
+                    <div style="background: rgba(255,43,214,0.04); border: 1px solid rgba(255,43,214,0.3); padding: 12px; border-radius: 10px;">
+                        <b style="color: var(--accent);">real / double precision / float(n)</b>
+                        <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Floating point and double-precision floating point numbers with at least $n$ digits.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CREATE TABLE CONSTRUCT & RELATIONS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 06–09</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                3. Create Table Construct &amp; Integrity Constraints
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>primary key ($A_1, \dots, A_n$):</b> Attributes automatically required to be <code>not null</code> and unique.<br>
+                    • <b>foreign key ($A_m, \dots, A_n$) references $r$:</b> Requires attribute values to correspond to the primary key of table $r$.<br>
+                    • <b>not null:</b> Prohibits null values from being stored for the attribute.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
+                    <div class="sql-code-block">
+<b>create table</b> instructor (<br>
+&nbsp;&nbsp;ID <b>char</b>(5),<br>
+&nbsp;&nbsp;name <b>varchar</b>(20) <b>not null</b>,<br>
+&nbsp;&nbsp;dept_name <b>varchar</b>(20),<br>
+&nbsp;&nbsp;salary <b>numeric</b>(8,2),<br>
+&nbsp;&nbsp;<b>primary key</b> (ID),<br>
+&nbsp;&nbsp;<b>foreign key</b> (dept_name) <b>references</b> department<br>
+);
+                    </div>
+                    <div class="sql-code-block">
+<b>create table</b> student (<br>
+&nbsp;&nbsp;ID <b>varchar</b>(5),<br>
+&nbsp;&nbsp;name <b>varchar</b>(20) <b>not null</b>,<br>
+&nbsp;&nbsp;dept_name <b>varchar</b>(20),<br>
+&nbsp;&nbsp;tot_cred <b>numeric</b>(3,0),<br>
+&nbsp;&nbsp;<b>primary key</b> (ID),<br>
+&nbsp;&nbsp;<b>foreign key</b> (dept_name) <b>references</b> department<br>
+);
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: TABLE UPDATES -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDE 10</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                4. Basic Table Modifications: Insert, Delete, Drop &amp; Alter
+            </h2>
+            <div class="feature-card">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Insert:</b> <code>insert into instructor values ('10211', 'Smith', 'Biology', 66000);</code><br>
+                    • <b>Delete:</b> Removes all tuples from relation while retaining schema: <code>delete from student;</code><br>
+                    • <b>Drop Table:</b> Completely removes tuples and schema definition from database: <code>drop table r;</code><br>
+                    • <b>Alter Table (Add Attribute):</b> <code>alter table r add A D;</code> (All existing tuples are assigned <code>null</code> for the new attribute).<br>
+                    • <b>Alter Table (Drop Attribute):</b> <code>alter table r drop A;</code> (Dropping attributes is unsupported on many engines).
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 5: BASIC QUERY STRUCTURE -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 11–18</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                5. Basic Query Structure (select, from, where)
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    A typical SQL query has the form:<br>
+                    <code><b>select</b> A1, A2, ..., An <b>from</b> r1, r2, ..., rm <b>where</b> P;</code> (The result of an SQL query is always a relation).<br>
+                    • <b>select clause:</b> Corresponds to relational algebra <b>projection $\Pi$</b>. Case insensitive (<code>Name &equiv; NAME &equiv; name</code>).<br>
+                    • <b>distinct vs all:</b> <code>select distinct dept_name from instructor;</code> forces duplicate elimination; <code>all</code> retains duplicates.<br>
+                    • <b>Asterisk (*):</b> Denotes all attributes: <code>select * from instructor;</code><br>
+                    • <b>Literals &amp; Arithmetic:</b> <code>select '437' as FOO;</code> or arithmetic: <code>select ID, name, salary/12 as monthly_salary from instructor;</code><br>
+                    • <b>where clause:</b> Corresponds to relational algebra <b>selection $\sigma$</b>. Connectives: <code>and, or, not</code>; operators: <code>&lt;, &lt;=, &gt;, &gt;=, =, &lt;&gt;</code>.<br>
+                    • <b>from clause:</b> Corresponds to relational algebra <b>Cartesian product $\times$</b>.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 6: RENAME OPERATION & SELF-JOINS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 19 &amp; 20</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                6. Rename Operation (as) &amp; Self Joins
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Rename Clause (<code>as</code>):</b> Renames relations and attributes using <code>old-name as new-name</code> (keyword <code>as</code> is optional).<br>
+                    • <b>Self-Join (Comparing a table with itself):</b> Find instructors earning more than some instructor in 'Comp. Sci.':
+                </p>
+                <div class="sql-code-block">
+<b>select distinct</b> T.name<br>
+<b>from</b> instructor <b>as</b> T, instructor <b>as</b> S<br>
+<b>where</b> T.salary > S.salary <b>and</b> S.dept_name = <i>'Comp. Sci.'</i>;
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: STRING OPS, ORDER BY & PREDICATES -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 21–24</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                7. String Operations, Ordering Displays &amp; Between Predicates
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>String Matching (<code>like</code>):</b> <code>'%'</code> matches any substring; <code>'_'</code> matches any single character. Escape wildcard using <code>escape '\'</code>.<br>
+                    • <b>Ordering (<code>order by</code>):</b> <code>desc</code> for descending, <code>asc</code> for ascending (default). Supports sorting by multiple attributes.<br>
+                    • <b>Between Operator:</b> <code>where salary between 90000 and 100000</code> ($\ge 90000$ and $\le 100000$).<br>
+                    • <b>Tuple Comparison:</b> <code>where (instructor.ID, dept_name) = (teaches.ID, 'Biology');</code>
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 8: SET OPERATIONS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 25 &amp; 26</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--warning);">
+                8. Set Operations: union, intersect, except
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <code>union</code> (in Fall 2017 or Spring 2018), <code>intersect</code> (in Fall 2017 and Spring 2018), <code>except</code> (in Fall 2017 but not Spring 2018).<br>
+                    • Standard set operations automatically eliminate duplicates. Use <code>union all</code>, <code>intersect all</code>, and <code>except all</code> to retain all duplicates.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 9: NULL VALUES & 3-VALUED LOGIC -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 27 &amp; 28</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                9. Null Values &amp; Three-Valued Logic
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • Arithmetic with null evaluates to <code>null</code> (<code>5 + null &rarr; null</code>).<br>
+                    • Comparisons with null evaluate to <code>unknown</code> (<code>5 &lt; null</code>, <code>null = null</code>).<br>
+                    • <b>Boolean Logic:</b> <code>(unknown OR true) = true</code>, <code>(unknown AND false) = false</code>, <code>(NOT unknown) = unknown</code>.<br>
+                    • Where clause filters out any row where predicate evaluates to <code>unknown</code> (treated as <code>false</code>).
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 10: AGGREGATE FUNCTIONS, GROUP BY & HAVING -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 29–33</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--success);">
+                10. Aggregate Functions, GROUP BY &amp; HAVING Clause
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Functions:</b> <code>avg, min, max, sum, count</code>. All ignore NULLs except <code>count(*)</code>.<br>
+                    • <b>Grouping Rule:</b> Attributes in <code>select</code> clause outside aggregate functions <b>must appear in group by list</b>.<br>
+                    • <b>HAVING vs WHERE:</b> <code>where</code> filters individual rows <i>before</i> group formation; <code>having</code> filters aggregated groups <i>after</i> formation.
+                </p>
+                <div class="sql-code-block">
+<b>select</b> dept_name, <b>avg</b> (salary) <b>as</b> avg_salary<br>
+<b>from</b> instructor<br>
+<b>group by</b> dept_name<br>
+<b>having avg</b> (salary) > 42000;
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 11: NESTED SUBQUERIES & SET COMPARISONS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 34–40</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                11. Nested Subqueries: Set Membership (in) &amp; Set Comparisons (some, all)
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Set Membership (<code>in / not in</code>):</b> Tests whether a value belongs to the subquery result set.<br>
+                    • <b>Definition of "some" Clause [Slides 37 &amp; 38]:</b> $F \text{ } \langle\text{comp}\rangle \text{ } \mathbf{some} \text{ } r \iff \exists t \in r \text{ such that } (F \text{ } \langle\text{comp}\rangle \text{ } t)$.<br>
+                    &nbsp;&nbsp;- <code>(= some) &equiv; in</code>, but <code>(&ne; some) &ne; not in</code>.<br>
+                    • <b>Definition of "all" Clause [Slides 39 &amp; 40]:</b> $F \text{ } \langle\text{comp}\rangle \text{ } \mathbf{all} \text{ } r \iff \forall t \in r \text{ } (F \text{ } \langle\text{comp}\rangle \text{ } t)$.<br>
+                    &nbsp;&nbsp;- <code>(&ne; all) &equiv; not in</code>, but <code>(= all) &ne; in</code>.
+                </p>
+                <div class="sql-code-block">
+<b>select</b> name<br>
+<b>from</b> instructor<br>
+<b>where</b> salary > <b>all</b> (<b>select</b> salary <b>from</b> instructor <b>where</b> dept_name = <i>'Biology'</i>);
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 12: ADVANCED SUBQUERIES: EXISTS, UNIQUE, FROM & WITH -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 41–47</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                12. Advanced Subqueries (exists, unique, from-clause &amp; with-clause)
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Empty Relations (<code>exists / not exists</code>) [Slides 41–43]:</b> Tests if subquery is non-empty ($\mathbf{exists} \text{ } r \iff r \ne \emptyset$).<br>
+                    &nbsp;&nbsp;- <b>Correlated Subqueries:</b> Inner query references correlation variables (e.g., <code>S.course_id = T.course_id</code>) from outer query.<br>
+                    &nbsp;&nbsp;- <b>Set Containment ($X \subseteq Y \iff X - Y = \emptyset$):</b> Tested using <code>not exists (X except Y)</code>.<br>
+                    • <b>Uniqueness Test (<code>unique</code>) [Slide 44]:</b> Evaluates to <code>true</code> if subquery contains no duplicate tuples.<br>
+                    • <b>Subqueries in the FROM Clause [Slide 45]:</b> Subquery expression placed directly in <code>from</code> clause without requiring a <code>having</code> clause.<br>
+                    • <b>WITH Clause (Temporary Relations) [Slides 46 &amp; 47]:</b> Defines temporary views whose definitions are available only to the executing query.
+                </p>
+                <div class="sql-code-block">
+<b>with</b> dept_total (dept_name, value) <b>as</b> (<br>
+&nbsp;&nbsp;<b>select</b> dept_name, <b>sum</b>(salary) <b>from</b> instructor <b>group by</b> dept_name<br>
+),<br>
+dept_total_avg(value) <b>as</b> (<br>
+&nbsp;&nbsp;<b>select avg</b>(value) <b>from</b> dept_total<br>
+)<br>
+<b>select</b> dept_name<br>
+<b>from</b> dept_total, dept_total_avg<br>
+<b>where</b> dept_total.value > dept_total_avg.value;
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 13: SCALAR SUBQUERIES & DATABASE MODIFICATIONS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 48–57</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                13. Scalar Subqueries &amp; Full Database Modifications
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13.5px; color: var(--text); line-height: 1.8;">
+                    • <b>Scalar Subquery [Slide 48]:</b> Used where a single value is expected. Returns a runtime error if the subquery returns more than one tuple.<br>
+                    • <b>Deletions [Slides 50 &amp; 51]:</b> Can contain nested subqueries (e.g., <code>delete from instructor where salary &lt; (select avg(salary) from instructor);</code>). SQL computes <code>avg(salary)</code> first and identifies all tuples to delete before performing deletions without recomputing.<br>
+                    • <b>Insertions with Subqueries [Slides 52 &amp; 53]:</b> <code>insert into instructor select ID, name, dept_name, 18000 from student where dept_name = 'Music' and total_cred > 144;</code> (Evaluated fully before insertion).<br>
+                    • <b>Updates with Scalar Subqueries &amp; CASE [Slides 54–57]:</b> Avoid order-dependent errors when updating values by using <code>CASE</code> statements:
+                </p>
+                <div class="sql-code-block">
+<b>update</b> instructor<br>
+<b>set</b> salary = <b>case</b><br>
+&nbsp;&nbsp;<b>when</b> salary &lt;= 100000 <b>then</b> salary * 1.05<br>
+&nbsp;&nbsp;<b>else</b> salary * 1.03<br>
+<b>end</b>;
+                </div>
+                <div class="sql-code-block" style="margin-top: 10px;">
+<b>update</b> student S<br>
+<b>set</b> tot_cred = (<br>
+&nbsp;&nbsp;<b>select case</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>when sum</b>(credits) <b>is not null then sum</b>(credits)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>else</b> 0<br>
+&nbsp;&nbsp;<b>end</b><br>
+&nbsp;&nbsp;<b>from</b> takes, course<br>
+&nbsp;&nbsp;<b>where</b> takes.course_id = course.course_id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>and</b> S.ID = takes.ID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>and</b> takes.grade &lt;&gt; <i>'F'</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>and</b> takes.grade <b>is not null</b><br>
+);
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 14: FORMULA CHEATSHEET -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--accent); color: var(--accent);">FORMULA CHEATSHEET</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                📐 Chapter 03 SQL Formulas, Rules &amp; Modification Cheatsheet
+            </h2>
+            <div class="formula-card">
+                <strong style="color: var(--primary); font-size: 13px;">1. Subquery Comparison Equivalencies:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    <code>(= some) &equiv; in</code> &nbsp;|&nbsp; <code>(&ne; all) &equiv; not in</code> &nbsp;|&nbsp; <code>exists r &equiv; (r &ne; &empty;)</code> &nbsp;|&nbsp; <code>not exists r &equiv; (r = &empty;)</code>
+                </p>
+            </div>
+            <div class="formula-card">
+                <strong style="color: var(--secondary); font-size: 13px;">2. Set Containment Equation:</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    $X \subseteq Y \iff X - Y = \emptyset$ (Written in SQL as <code>NOT EXISTS (X EXCEPT Y)</code>).
+                </p>
+            </div>
+            <div class="formula-card">
+                <strong style="color: var(--warning); font-size: 13px;">3. Conditional Update Pattern (CASE):</strong>
+                <p style="font-size: 12.5px; color: var(--text); margin-top: 4px;">
+                    <code>UPDATE r SET A = CASE WHEN P1 THEN E1 WHEN P2 THEN E2 ELSE E3 END;</code>
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 15: MEMORY ANCHORS -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--accent); color: var(--accent);">EXAM REVISION</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                🧠 Chapter 03 Memory Anchors
+            </h2>
+            <div id="memoryKeywordsDeck"></div>
+        </section>
+
+        <!-- SECTION 16: INTERACTIVE MINIGAME -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">INTERACTIVE LAB</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                🎮 Mini-Game: SQL Query Commander
+            </h2>
+            <div class="feature-card" id="chapterGameArea"></div>
+        </section>
+
+        <!-- SECTION 17: TOPIC PRACTICE QUIZ -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--warning); color: var(--warning);">TOPIC SELF-CHECK</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--warning);">
+                📝 Chapter 03 Topic Practice Quiz
+            </h2>
+            <div class="feature-card" id="practiceQuizArea"></div>
+        </section>
+
+        <!-- SECTION 18: OFFICIAL EXAMINATION ARENA -->
+        <section style="padding: 20px 0 60px;">
+            <span class="topic-pill" style="border-color: var(--secondary); color: var(--secondary);">MASTERY VERIFICATION</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                ⚡ Chapter 03 Official Examination Arena
+            </h2>
+            <p style="color: var(--muted); font-size: 13px; margin-bottom: 15px;">
+                Complete this proctored 15-question battle assessment to unlock Chapter 04.
+            </p>
+            <div id="quizArena"></div>
+        </section>
+
+    </main>
+
+    <div style="position: fixed; bottom: 25px; left: 25px; display: flex; gap: 10px; z-index: 999;">
+        <select onchange="NexusVoice.setGender(this.value)" style="background: var(--panel); color: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-family: var(--font-tech); font-size: 10px;">
+            <option value="female">♀ Female Voice</option>
+            <option value="male">♂ Male Voice</option>
+        </select>
+        <button onclick="document.getElementById('lensModal').classList.add('active')" class="secondary-button" style="min-height: 36px; padding: 0 12px; font-size: 10px;">📷 LENS</button>
+    </div>
+
+    <div class="modal-overlay" id="lensModal">
+        <div class="lock-modal" style="width: min(550px, 95vw); text-align: left;">
+            <button class="modal-close" onclick="document.getElementById('lensModal').classList.remove('active')">×</button>
+            <span class="modal-label">NEXUS LENS</span>
+            <h2 style="color: var(--primary); font-size: 20px;">📷 OPTICAL SCHEMA EXPLAINER</h2>
+            <input type="file" id="lensUpload" accept="image/*" onchange="NexusLens.analyzeImage(this)" style="display: none;">
+            <button onclick="document.getElementById('lensUpload').click()" class="primary-button" style="width: 100%; margin: 15px 0;">UPLOAD SCHEMA / SLIDE</button>
+            <img id="lensPreviewImg" style="display: none; max-width: 100%; height: 160px; object-fit: contain; border-radius: 8px; margin-bottom: 10px;" />
+            <div id="lensResultBox"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay unlock-overlay" id="unlockModal">
+        <div class="unlock-modal">
+            <div class="unlock-energy"></div>
+            <div class="unlock-lock">🔒</div>
+            <h2 id="unlockTitle">DECRYPTING NEXT PROTOCOL...</h2>
+            <div class="unlock-progress-track"><div class="unlock-progress-fill" id="unlockProgress"></div></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMessage"></span></div>
+
+    <script src="js/progress.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/vision.js"></script>
+    <script src="js/chapter.js"></script>
+    <script src="js/practice.js"></script>
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initChapter(3);
+            initPracticeQuiz(3);
+            renderQuiz(3);
+        });
+    </script>
+</body>
+</html>

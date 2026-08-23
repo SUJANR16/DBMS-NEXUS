@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 01: Complete Database System Concepts | DBMS NEXUS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .diagram-container {
+            background: #020612;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            margin: 18px 0;
+            overflow-x: auto;
+        }
+        .diagram-container svg text {
+            font-family: var(--font-tech), sans-serif;
+            fill: var(--text);
+        }
+        .topic-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px;
+            background: rgba(0, 234, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-family: var(--font-tech);
+            font-size: 8.5px;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body data-chapter-id="1">
+
+    <!-- Ambient FX Background -->
+    <div class="background-effects">
+        <div class="grid-background"></div>
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <a href="index.html" class="brand">
+            <div class="brand-logo"><span>DB</span></div>
+            <div class="brand-text">
+                <strong>DBMS</strong>
+                <span>NEXUS</span>
+            </div>
+        </a>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="index.html" class="secondary-button" style="min-height: 38px; padding: 0 16px;">← BACK TO NEXUS</a>
+            <a href="chapter2.html" class="primary-button" style="min-height: 38px; padding: 0 16px;">NEXT: CH 02 →</a>
+        </div>
+    </header>
+
+    <!-- Main Syllabus Core -->
+    <main style="max-width: 1100px; margin: 120px auto 80px; padding: 0 5%;" class="chapter-hero">
+        
+        <!-- Header Banner -->
+        <div class="section-heading" style="text-align: left; margin-bottom: 40px;">
+            <span class="section-label">CURRICULUM PROTOCOL // MODULE 01 (SLIDES 01–33 COMPLETE)</span>
+            <h1 style="font-family: var(--font-tech); font-size: clamp(30px, 4vw, 52px); margin: 12px 0; color: #fff;">
+                DATABASE SYSTEM <strong style="color: var(--primary);">FUNDAMENTALS</strong>
+            </h1>
+            <p style="color: var(--muted); font-size: 15px; max-width: 850px; line-height: 1.8;">
+                Exhaustive coverage of Chapter 1: Definition of DBMS, Enterprise Applications, File System Pitfalls, Data Models, Tabular Relational Model, 3-Level Data Abstraction, Instances vs Schemas, Physical Data Independence, DDL vs DML, Turing Incompleteness, Host Languages, Database Design (Business vs CS decisions), Storage Manager Internals & Physical Data Structures, Query Processor Pipeline & Flowchart, Centralized/Shared-Memory Architecture, 2-Tier vs 3-Tier Architectures, and Database Users & DBA Functions[cite: 11].
+            </p>
+        </div>
+
+        <!-- ========================================================
+             SLIDE 03: DEFINITION OF DATABASE SYSTEMS
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDE 03</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                1. What is a Database Management System (DBMS)?
+            </h2>
+            <div class="feature-card">
+                <p style="color: var(--text); font-size: 14px; line-height: 1.8;">
+                    A <b>DBMS</b> contains information about a particular enterprise[cite: 11]. It is a collection of interrelated data combined with a set of programs to access that data in an environment that is both convenient and efficient to use[cite: 11].
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 14px; font-size: 13px; color: var(--muted);">
+                    <div style="padding: 10px; background: rgba(0, 234, 255, 0.04); border: 1px solid var(--border); border-radius: 8px;">
+                        <strong style="color: var(--primary);">Highly Valuable:</strong> Mission-critical operational records[cite: 11].
+                    </div>
+                    <div style="padding: 10px; background: rgba(124, 60, 255, 0.04); border: 1px solid rgba(124, 60, 255, 0.2); border-radius: 8px;">
+                        <strong style="color: var(--secondary);">Relatively Large:</strong> Terabytes to petabytes of enterprise data[cite: 11].
+                    </div>
+                    <div style="padding: 10px; background: rgba(32, 255, 155, 0.04); border: 1px solid rgba(32, 255, 155, 0.2); border-radius: 8px;">
+                        <strong style="color: var(--success);">Multi-User:</strong> Accessed by multiple users and programs concurrently[cite: 11].
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 04 & 05: DATABASE APPLICATIONS EXAMPLES
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 04 & 05</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                2. Real-World Database Applications Examples
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div class="feature-card">
+                    <h3 style="color: var(--secondary); font-size: 14px;">Enterprise Information Systems</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>Sales:</b> Customers, products, purchase transactions[cite: 11].<br>
+                        • <b>Accounting:</b> Payments, receipts, enterprise balance assets[cite: 11].<br>
+                        • <b>Human Resources:</b> Employees, salaries, payroll taxes[cite: 11].<br>
+                        • <b>Manufacturing:</b> Production schedules, inventory, supply chain[cite: 11].
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: var(--primary); font-size: 14px;">Banking, Finance & Academia</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>Banking:</b> Accounts, loans, banking transactions[cite: 11].<br>
+                        • <b>Credit Cards:</b> Real-time transaction validation & tracking[cite: 11].<br>
+                        • <b>Finance:</b> Buying/selling financial instruments (stocks/bonds) and real-time market data[cite: 11].<br>
+                        • <b>Universities:</b> Student registrations, GPA computations, transcripts[cite: 11].
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: var(--accent); font-size: 14px;">Telecom, Web & Navigation Systems</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>Airlines:</b> Reservations and dynamic flight schedules[cite: 11].<br>
+                        • <b>Telecommunication:</b> Call logs, texts, prepaid card balances[cite: 11].<br>
+                        • <b>Web Services:</b> Online retailers, order tracking, ad targeting[cite: 11].<br>
+                        • <b>Document DBs & Navigation:</b> Locations of points of interest and road/bus/train network route graphs[cite: 11].
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 06, 07 & 08: PURPOSE OF DATABASE SYSTEMS
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 06, 07 & 08</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--danger);">
+                3. Purpose of Database Systems (File Processing Pitfalls)
+            </h2>
+            <div class="feature-card" style="border: 1px solid rgba(255, 73, 108, 0.25);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h4 style="color: var(--warning); margin-bottom: 8px;">Storage & Access Limitations</h4>
+                        <p style="font-size: 13px; color: var(--muted); line-height: 1.7;">
+                            • <b>Data Redundancy & Inconsistency:</b> Data stored in multiple file formats causes duplication and mismatched records upon partial updates[cite: 11].<br>
+                            • <b>Difficulty in Accessing Data:</b> Requires developing a brand-new program for every ad-hoc query[cite: 11].<br>
+                            • <b>Data Isolation:</b> Data scattered in multiple files makes writing retrieval tools tedious[cite: 11].<br>
+                            • <b>Integrity Problems:</b> Constraints (e.g., <code>account balance > 0</code>) are buried in application code rather than stated explicitly and centrally[cite: 11].
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--danger); margin-bottom: 8px;">Transaction & Security Failures</h4>
+                        <p style="font-size: 13px; color: var(--muted); line-height: 1.7;">
+                            • <b>Atomicity of Updates:</b> Failures leave the DB inconsistent with partial updates. Fund transfers must execute completely or not happen at all[cite: 11].<br>
+                            • <b>Concurrent Access Anomalies:</b> Uncontrolled concurrent access leads to inconsistency. <i>Example:</i> Two users reading balance $100 and withdrawing $50 simultaneously[cite: 11]!<br>
+                            • <b>Security Problems:</b> Inability to provide fine-grained user access to some, but not all, data[cite: 11].
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 10, 11 & 12: DATA MODELS & RELATIONAL TABLES
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 10, 11 & 12</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                4. Data Models & Tabular Relational Model
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 10px;">
+                    <b>Data Model:</b> A collection of conceptual tools for describing data, data relationships, data semantics, and data constraints (Relational model, E-R model, Object-based models, Semi-structured XML, and older Network/Hierarchical models)[cite: 11].
+                </p>
+                <h4 style="color: var(--primary); font-size: 13px; margin-bottom: 8px;">The Relational Model (Tabular Data Structure)</h4>
+                <p style="font-size: 12.5px; color: var(--muted); margin-bottom: 12px;">All data is organized into tables where <b>Columns = Attributes</b> and <b>Rows = Tuples</b>[cite: 11].</p>
+
+                <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px;">
+                    <div>
+                        <span style="font-family: var(--font-tech); font-size: 10px; color: var(--primary);">(a) The instructor Table (Columns &amp; Rows)</span>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 11px; font-family: monospace; border: 1px solid var(--border);">
+                            <tr style="background: rgba(0, 234, 255, 0.1); color: var(--primary);">
+                                <th style="border: 1px solid var(--border); padding: 5px;">ID</th>
+                                <th style="border: 1px solid var(--border); padding: 5px;">name</th>
+                                <th style="border: 1px solid var(--border); padding: 5px;">dept_name</th>
+                                <th style="border: 1px solid var(--border); padding: 5px;">salary</th>
+                            </tr>
+                            <tr><td style="border: 1px solid var(--border); padding: 4px;">22222</td><td style="border: 1px solid var(--border); padding: 4px;">Einstein</td><td style="border: 1px solid var(--border); padding: 4px;">Physics</td><td style="border: 1px solid var(--border); padding: 4px;">95000</td></tr>
+                            <tr><td style="border: 1px solid var(--border); padding: 4px;">12121</td><td style="border: 1px solid var(--border); padding: 4px;">Wu</td><td style="border: 1px solid var(--border); padding: 4px;">Finance</td><td style="border: 1px solid var(--border); padding: 4px;">90000</td></tr>
+                            <tr><td style="border: 1px solid var(--border); padding: 4px;">32343</td><td style="border: 1px solid var(--border); padding: 4px;">El Said</td><td style="border: 1px solid var(--border); padding: 4px;">History</td><td style="border: 1px solid var(--border); padding: 4px;">60000</td></tr>
+                            <tr><td style="border: 1px solid var(--border); padding: 4px;">45565</td><td style="border: 1px solid var(--border); padding: 4px;">Katz</td><td style="border: 1px solid var(--border); padding: 4px;">Comp. Sci.</td><td style="border: 1px solid var(--border); padding: 4px;">75000</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <span style="font-family: var(--font-tech); font-size: 10px; color: var(--secondary);">(b) The department Table</span>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 11px; font-family: monospace; border: 1px solid var(--border);">
+                            <tr style="background: rgba(124, 60, 255, 0.1); color: var(--secondary);">
+                                <th style="border: 1px solid var(--border); padding: 5px;">dept_name</th>
+                                <th style="border: 1px solid var(--border); padding: 5px;">building</th>
+                                <th style="border: 1px solid var(--border); padding: 5px;">budget</th>
+                            </tr>
+                            <tr><td style="border: 1px solid var(--border); padding: 4px;">Comp. Sci.</td><td style="border: 1px solid var(--border); padding: 4px;">Taylor</td><td style="border: 1px solid var(--border); padding: 4px;">100000</td></tr>
+                            <tr><td style="border: 1px solid var(--border); padding: 4px;">Biology</td><td style="border: 1px solid var(--border); padding: 4px;">Watson</td><td style="border: 1px solid var(--border); padding: 4px;">90000</td></tr>
+                            <tr><td style="border: 1px solid var(--border); padding: 4px;">Physics</td><td style="border: 1px solid var(--border); padding: 4px;">Watson</td><td style="border: 1px solid var(--border); padding: 4px;">70000</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 13, 14, 15 & 16: VIEW OF DATA & ABSTRACTION
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 13, 14, 15 & 16</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                5. View of Data, Levels of Abstraction & Data Independence
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                <div class="feature-card" style="border-top: 3px solid var(--accent);">
+                    <span style="font-family: var(--font-tech); font-size: 10px; color: var(--accent);">HIGHEST LEVEL</span>
+                    <h3 style="margin: 6px 0;">View Level (External)</h3>
+                    <p style="font-size: 13px; color: var(--muted);">Application programs hide data type details and conceal sensitive columns (like salary) for security[cite: 11].</p>
+                </div>
+                <div class="feature-card" style="border-top: 3px solid var(--primary);">
+                    <span style="font-family: var(--font-tech); font-size: 10px; color: var(--primary);">MIDDLE LEVEL</span>
+                    <h3 style="margin: 6px 0;">Logical Level (Conceptual)</h3>
+                    <p style="font-size: 13px; color: var(--muted);">Describes <i>what</i> data is stored in the database and the relationships among those records[cite: 11].</p>
+                </div>
+                <div class="feature-card" style="border-top: 3px solid var(--success);">
+                    <span style="font-family: var(--font-tech); font-size: 10px; color: var(--success);">LOWEST LEVEL</span>
+                    <h3 style="margin: 6px 0;">Physical Level (Internal)</h3>
+                    <p style="font-size: 13px; color: var(--muted);">Describes <i>how</i> a record (e.g., instructor bytes, pointers) is actually stored on disk hardware[cite: 11].</p>
+                </div>
+            </div>
+
+            <!-- 3-Level Abstraction SVG Diagram (Slide 14) -->
+            <div class="diagram-container">
+                <span style="font-family: var(--font-tech); font-size: 11px; color: var(--primary); display: block; margin-bottom: 10px;">Figure: An Architecture for a Database System (Levels of Abstraction) [Slide 14]</span>
+                <svg viewBox="0 0 700 240" style="width: 100%; min-width: 550px; height: auto;">
+                    <!-- View Level Big Box -->
+                    <rect x="50" y="20" width="600" height="70" rx="8" fill="rgba(0, 234, 255, 0.08)" stroke="#00eaff" stroke-width="1.5"/>
+                    <text x="350" y="40" font-size="12" text-anchor="middle" fill="#00eaff">view level</text>
+                    <rect x="70" y="48" width="100" height="30" rx="4" fill="#050816" stroke="#00eaff" stroke-width="1"/>
+                    <text x="120" y="67" font-size="10" text-anchor="middle">view 1</text>
+                    <rect x="220" y="48" width="100" height="30" rx="4" fill="#050816" stroke="#00eaff" stroke-width="1"/>
+                    <text x="270" y="67" font-size="10" text-anchor="middle">view 2</text>
+                    <text x="390" y="68" font-size="14" text-anchor="middle" fill="#8995b3">...</text>
+                    <rect x="470" y="48" width="120" height="30" rx="4" fill="#050816" stroke="#00eaff" stroke-width="1"/>
+                    <text x="530" y="67" font-size="10" text-anchor="middle">view n</text>
+                    
+                    <path d="M 350 90 L 350 120" stroke="#7c3cff" stroke-width="1.5"/>
+
+                    <!-- Logical Level Box -->
+                    <rect x="270" y="120" width="160" height="40" rx="6" fill="rgba(124, 60, 255, 0.15)" stroke="#7c3cff" stroke-width="1.5"/>
+                    <text x="350" y="144" font-size="11" text-anchor="middle" fill="#fff">logical level</text>
+
+                    <path d="M 350 160 L 350 185" stroke="#20ff9b" stroke-width="1.5"/>
+
+                    <!-- Physical Level Box -->
+                    <rect x="270" y="185" width="160" height="40" rx="6" fill="rgba(32, 255, 155, 0.15)" stroke="#20ff9b" stroke-width="1.5"/>
+                    <text x="350" y="210" font-size="11" text-anchor="middle" fill="#20ff9b">physical level</text>
+                </svg>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="feature-card">
+                    <h3 style="color: var(--warning); font-size: 14px;">Instances and Schemas</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>Logical Schema:</b> Overall structural design of the DB (e.g., customers and accounts in a bank). Analogous to type declarations in a program[cite: 11].<br>
+                        • <b>Physical Schema:</b> The overall physical storage layout on disk[cite: 11].<br>
+                        • <b>Instance:</b> The actual content/snapshot of data at a particular point in time. Analogous to the value of a variable[cite: 11].
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: var(--success); font-size: 14px;">Physical Data Independence</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        The ability to modify the physical schema (e.g., reorganize storage blocks, change indexing structures) without changing the logical schema[cite: 11]. Applications depend strictly on the logical schema and remain unaffected[cite: 11].
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 17, 18, 19 & 20: DDL, DML & HOST LANGUAGES
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 17, 18, 19 & 20</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                6. Database Languages (DDL, DML & Host Language Access)
+            </h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="feature-card">
+                    <h3 style="color: var(--primary); font-size: 14px;">Data Definition Language (DDL)</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        Notation for defining the database schema, integrity constraints (Primary Key, NOT NULL), and authorization permissions[cite: 11]. The DDL compiler generates table templates stored in the <b>Data Dictionary (Metadata)</b>[cite: 11].
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: var(--secondary); font-size: 14px;">Data Manipulation Language (DML)</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>Procedural DML:</b> Requires user to specify what data is needed and how to get it[cite: 11].<br>
+                        • <b>Declarative (Non-procedural) DML:</b> User specifies what data is needed without specifying how to retrieve it[cite: 11]. SQL is a declarative DML[cite: 11].
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-card" style="background: rgba(124, 60, 255, 0.04);">
+                <h3 style="color: var(--accent); font-size: 14px; margin-bottom: 8px;">Database Access from Application Programs</h3>
+                <p style="font-size: 13px; color: var(--muted);">
+                    SQL is <b>NOT Turing machine equivalent</b> (it cannot perform arbitrary general computations, display graphical windows, or communicate across network sockets)[cite: 11]. Complex operations must be written in a <b>host language</b> (C/C++, Java, Python) with embedded SQL queries or Application Program Interfaces (ODBC/JDBC)[cite: 11].
+                </p>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 21–24: DATABASE DESIGN & STORAGE MANAGER
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 21, 22, 23 & 24</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                7. Database Design & Storage Manager Internals
+            </h2>
+            <div class="feature-card" style="margin-bottom: 16px;">
+                <h3 style="color: var(--warning); font-size: 14px; margin-bottom: 8px;">Database Design Process</h3>
+                <p style="font-size: 13px; color: var(--muted);">
+                    • <b>Logical Design:</b> Deciding the database schema. Involves a <i>Business Decision</i> (what attributes to record) and a <i>Computer Science Decision</i> (what relation schemas to have and how to distribute attributes among them)[cite: 11].<br>
+                    • <b>Physical Design:</b> Deciding the physical layout and disk data structures of the database[cite: 11].
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">Storage Manager Components & Data Structures</h3>
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 10px;">
+                    A program module providing the interface between low-level data stored on disk and application queries submitted to the system[cite: 11]:
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px; color: var(--muted);">
+                    <div>• <b>Authorization & Integrity Manager:</b> Verifies integrity constraints & user permissions[cite: 11].</div>
+                    <div>• <b>Transaction Manager:</b> Ensures consistency despite system failures and crashes[cite: 11].</div>
+                    <div>• <b>File Manager:</b> Allocates physical block space on disk storage[cite: 11].</div>
+                    <div>• <b>Buffer Manager:</b> Handles data caching between disk blocks and main memory (RAM)[cite: 11].</div>
+                    <div>• <b>Data Files:</b> Store the database itself[cite: 11].</div>
+                    <div>• <b>Data Dictionary:</b> Stores metadata about the database schema[cite: 11].</div>
+                    <div>• <b>Indices:</b> Provide fast access to data items without scanning every record[cite: 11].</div>
+                    <div>• <b>Statistical Data:</b> Maintained for query optimization estimation[cite: 11].</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 25 & 26: QUERY PROCESSING PIPELINE & FLOWCHART
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 25 & 26</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                8. Query Processor & Flowchart
+            </h2>
+            <div class="feature-card">
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+                    <b>Query Processing Steps:</b> 1. Parsing and translation &rarr; 2. Optimization (picking the lowest-cost evaluation plan from alternatives using data statistics) &rarr; 3. Evaluation engine execution[cite: 11].
+                </p>
+                
+                <!-- Query Processing SVG Flowchart (Slide 26) -->
+                <div class="diagram-container">
+                    <span style="font-family: var(--font-tech); font-size: 11px; color: var(--primary); display: block; margin-bottom: 10px;">Figure: Query Processing Flowchart [Slide 26]</span>
+                    <svg viewBox="0 0 800 240" style="width: 100%; min-width: 650px; height: auto;">
+                        <rect x="20" y="30" width="80" height="40" rx="6" fill="rgba(0,234,255,0.15)" stroke="#00eaff" stroke-width="1.5"/>
+                        <text x="60" y="55" font-size="12" text-anchor="middle" fill="#00eaff">query</text>
+                        <path d="M 100 50 L 160 50" stroke="#00eaff" stroke-width="1.5"/>
+                        
+                        <!-- Diamond: Parser -->
+                        <polygon points="210,20 260,50 210,80 160,50" fill="rgba(124,60,255,0.2)" stroke="#7c3cff" stroke-width="1.5"/>
+                        <text x="210" y="46" font-size="10" text-anchor="middle" fill="#fff">parser and</text>
+                        <text x="210" y="58" font-size="10" text-anchor="middle" fill="#fff">translator</text>
+                        <path d="M 260 50 L 330 50" stroke="#7c3cff" stroke-width="1.5"/>
+
+                        <!-- Relational Algebra Box -->
+                        <rect x="330" y="30" width="140" height="40" rx="6" fill="rgba(0,234,255,0.15)" stroke="#00eaff" stroke-width="1.5"/>
+                        <text x="400" y="47" font-size="10" text-anchor="middle">relational-algebra</text>
+                        <text x="400" y="59" font-size="10" text-anchor="middle">expression</text>
+                        <path d="M 400 70 L 400 110" stroke="#00eaff" stroke-width="1.5"/>
+
+                        <!-- Diamond: Optimizer -->
+                        <polygon points="400,110 450,135 400,160 350,135" fill="rgba(124,60,255,0.2)" stroke="#7c3cff" stroke-width="1.5"/>
+                        <text x="400" y="139" font-size="11" text-anchor="middle" fill="#fff">optimizer</text>
+                        <path d="M 400 160 L 400 190" stroke="#7c3cff" stroke-width="1.5"/>
+
+                        <!-- Stats Cylinder -->
+                        <ellipse cx="580" cy="180" rx="35" ry="12" fill="rgba(255,43,214,0.15)" stroke="#ff2bd6" stroke-width="1.5"/>
+                        <path d="M 545 180 v 25 a 35 12 0 0 0 70 0 v -25" fill="rgba(255,43,214,0.15)" stroke="#ff2bd6" stroke-width="1.5"/>
+                        <text x="580" y="222" font-size="9" text-anchor="middle">statistics</text>
+                        <text x="580" y="233" font-size="8" text-anchor="middle">about data</text>
+                        <path d="M 580 168 L 580 135 L 450 135" stroke="#ff2bd6" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+                        <!-- Execution Plan -->
+                        <rect x="330" y="190" width="140" height="35" rx="6" fill="rgba(0,234,255,0.15)" stroke="#00eaff" stroke-width="1.5"/>
+                        <text x="400" y="212" font-size="11" text-anchor="middle">execution plan</text>
+                        <path d="M 330 207 L 270 207" stroke="#00eaff" stroke-width="1.5"/>
+
+                        <!-- Diamond: Evaluation Engine -->
+                        <polygon points="210,180 270,207 210,235 150,207" fill="rgba(32,255,155,0.2)" stroke="#20ff9b" stroke-width="1.5"/>
+                        <text x="210" y="211" font-size="11" text-anchor="middle" fill="#20ff9b">eval engine</text>
+                        <path d="M 150 207 L 90 207" stroke="#20ff9b" stroke-width="1.5"/>
+
+                        <!-- Output Box -->
+                        <rect x="10" y="187" width="80" height="40" rx="6" fill="rgba(32,255,155,0.15)" stroke="#20ff9b" stroke-width="1.5"/>
+                        <text x="50" y="204" font-size="10" text-anchor="middle">query</text>
+                        <text x="50" y="216" font-size="10" text-anchor="middle">output</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 27, 28 & 29: CENTRALIZED/SHARED-MEMORY ARCHITECTURE
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 27, 28 & 29</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                9. Database Architecture (Centralized & Shared-Memory)
+            </h2>
+            <div class="feature-card">
+                <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+                    • <b>Centralized:</b> One to a few cores with shared memory[cite: 11].<br>
+                    • <b>Client-Server:</b> Server executes work on behalf of multiple client machines[cite: 11].<br>
+                    • <b>Parallel Databases:</b> Shared memory, shared disk, or shared nothing architectures[cite: 11].<br>
+                    • <b>Distributed Databases:</b> Geographical distribution with data heterogeneity[cite: 11].
+                </p>
+
+                <!-- Centralized Engine Architecture SVG Diagram (Slide 29) -->
+                <div class="diagram-container">
+                    <span style="font-family: var(--font-tech); font-size: 11px; color: var(--primary); display: block; margin-bottom: 10px;">Figure: Database Architecture (Centralized/Shared-Memory) [Slide 29]</span>
+                    <svg viewBox="0 0 800 330" style="width: 100%; min-width: 650px; height: auto;">
+                        <!-- Query Processor Box -->
+                        <rect x="20" y="20" width="760" height="110" rx="10" fill="rgba(0, 234, 255, 0.03)" stroke="#00eaff" stroke-width="1" stroke-dasharray="4,4"/>
+                        <text x="770" y="40" font-size="10" text-anchor="end" fill="#00eaff">QUERY PROCESSOR</text>
+                        
+                        <rect x="40" y="45" width="130" height="35" rx="6" fill="rgba(0,234,255,0.1)" stroke="#00eaff" stroke-width="1"/>
+                        <text x="105" y="66" font-size="10" text-anchor="middle">Compiler &amp; Linker</text>
+
+                        <rect x="220" y="45" width="120" height="35" rx="6" fill="rgba(0,234,255,0.1)" stroke="#00eaff" stroke-width="1"/>
+                        <text x="280" y="66" font-size="10" text-anchor="middle">DML Queries</text>
+
+                        <rect x="400" y="45" width="130" height="35" rx="6" fill="rgba(0,234,255,0.1)" stroke="#00eaff" stroke-width="1"/>
+                        <text x="465" y="66" font-size="10" text-anchor="middle">DDL Interpreter</text>
+
+                        <rect x="580" y="45" width="180" height="35" rx="6" fill="rgba(0,234,255,0.1)" stroke="#00eaff" stroke-width="1"/>
+                        <text x="670" y="66" font-size="10" text-anchor="middle">DML Compiler &amp; Optimizer</text>
+
+                        <!-- Storage Manager Box -->
+                        <rect x="20" y="150" width="760" height="90" rx="10" fill="rgba(124, 60, 255, 0.03)" stroke="#7c3cff" stroke-width="1" stroke-dasharray="4,4"/>
+                        <text x="770" y="170" font-size="10" text-anchor="end" fill="#7c3cff">STORAGE MANAGER</text>
+
+                        <rect x="40" y="180" width="120" height="35" rx="6" fill="rgba(124,60,255,0.1)" stroke="#7c3cff" stroke-width="1"/>
+                        <text x="100" y="201" font-size="10" text-anchor="middle">Buffer Manager</text>
+
+                        <rect x="180" y="180" width="120" height="35" rx="6" fill="rgba(124,60,255,0.1)" stroke="#7c3cff" stroke-width="1"/>
+                        <text x="240" y="201" font-size="10" text-anchor="middle">File Manager</text>
+
+                        <rect x="320" y="180" width="180" height="35" rx="6" fill="rgba(124,60,255,0.1)" stroke="#7c3cff" stroke-width="1"/>
+                        <text x="410" y="201" font-size="9" text-anchor="middle">Authorization &amp; Integrity</text>
+
+                        <rect x="520" y="180" width="150" height="35" rx="6" fill="rgba(124,60,255,0.1)" stroke="#7c3cff" stroke-width="1"/>
+                        <text x="595" y="201" font-size="10" text-anchor="middle">Transaction Manager</text>
+
+                        <!-- Disk Storage Cylinders -->
+                        <rect x="150" y="260" width="500" height="50" rx="10" fill="rgba(32,255,155,0.06)" stroke="#20ff9b" stroke-width="1.5"/>
+                        <text x="400" y="290" font-size="11" text-anchor="middle" fill="#20ff9b">DISK STORAGE (Data Files, Indices, Data Dictionary, Statistical Data)</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SLIDES 30 & 31: 2-TIER VS 3-TIER ARCHITECTURES
+        ======================================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 30 & 31</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                10. Two-Tier vs. Three-Tier Architectures
+            </h2>
+            <div class="feature-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 6px;">(a) Two-Tier Architecture</h4>
+                        <p style="font-size: 13px; color: var(--muted);">
+                            The application resides directly at the client machine, where it invokes database system functionality at the server machine across the network[cite: 11].
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--secondary); margin-bottom: 6px;">(b) Three-Tier Architecture</h4>
+                        <p style="font-size: 13px; color: var(--muted);">
+                            The client acts as a front end and contains no direct database calls. It communicates with an Application Server (business logic) which in turn accesses the database system[cite: 11].
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2-Tier vs 3-Tier SVG Diagram (Slide 31) -->
+                <div class="diagram-container">
+                    <span style="font-family: var(--font-tech); font-size: 11px; color: var(--primary); display: block; margin-bottom: 10px;">Figure: Two-Tier and Three-Tier Architectures [Slide 31]</span>
+                    <svg viewBox="0 0 800 240" style="width: 100%; min-width: 650px; height: auto;">
+                        <!-- Two Tier Group -->
+                        <rect x="50" y="20" width="280" height="200" rx="12" fill="rgba(0,234,255,0.02)" stroke="rgba(0,234,255,0.2)" stroke-dasharray="4,4"/>
+                        <text x="190" y="40" font-size="11" text-anchor="middle" fill="#00eaff">(a) TWO-TIER ARCHITECTURE</text>
+                        
+                        <rect x="120" y="55" width="140" height="30" rx="6" fill="rgba(0,234,255,0.15)" stroke="#00eaff" stroke-width="1"/>
+                        <text x="190" y="74" font-size="10" text-anchor="middle">user</text>
+                        <path d="M 190 85 L 190 115" stroke="#00eaff" stroke-width="1.5"/>
+
+                        <rect x="100" y="115" width="180" height="30" rx="6" fill="rgba(0,234,255,0.15)" stroke="#00eaff" stroke-width="1"/>
+                        <text x="190" y="134" font-size="10" text-anchor="middle">application</text>
+                        <path d="M 190 145 L 190 175" stroke="#00eaff" stroke-width="1.5" stroke-dasharray="2,2"/>
+                        <text x="210" y="162" font-size="8" fill="#8995b3">network</text>
+
+                        <rect x="100" y="175" width="180" height="30" rx="6" fill="rgba(32,255,155,0.15)" stroke="#20ff9b" stroke-width="1"/>
+                        <text x="190" y="194" font-size="10" text-anchor="middle" fill="#20ff9b">database system</text>
+
+                        <!-- Three Tier Group -->
+                        <rect x="450" y="20" width="300" height="200" rx="12" fill="rgba(124,60,255,0.02)" stroke="rgba(124,60,255,0.2)" stroke-dasharray="4,4"/>
+                        <text x="600" y="40" font-size="11" text-anchor="middle" fill="#7c3cff">(b) THREE-TIER ARCHITECTURE</text>
+
+                        <rect x="530" y="50" width="140" height="25" rx="6" fill="rgba(124,60,255,0.15)" stroke="#7c3cff" stroke-width="1"/>
+                        <text x="600" y="66" font-size="9" text-anchor="middle">user</text>
+                        <path d="M 600 75 L 600 95" stroke="#7c3cff" stroke-width="1.5"/>
+
+                        <rect x="500" y="95" width="200" height="25" rx="6" fill="rgba(124,60,255,0.15)" stroke="#7c3cff" stroke-width="1"/>
+                        <text x="600" y="111" font-size="9" text-anchor="middle">application client</text>
+                        <path d="M 600 120 L 600 140" stroke="#7c3cff" stroke-width="1.5" stroke-dasharray="2,2"/>
+                        <text x="620" y="132" font-size="8" fill="#8995b3">network</text>
+
+                        <rect x="490" y="140" width="220" height="25" rx="6" fill="rgba(255,43,214,0.15)" stroke="#ff2bd6" stroke-width="1"/>
+                        <text x="600" y="156" font-size="9" text-anchor="middle" fill="#ff2bd6">application server</text>
+                        <path d="M 600 165 L 600 185" stroke="#7c3cff" stroke-width="1.5" stroke-dasharray="2,2"/>
+
+                        <rect x="490" y="185" width="220" height="25" rx="6" fill="rgba(32,255,155,0.15)" stroke="#20ff9b" stroke-width="1"/>
+                        <text x="600" y="201" font-size="9" text-anchor="middle" fill="#20ff9b">database system</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDES 32 & 33: USERS & DBA RESPONSIBILITIES
+        ========================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill">SLIDES 32 & 33</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                11. Database Users & Database Administrator (DBA)
+            </h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="feature-card">
+                    <h3 style="color: var(--accent); font-size: 14px;">Database User Classes</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • <b>Naive Users:</b> Access through pre-built forms (tellers, web users, mobile apps)[cite: 11].<br>
+                        • <b>Application Programmers:</b> Write host language applications with embedded SQL[cite: 11].<br>
+                        • <b>Sophisticated Users:</b> Analysts submitting complex ad-hoc queries through query tools[cite: 11].
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: var(--success); font-size: 14px;">Functions of a DBA</h3>
+                    <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">
+                        • Schema definition & storage structure / access-method definition[cite: 11].<br>
+                        • Schema and physical-organization modification[cite: 11].<br>
+                        • Granting authorization for data access[cite: 11].<br>
+                        • Routine maintenance, periodic backups, and disk space upgrades[cite: 11].<br>
+                        • Monitoring active jobs running on the database[cite: 11].
+                    </p>
+                </div>
+            </div>
+
+            <!-- Users to Engine Flowchart SVG Diagram (Slide 32) -->
+            <div class="diagram-container">
+                <span style="font-family: var(--font-tech); font-size: 11px; color: var(--primary); display: block; margin-bottom: 10px;">Figure: Database Users and User Interfaces [Slide 32]</span>
+                <svg viewBox="0 0 800 160" style="width: 100%; min-width: 650px; height: auto;">
+                    <!-- User types -->
+                    <rect x="30" y="20" width="150" height="35" rx="8" fill="rgba(0,234,255,0.1)" stroke="#00eaff" stroke-width="1"/>
+                    <text x="105" y="41" font-size="9" text-anchor="middle">Naive Users (Web)</text>
+                    <path d="M 105 55 L 105 85" stroke="#00eaff" stroke-width="1.5"/>
+
+                    <rect x="220" y="20" width="160" height="35" rx="8" fill="rgba(124,60,255,0.1)" stroke="#7c3cff" stroke-width="1"/>
+                    <text x="300" y="41" font-size="9" text-anchor="middle">Programmers</text>
+                    <path d="M 300 55 L 300 85" stroke="#7c3cff" stroke-width="1.5"/>
+
+                    <rect x="420" y="20" width="160" height="35" rx="8" fill="rgba(255,43,214,0.1)" stroke="#ff2bd6" stroke-width="1"/>
+                    <text x="500" y="41" font-size="9" text-anchor="middle">Analysts</text>
+                    <path d="M 500 55 L 500 85" stroke="#ff2bd6" stroke-width="1.5"/>
+
+                    <rect x="620" y="20" width="150" height="35" rx="8" fill="rgba(32,255,155,0.1)" stroke="#20ff9b" stroke-width="1"/>
+                    <text x="695" y="41" font-size="9" text-anchor="middle">DBA</text>
+                    <path d="M 695 55 L 695 85" stroke="#20ff9b" stroke-width="1.5"/>
+
+                    <!-- Interface bar -->
+                    <rect x="20" y="85" width="760" height="40" rx="8" fill="rgba(255,255,255,0.03)" stroke="var(--border)" stroke-width="1"/>
+                    <text x="105" y="108" font-size="8" text-anchor="middle" fill="#8995b3">application interfaces</text>
+                    <text x="300" y="108" font-size="8" text-anchor="middle" fill="#8995b3">application programs</text>
+                    <text x="500" y="108" font-size="8" text-anchor="middle" fill="#8995b3">query tools</text>
+                    <text x="695" y="108" font-size="8" text-anchor="middle" fill="#8995b3">administration tools</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 12: MEMORY KEYWORDS
+        ========================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="section-label">REVISION ANCHORS</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--accent);">
+                🧠 Chapter 01 Memory Anchors
+            </h2>
+            <div id="memoryKeywordsDeck"></div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 13: INTERACTIVE MINIGAME
+        ========================================== -->
+        <section style="padding: 20px 0 35px;">
+            <span class="section-label">INTERACTIVE LAB</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--primary);">
+                🎮 Mini-Game: Engine Pipeline Router
+            </h2>
+            <div class="feature-card" id="chapterGameArea"></div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 14: PRACTICE QUIZ
+        ========================================== -->
+       <!-- SECTION: TOPIC-BY-TOPIC PRACTICE QUIZ -->
+        <section style="padding: 20px 0 35px;">
+            <span class="topic-pill" style="border-color: var(--warning); color: var(--warning);">TOPIC-BY-TOPIC SELF CHECK</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--warning);">
+                📝 Interactive Topic Practice Quiz
+            </h2>
+            <div class="feature-card" id="practiceQuizArea"></div>
+        </section>
+        <!-- ========================================================
+             SECTION 15: OFFICIAL EXAMINATION ARENA
+        ======================================================== -->
+        <section style="padding: 20px 0 60px;">
+            <span class="section-label">MASTERY VERIFICATION</span>
+            <h2 style="font-family: var(--font-tech); font-size: 20px; margin: 8px 0 16px; color: var(--secondary);">
+                ⚡ Chapter 01 Official Examination Arena
+            </h2>
+            <p style="color: var(--muted); font-size: 13px; margin-bottom: 15px;">
+                Complete this assessment to unlock Chapter 02. AI assistance is restricted during tests to evaluate direct recall[cite: 11].
+            </p>
+            <div id="quizArena"></div>
+        </section>
+
+    </main>
+
+    <!-- Floating Voice & Lens Toolbar -->
+    <div style="position: fixed; bottom: 25px; left: 25px; display: flex; gap: 10px; z-index: 999;">
+        <select onchange="NexusVoice.setGender(this.value)" style="background: var(--panel); color: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-family: var(--font-tech); font-size: 10px;">
+            <option value="female">♀ Female Voice</option>
+            <option value="male">♂ Male Voice</option>
+        </select>
+        <button onclick="document.getElementById('lensModal').classList.add('active')" class="secondary-button" style="min-height: 36px; padding: 0 12px; font-size: 10px;">📷 LENS</button>
+    </div>
+
+    <!-- Lens Modal -->
+    <div class="modal-overlay" id="lensModal">
+        <div class="lock-modal" style="width: min(550px, 95vw); text-align: left;">
+            <button class="modal-close" onclick="document.getElementById('lensModal').classList.remove('active')">×</button>
+            <span class="modal-label">NEXUS LENS</span>
+            <h2 style="color: var(--primary); font-size: 20px;">📷 OPTICAL SLIDE EXPLAINER</h2>
+            <input type="file" id="lensUpload" accept="image/*" onchange="NexusLens.analyzeImage(this)" style="display: none;">
+            <button onclick="document.getElementById('lensUpload').click()" class="primary-button" style="width: 100%; margin: 15px 0;">UPLOAD SLIDE / SCREENSHOT</button>
+            <img id="lensPreviewImg" style="display: none; max-width: 100%; height: 160px; object-fit: contain; border-radius: 8px; margin-bottom: 10px;" />
+            <div id="lensResultBox"></div>
+        </div>
+    </div>
+
+    <!-- Unlock Animation Modal -->
+    <div class="modal-overlay unlock-overlay" id="unlockModal">
+        <div class="unlock-modal">
+            <div class="unlock-energy"></div>
+            <div class="unlock-lock">🔒</div>
+            <h2 id="unlockTitle">DECRYPTING NEXT PROTOCOL...</h2>
+            <div class="unlock-progress-track"><div class="unlock-progress-fill" id="unlockProgress"></div></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMessage"></span></div>
+
+    <!-- Scripts -->
+<!-- Core Engine Scripts -->
+   <script src="js/progress.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/vision.js"></script>
+    <script src="js/chapter.js"></script>
+    <script src="js/practice.js"></script>
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initChapter(1);
+            initPracticeQuiz(1);
+            renderQuiz(1);
+        });
+    </script>
+</body>
+</html>
