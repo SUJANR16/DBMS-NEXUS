@@ -106,7 +106,6 @@
             color: var(--muted);
             margin-top: 8px;
         }
-        /* Admin Login Overlay */
         #adminLoginOverlay {
             position: fixed;
             inset: 0;
@@ -257,7 +256,6 @@
 
         let cachedStudents = [];
 
-        // Check Session Storage for Admin Auth
         if (sessionStorage.getItem("dbms_admin_auth") === "true") {
             document.getElementById("adminLoginOverlay").style.display = "none";
             fetchStudents();
