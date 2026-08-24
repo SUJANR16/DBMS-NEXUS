@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- html2pdf library for PDF report generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -33,7 +32,6 @@
             position: relative;
         }
 
-        /* CRT SCANLINE EFFECT */
         body::before {
             content: " ";
             display: block;
@@ -214,7 +212,6 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* FULL SCREEN HACKER LOGIN OVERLAY */
         #authOverlay {
             position: fixed;
             inset: 0;
@@ -227,7 +224,6 @@
             overflow: hidden;
         }
 
-        /* FULL VIEWPORT HEIGHT & WIDTH MAX-DENSITY MATRIX STREAM */
         .matrix-bg-stream {
             position: fixed;
             top: 0;
@@ -313,7 +309,6 @@
 
     <div class="cyber-grid"></div>
 
-    <!-- FULL SCREEN HACKER LOGIN GATEWAY -->
     <div id="authOverlay">
         <div class="matrix-bg-stream" id="matrixStream">
             INIT_SYS_STREAM... 01010111 ROOT_ACCESS_ACTIVE<br>
@@ -321,23 +316,9 @@
             LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE<br>
             LOAD_CLUSTER_STUDENTS... DB_CONNECTED<br>
             VERIFYING_CREDENTIALS... INSTRUCTOR_GATEWAY_ACTIVE<br>
-            SYS_OVERRIDE_0x99 // DECRYPTING_PACKETS...<br>
-            01010111 MTRX_STREAM_FULL_DISPLAY_ACTIVE // 0x99_SECURE_AUTH // DECRYPTING...<br>
-            BYPASS_FW // 01011101 // HASH_SHA256 // SOCKET_ESTABLISHED // DECRYPT_PKT<br>
-            DB_CLUSTER // SYS_OVERRIDE // ACCESS_GRANTED // PACKET_0x99 // ERR_STACK_TRACE<br>
-            SYSTEM_TELEMETRY_ONLINE // SECURE_CLUSTER_LOADED // AUTH_GATEWAY_READY<br>
-            01010111 MTRX_STREAM_FULL_DISPLAY_ACTIVE // 0x99_SECURE_AUTH // DECRYPTING...<br>
-            BYPASS_FW // 01011101 // HASH_SHA256 // SOCKET_ESTABLISHED // DECRYPT_PKT<br>
-            DB_CLUSTER // SYS_OVERRIDE // ACCESS_GRANTED // PACKET_0x99 // ERR_STACK_TRACE<br>
-            SYSTEM_TELEMETRY_ONLINE // SECURE_CLUSTER_LOADED // AUTH_GATEWAY_READY<br>
-            INIT_SYS_STREAM... 01010111 ROOT_ACCESS_ACTIVE<br>
-            BYPASSING_FIREWALL... ACCESS_VECTOR_ESTABLISHED<br>
-            LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE<br>
-            LOAD_CLUSTER_STUDENTS... DB_CONNECTED<br>
-            VERIFYING_CREDENTIALS... INSTRUCTOR_GATEWAY_ACTIVE
+            SYS_OVERRIDE_0x99 // DECRYPTING_PACKETS...
         </div>
         <div class="terminal-box">
-            <!-- HACK SYMBOL & TITLE -->
             <div style="text-align: center; margin-bottom: 20px;">
                 <div style="font-size: 36px; color: var(--neon-green); text-shadow: 0 0 12px var(--neon-green); margin-bottom: 5px;">💀</div>
                 <h2 style="font-family: var(--font-head); color: var(--neon-green); font-size: 18px; letter-spacing: 2px;">SECURITY OVERRIDE</h2>
@@ -361,7 +342,6 @@
         </div>
     </div>
 
-    <!-- NAVBAR WITH LOGOUT BUTTON -->
     <header>
         <a href="index.html" class="brand">&gt; DBMS_NEXUS // ROOT_ADMIN</a>
         <div style="display: flex; gap: 15px; align-items: center;">
@@ -371,9 +351,7 @@
         </div>
     </header>
 
-    <!-- MAIN DASHBOARD -->
     <div class="container">
-        
         <div class="stats-grid">
             <div class="stat-box">
                 <span>TOTAL REGISTERED USERS</span>
@@ -432,7 +410,6 @@
                 [SYSTEM] Ready for instructor commands.
             </div>
         </div>
-
     </div>
 
     <div id="modalOverlay">
@@ -465,7 +442,7 @@
 
         let studentCache = [];
 
-        // MAX-SPEED, HIGH-DENSITY MATRIX TICKER (5ms Interval)
+        // MAXIMUM SPEED MATRIX TICKER (1ms Interval)
         const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99", "ERR_STACK_TRACE", "0x00FF99"];
         let baseMatrixText = document.getElementById("matrixStream") ? document.getElementById("matrixStream").innerHTML : "";
         
@@ -473,16 +450,16 @@
             const stream = document.getElementById("matrixStream");
             if (stream) {
                 let chunk = "";
-                for(let i=0; i<4; i++) {
+                for(let i=0; i<6; i++) {
                     chunk += hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 10).toUpperCase() + " // " + Math.random().toString(36).substring(2, 10).toUpperCase() + "<br>";
                 }
                 baseMatrixText += chunk;
-                if (baseMatrixText.length > 25000) {
-                    baseMatrixText = baseMatrixText.substring(8000);
+                if (baseMatrixText.length > 35000) {
+                    baseMatrixText = baseMatrixText.substring(10000);
                 }
                 stream.innerHTML = baseMatrixText;
             }
-        }, 5);
+        }, 1);
 
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
@@ -492,7 +469,6 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // LOGOUT HANDLER
         window.adminLogout = function() {
             sessionStorage.removeItem("cyber_admin");
             alert("Admin session terminated.");
@@ -595,7 +571,6 @@
             renderTable(filtered);
         });
 
-        // ELITE UPGRADED PDF REPORT LAYOUT
         window.viewRecord = function(id) {
             const st = studentCache.find(s => s.id === id);
             if (!st) return;
