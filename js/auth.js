@@ -33,6 +33,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ➔ EXPOSE DB GLOBALLY FOR LIVE ANNOUNCEMENTS & ADMIN SYNC
+window.db = db;
+
 window.currentUser = null;
 
 onAuthStateChanged(auth, async (user) => {
@@ -131,6 +134,10 @@ window.openAuthModal = function() {
     }
     const modal = document.getElementById("authModal");
     if (modal) modal.classList.add("active");
+};
+
+window.closeAuthManager = function() {
+    // keeping helper safe
 };
 
 window.closeAuthModal = function() {

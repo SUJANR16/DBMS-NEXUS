@@ -77,6 +77,11 @@
     </div>
 </header>
 
+<!-- GLOBAL BROADCAST ANNOUNCEMENT BANNER -->
+<div id="globalAnnouncementBanner" style="display: none; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary); padding: 12px 20px; border-radius: 8px; margin: 20px auto 0 auto; max-width: 1100px; text-align: center; font-family: var(--font-tech); font-size: 12px; color: var(--primary); z-index: 100; position: relative;">
+    <strong style="color: #fff;">📢 SYSTEM ANNOUNCEMENT:</strong> <span id="announcementText"></span>
+</div>
+
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="#home">HOME</a>
@@ -567,9 +572,11 @@ Features Required:
 <script src="js/vision.js"></script>
 <script src="script.js"></script>
 
-<script>
+<script type="module">
+    import { getDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
     let authMode = "login";
-    function switchAuthMode(mode) {
+    window.switchAuthMode = function(mode) {
         authMode = mode;
         const nameGroup = document.getElementById("nameFieldGroup");
         const submitBtn = document.getElementById("authSubmitBtn");
@@ -587,9 +594,9 @@ Features Required:
             tabLogin.className = "primary-button";
             tabSignup.className = "secondary-button";
         }
-    }
+    };
 
-    function submitAuthForm(e) {
+    window.submitAuthForm = function(e) {
         e.preventDefault();
         const email = document.getElementById("authEmail").value;
         const pass = document.getElementById("authPassword").value;
@@ -600,7 +607,33 @@ Features Required:
         } else {
             window.handleLogin(email, pass);
         }
+    };
+
+    // Real-time listener for global announcements from Admin Panel
+    async function checkGlobalAnnouncement() {
+        try {
+            if (typeof db !== 'undefined') {
+                const snap = await getDoc(doc(db, "system", "announcement"));
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if (data && data.message) {
+                        const banner = document.getElementById("globalAnnouncementBanner");
+                        const textSpan = document.getElementById("announcementText");
+                        if (banner && textSpan) {
+                            textSpan.innerText = data.message;
+                            banner.style.display = "block";
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            console.error("Error fetching announcement:", err);
+        }
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(checkGlobalAnnouncement, 1200);
+    });
 </script>
 
 </body>

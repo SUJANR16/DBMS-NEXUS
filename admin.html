@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- html2pdf library for gorgeous PDF student report exports -->
-    <script src="https://cdnjs.cloudflare.com/ajax5/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- FIXED CDN LINK FOR html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --bg-deep: #020408;
@@ -191,11 +191,12 @@
         .cyber-btn.pdf-btn {
             border-color: var(--neon-green);
             color: var(--neon-green);
+            font-weight: bold;
         }
         .cyber-btn.pdf-btn:hover {
             background: var(--neon-green);
             color: var(--bg-deep);
-            box-shadow: 0 0 10px var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
         }
 
         input, textarea {
@@ -226,7 +227,7 @@
         #modalOverlay { display: none; z-index: 10001; }
 
         .terminal-box {
-            width: min(540px, 95vw);
+            width: min(600px, 95vw);
             background: var(--bg-deep);
             border: 2px solid var(--neon-cyan);
             padding: 30px;
@@ -247,21 +248,20 @@
             margin-top: 10px;
         }
 
-        /* Progress bars inside modal */
         .progress-bar-container {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(0, 243, 255, 0.2);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(0, 243, 255, 0.3);
             border-radius: 4px;
-            height: 10px;
+            height: 12px;
             width: 100%;
-            margin-top: 4px;
-            margin-bottom: 12px;
+            margin-top: 5px;
+            margin-bottom: 15px;
             overflow: hidden;
         }
         .progress-fill {
             height: 100%;
-            background: var(--neon-cyan);
-            box-shadow: 0 0 8px var(--neon-cyan);
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+            box-shadow: 0 0 10px var(--neon-cyan);
             transition: width 0.4s ease;
         }
     </style>
@@ -304,7 +304,6 @@
     <!-- MAIN DASHBOARD -->
     <div class="container">
         
-        <!-- TELEMETRY STATS -->
         <div class="stats-grid">
             <div class="stat-box">
                 <span>TOTAL REGISTERED USERS</span>
@@ -320,7 +319,6 @@
             </div>
         </div>
 
-        <!-- BROADCAST TERMINAL -->
         <div class="terminal-panel" data-title="BROADCAST_SYSTEM">
             <p style="font-size: 12px; margin-bottom: 10px;">Transmit global system telemetry or updates directly to active student terminals:</p>
             <div style="display: flex; gap: 10px;">
@@ -329,7 +327,6 @@
             </div>
         </div>
 
-        <!-- STUDENT DATABASE TABLE -->
         <div class="terminal-panel" data-title="STUDENT_RECORDS_DB">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                 <input type="text" id="searchBox" placeholder="Search records by name or email..." style="max-width: 300px;">
@@ -359,7 +356,6 @@
             </div>
         </div>
 
-        <!-- LIVE AUDIT LOG -->
         <div class="terminal-panel" data-title="KERNEL_AUDIT_LOG">
             <div class="matrix-log" id="auditLog">
                 [SYSTEM] Initializing secure telemetry connection...<br>
@@ -369,7 +365,6 @@
 
     </div>
 
-    <!-- EDIT / VIEW MODAL -->
     <div id="modalOverlay">
         <div class="terminal-box">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--neon-cyan); padding-bottom: 10px; margin-bottom: 20px;">
@@ -380,7 +375,6 @@
         </div>
     </div>
 
-    <!-- FIREBASE & LOGIC SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -397,6 +391,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        window.db = db;
 
         let studentCache = [];
 
@@ -408,14 +403,12 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // Check Session Authentication on Load
         if (sessionStorage.getItem("cyber_admin") === "active") {
             document.getElementById("authOverlay").style.display = "none";
             logKernel("Root clearance verified via session token.");
             loadStudents();
         }
 
-        // Login Handler
         document.getElementById("authForm").addEventListener("submit", (e) => {
             e.preventDefault();
             const u = document.getElementById("usernameInput").value.trim();
@@ -432,7 +425,6 @@
             }
         });
 
-        // Fetch Student Records from Firestore
         async function loadStudents() {
             const tbody = document.getElementById("studentTableBody");
             tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--neon-amber);">Fetching cloud clusters...</td></tr>`;
@@ -498,7 +490,6 @@
             });
         }
 
-        // Live Search Filter
         document.getElementById("searchBox").addEventListener("keyup", () => {
             const query = document.getElementById("searchBox").value.toLowerCase();
             const filtered = studentCache.filter(st => 
@@ -508,7 +499,7 @@
             renderTable(filtered);
         });
 
-        // Advanced View Record Modal with Charts & PDF Export
+        // ELITE UPGRADED PDF REPORT LAYOUT
         window.viewRecord = function(id) {
             const st = studentCache.find(s => s.id === id);
             if (!st) return;
@@ -521,43 +512,77 @@
 
             document.getElementById("modalTitle").innerText = "STUDENT TELEMETRY DOSSIER";
             document.getElementById("modalContent").innerHTML = `
-                <div id="pdfReportContent" style="padding: 10px; background: #020408; color: #c0d8e0;">
-                    <div style="border-bottom: 1px dashed var(--neon-cyan); padding-bottom: 10px; margin-bottom: 15px;">
-                        <h4 style="color: var(--neon-cyan); font-family: var(--font-head); font-size: 15px;">DBMS NEXUS // PERFORMANCE REPORT</h4>
-                        <p style="font-size: 10px; color: #78909c;">Generated on ${new Date().toLocaleString()}</p>
+                <div id="pdfReportContent" style="padding: 25px; background: #020408; color: #c0d8e0; border: 2px solid #00f3ff; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00f3ff; padding-bottom: 12px; margin-bottom: 20px;">
+                        <div>
+                            <h2 style="color: #00f3ff; font-family: monospace; font-size: 18px; letter-spacing: 2px;">DBMS NEXUS</h2>
+                            <p style="font-size: 10px; color: #00ff66; margin-top: 2px;">OFFICIAL ACADEMIC PERFORMANCE REPORT</p>
+                        </div>
+                        <div style="text-align: right; font-size: 10px; color: #78909c;">
+                            <div>TIMESTAMP: ${new Date().toLocaleDateString()}</div>
+                            <div>SECURITY CLEARANCE: ACTIVE</div>
+                        </div>
                     </div>
 
-                    <p style="margin-bottom: 6px;"><strong>Full Name:</strong> <span style="color:#fff;">${st.name || 'N/A'}</span></p>
-                    <p style="margin-bottom: 6px;"><strong>Email Address:</strong> <span style="color:#fff;">${st.email}</span></p>
-                    <p style="margin-bottom: 6px;"><strong>Total Accumulated XP:</strong> <span style="color: var(--neon-green); font-weight: bold;">${st.totalXP || 0} XP</span></p>
-                    <p style="margin-bottom: 15px;"><strong>Overall Average Mastery:</strong> <span style="color: var(--neon-cyan); font-weight: bold;">${avgScore}%</span></p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: rgba(0,243,255,0.03); border: 1px solid rgba(0,243,255,0.2); padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                        <div>
+                            <p style="font-size: 10px; color: #78909c;">STUDENT NAME</p>
+                            <p style="font-size: 14px; font-weight: bold; color: #fff; margin-top: 2px;">${st.name || 'Anonymous'}</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 10px; color: #78909c;">EMAIL ADDRESS</p>
+                            <p style="font-size: 13px; font-weight: bold; color: #fff; margin-top: 2px;">${st.email}</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 10px; color: #78909c;">ACCUMULATED XP</p>
+                            <p style="font-size: 14px; font-weight: bold; color: #00ff66; margin-top: 2px;">${st.totalXP || 0} XP</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 10px; color: #78909c;">OVERALL MASTERY</p>
+                            <p style="font-size: 14px; font-weight: bold; color: #00f3ff; margin-top: 2px;">${avgScore}%</p>
+                        </div>
+                    </div>
+
+                    <p style="color: #00f3ff; font-family: monospace; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">MODULE BREAKDOWN & PROGRESS MATRIX:</p>
                     
-                    <hr style="border: 0; border-top: 1px solid rgba(0,243,255,0.2); margin: 15px 0;">
-                    
-                    <p style="color: var(--neon-cyan); font-family: var(--font-head); font-size: 11px; margin-bottom: 10px;">CHAPTER-WISE MASTERY BREAKDOWN:</p>
-                    
-                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 01: Architecture & Abstraction (${c1}%)</div>
+                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                        <span>Chapter 01: Architecture & Abstraction</span>
+                        <span style="color: #00ff66; font-weight: bold;">${c1}%</span>
+                    </div>
                     <div class="progress-bar-container"><div class="progress-fill" style="width: ${c1}%;"></div></div>
 
-                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 02: Relational Algebra & Keys (${c2}%)</div>
+                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                        <span>Chapter 02: Relational Algebra & Keys</span>
+                        <span style="color: #00ff66; font-weight: bold;">${c2}%</span>
+                    </div>
                     <div class="progress-bar-container"><div class="progress-fill" style="width: ${c2}%;"></div></div>
 
-                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 03: SQL Queries & Aggregations (${c3}%)</div>
+                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                        <span>Chapter 03: SQL Queries & Aggregations</span>
+                        <span style="color: #00ff66; font-weight: bold;">${c3}%</span>
+                    </div>
                     <div class="progress-bar-container"><div class="progress-fill" style="width: ${c3}%;"></div></div>
 
-                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 04: Advanced SQL & Security (${c4}%)</div>
+                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                        <span>Chapter 04: Advanced SQL & Security</span>
+                        <span style="color: #00ff66; font-weight: bold;">${c4}%</span>
+                    </div>
                     <div class="progress-bar-container"><div class="progress-fill" style="width: ${c4}%;"></div></div>
+
+                    <div style="margin-top: 25px; border-top: 1px dashed rgba(0,243,255,0.3); padding-top: 10px; display: flex; justify-content: space-between; font-size: 9px; color: #78909c;">
+                        <span>DBMS NEXUS CERTIFIED TELEMETRY</span>
+                        <span>INSTRUCTOR VERIFIED</span>
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button id="downloadPdfBtn" class="cyber-btn pdf-btn" style="flex: 1; padding: 10px; font-weight: bold;">📥 DOWNLOAD PDF REPORT</button>
-                    <button id="closeDossierBtn" class="cyber-btn" style="padding: 10px;">CLOSE</button>
+                    <button id="downloadPdfBtn" class="cyber-btn pdf-btn" style="flex: 1; padding: 12px; font-size: 12px;">📥 DOWNLOAD OFFICIAL PDF REPORT</button>
+                    <button id="closeDossierBtn" class="cyber-btn" style="padding: 12px; font-size: 12px;">CLOSE</button>
                 </div>
             `;
 
             document.getElementById("modalOverlay").style.display = "flex";
 
-            // Wire PDF Download Action
             document.getElementById("downloadPdfBtn").addEventListener("click", () => {
                 const element = document.getElementById("pdfReportContent");
                 const opt = {
@@ -567,15 +592,17 @@
                     html2canvas:  { scale: 2, backgroundColor: '#020408' },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
-                html2pdf().from(element).set(opt).save();
-                logKernel(`Downloaded official PDF report for student: ${st.email}`);
+                html2pdf().from(element).set(opt).save().then(() => {
+                    logKernel(`Successfully generated and downloaded PDF report for: ${st.email}`);
+                }).catch(err => {
+                    alert("PDF Generation Error: " + err.message);
+                });
             });
 
             document.getElementById("closeDossierBtn").addEventListener("click", closeModal);
             logKernel(`Viewed advanced dossier for ID: ${id}`);
         };
 
-        // Edit Record Modal
         function editRecord(id) {
             const st = studentCache.find(s => s.id === id);
             if (!st) return;
@@ -639,7 +666,6 @@
             });
         }
 
-        // Delete Record
         async function deleteRecord(id) {
             if (!confirm("CRITICAL WARNING: Confirm record wipe from cloud storage?")) return;
             try {
@@ -652,7 +678,6 @@
             }
         }
 
-        // Broadcast System
         document.getElementById("broadcastBtn").addEventListener("click", async () => {
             const msg = document.getElementById("broadcastText").value.trim();
             if (!msg) {
@@ -672,7 +697,6 @@
             }
         });
 
-        // Export to CSV
         document.getElementById("exportCsvBtn").addEventListener("click", () => {
             if (studentCache.length === 0) {
                 alert("No records to export.");
