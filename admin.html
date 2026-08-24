@@ -214,7 +214,7 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* HACKER LOGIN OVERLAY WITH RUNNING BACKGROUND CODE STREAM */
+        /* HACKER LOGIN OVERLAY WITH ULTRA-FAST CODE STREAM */
         #authOverlay {
             position: fixed;
             inset: 0;
@@ -227,18 +227,18 @@
             overflow: hidden;
         }
 
-        /* Running background matrix code feed behind login */
+        /* Hyper-fast running background matrix code stream */
         .matrix-bg-stream {
             position: absolute;
             inset: 0;
             font-family: monospace;
             font-size: 11px;
-            color: rgba(0, 255, 102, 0.15);
-            line-height: 1.4;
+            color: rgba(0, 255, 102, 0.2);
+            line-height: 1.3;
             padding: 20px;
             pointer-events: none;
             z-index: 1;
-            white-space: pre;
+            white-space: pre-wrap;
             overflow: hidden;
         }
 
@@ -308,14 +308,10 @@
 
     <div class="cyber-grid"></div>
 
-    <!-- HACKER LOGIN GATEWAY WITH RUNNING BACKGROUND CODE STREAM -->
+    <!-- HACKER LOGIN GATEWAY WITH ULTRA-FAST STREAM -->
     <div id="authOverlay">
         <div class="matrix-bg-stream" id="matrixStream">
-            INIT_SYS_CORE... 01010111 MTRX_OKAY
-            BYPASSING_FIREWALL... ACCESS_VECTOR_ESTABLISHED
-            LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE
-            LOAD_CLUSTER_STUDENTS... DB_CONNECTED
-            VERIFYING_CREDENTIALS... INSTRUCTOR_GATEWAY_ACTIVE
+            01010111 MTRX_STREAM_ACTIVE...
         </div>
         <div class="terminal-box">
             <!-- HACK SYMBOL & TITLE -->
@@ -446,26 +442,21 @@
 
         let studentCache = [];
 
-        // Simulated background hacker code stream ticker
-        const hackerLines = [
-            "BYPASS_FIREWALL // 01010111",
-            "DECRYPTING_STUDENT_TELEMETRY...",
-            "SOCKET_CONNECTED_PORT_443",
-            "ROOT_ACCESS_VECTOR_STABLE",
-            "LOADING_CLUSTER_INDEX_04",
-            "SECURITY_HASH: SHA-256_VERIFIED",
-            "SYNCING_FIRESTORE_RECORDS..."
-        ];
+        // ULTRA-FAST HACKER STREAM TICKER (Runs every 40 milliseconds for high-speed effect)
+        const hexChars = "0189ABCDEF<>//_XCORP_ROOT_CONNECT_PACKET_0x99";
         setInterval(() => {
             const stream = document.getElementById("matrixStream");
             if (stream) {
-                const randomLine = hackerLines[Math.floor(Math.random() * hackerLines.length)];
-                stream.innerText += "\n" + randomLine;
-                if (stream.innerText.length > 1000) {
-                    stream.innerText = stream.innerText.substring(200);
+                let randomBlock = "";
+                for(let i=0; i<35; i++) {
+                    randomBlock += hexChars.charAt(Math.floor(Math.random() * hexChars.length));
+                }
+                stream.innerText += "\n" + randomBlock + " // " + Math.random().toString(36).substring(2, 10).toUpperCase();
+                if (stream.innerText.length > 2500) {
+                    stream.innerText = stream.innerText.substring(800);
                 }
             }
-        }, 600);
+        }, 40);
 
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
