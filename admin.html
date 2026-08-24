@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- html2pdf library for gorgeous PDF student report exports -->
+    <script src="https://cdnjs.cloudflare.com/ajax5/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --bg-deep: #020408;
@@ -186,6 +188,16 @@
             box-shadow: 0 0 10px var(--neon-red);
         }
 
+        .cyber-btn.pdf-btn {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        .cyber-btn.pdf-btn:hover {
+            background: var(--neon-green);
+            color: var(--bg-deep);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
         input, textarea {
             background: #000;
             border: 1px solid var(--neon-cyan);
@@ -214,12 +226,14 @@
         #modalOverlay { display: none; z-index: 10001; }
 
         .terminal-box {
-            width: min(480px, 95vw);
+            width: min(540px, 95vw);
             background: var(--bg-deep);
             border: 2px solid var(--neon-cyan);
-            padding: 35px;
+            padding: 30px;
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .matrix-log {
@@ -231,6 +245,24 @@
             height: 120px;
             overflow-y: auto;
             margin-top: 10px;
+        }
+
+        /* Progress bars inside modal */
+        .progress-bar-container {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 4px;
+            height: 10px;
+            width: 100%;
+            margin-top: 4px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 8px var(--neon-cyan);
+            transition: width 0.4s ease;
         }
     </style>
 </head>
@@ -455,7 +487,6 @@
             });
             tbody.innerHTML = html || `<tr><td colspan="8" style="text-align: center; color: var(--text-main);">No student entries found in cluster.</td></tr>`;
             
-            // Attach row action listeners dynamically
             document.querySelectorAll(".view-btn").forEach(btn => {
                 btn.addEventListener("click", () => viewRecord(btn.getAttribute("data-id")));
             });
@@ -477,28 +508,72 @@
             renderTable(filtered);
         });
 
-        // View Record Modal
-        function viewRecord(id) {
+        // Advanced View Record Modal with Charts & PDF Export
+        window.viewRecord = function(id) {
             const st = studentCache.find(s => s.id === id);
             if (!st) return;
 
-            document.getElementById("modalTitle").innerText = "DOSSIER // VIEW";
+            const c1 = st.scores?.[1] || 0;
+            const c2 = st.scores?.[2] || 0;
+            const c3 = st.scores?.[3] || 0;
+            const c4 = st.scores?.[4] || 0;
+            const avgScore = Math.round((c1 + c2 + c3 + c4) / 4);
+
+            document.getElementById("modalTitle").innerText = "STUDENT TELEMETRY DOSSIER";
             document.getElementById("modalContent").innerHTML = `
-                <p style="margin-bottom: 8px;"><strong>Student Name:</strong> ${st.name || 'N/A'}</p>
-                <p style="margin-bottom: 8px;"><strong>Email:</strong> ${st.email}</p>
-                <p style="margin-bottom: 15px;"><strong>Total XP:</strong> <span style="color: var(--neon-green);">${st.totalXP || 0} XP</span></p>
-                <hr style="border: 0; border-top: 1px solid rgba(0,243,255,0.2); margin: 15px 0;">
-                <p style="color: var(--neon-cyan); margin-bottom: 8px;">CHAPTER BREAKDOWN:</p>
-                <p>Chapter 01 Score: ${st.scores?.[1] || 0}%</p>
-                <p>Chapter 02 Score: ${st.scores?.[2] || 0}%</p>
-                <p>Chapter 03 Score: ${st.scores?.[3] || 0}%</p>
-                <p>Chapter 04 Score: ${st.scores?.[4] || 0}%</p>
-                <button id="closeDossierBtn" class="cyber-btn" style="width: 100%; margin-top: 20px;">CLOSE DOSSIER</button>
+                <div id="pdfReportContent" style="padding: 10px; background: #020408; color: #c0d8e0;">
+                    <div style="border-bottom: 1px dashed var(--neon-cyan); padding-bottom: 10px; margin-bottom: 15px;">
+                        <h4 style="color: var(--neon-cyan); font-family: var(--font-head); font-size: 15px;">DBMS NEXUS // PERFORMANCE REPORT</h4>
+                        <p style="font-size: 10px; color: #78909c;">Generated on ${new Date().toLocaleString()}</p>
+                    </div>
+
+                    <p style="margin-bottom: 6px;"><strong>Full Name:</strong> <span style="color:#fff;">${st.name || 'N/A'}</span></p>
+                    <p style="margin-bottom: 6px;"><strong>Email Address:</strong> <span style="color:#fff;">${st.email}</span></p>
+                    <p style="margin-bottom: 6px;"><strong>Total Accumulated XP:</strong> <span style="color: var(--neon-green); font-weight: bold;">${st.totalXP || 0} XP</span></p>
+                    <p style="margin-bottom: 15px;"><strong>Overall Average Mastery:</strong> <span style="color: var(--neon-cyan); font-weight: bold;">${avgScore}%</span></p>
+                    
+                    <hr style="border: 0; border-top: 1px solid rgba(0,243,255,0.2); margin: 15px 0;">
+                    
+                    <p style="color: var(--neon-cyan); font-family: var(--font-head); font-size: 11px; margin-bottom: 10px;">CHAPTER-WISE MASTERY BREAKDOWN:</p>
+                    
+                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 01: Architecture & Abstraction (${c1}%)</div>
+                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c1}%;"></div></div>
+
+                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 02: Relational Algebra & Keys (${c2}%)</div>
+                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c2}%;"></div></div>
+
+                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 03: SQL Queries & Aggregations (${c3}%)</div>
+                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c3}%;"></div></div>
+
+                    <div style="font-size: 11px; margin-bottom: 4px;">Chapter 04: Advanced SQL & Security (${c4}%)</div>
+                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c4}%;"></div></div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button id="downloadPdfBtn" class="cyber-btn pdf-btn" style="flex: 1; padding: 10px; font-weight: bold;">📥 DOWNLOAD PDF REPORT</button>
+                    <button id="closeDossierBtn" class="cyber-btn" style="padding: 10px;">CLOSE</button>
+                </div>
             `;
+
             document.getElementById("modalOverlay").style.display = "flex";
+
+            // Wire PDF Download Action
+            document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+                const element = document.getElementById("pdfReportContent");
+                const opt = {
+                    margin:       10,
+                    filename:     `DBMS_NEXUS_Report_${st.name || 'Student'}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, backgroundColor: '#020408' },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().from(element).set(opt).save();
+                logKernel(`Downloaded official PDF report for student: ${st.email}`);
+            });
+
             document.getElementById("closeDossierBtn").addEventListener("click", closeModal);
-            logKernel(`Viewed record for ID: ${id}`);
-        }
+            logKernel(`Viewed advanced dossier for ID: ${id}`);
+        };
 
         // Edit Record Modal
         function editRecord(id) {
