@@ -10,12 +10,11 @@
     <style>
         :root {
             --bg-deep: #020408;
-            --panel-bg: rgba(2, 12, 24, 0.90);
+            --panel-bg: rgba(2, 12, 24, 0.92);
             --neon-cyan: #00f3ff;
             --neon-green: #00ff66;
             --neon-red: #ff0055;
             --neon-amber: #ffb700;
-            --border-glow: rgba(0, 243, 255, 0.3);
             --text-main: #c0d8e0;
             --font-code: 'JetBrains Mono', monospace;
             --font-head: 'Orbitron', sans-serif;
@@ -44,7 +43,6 @@
             pointer-events: none;
         }
 
-        /* MATRIX GRID BG */
         .cyber-grid {
             position: fixed;
             inset: 0;
@@ -188,7 +186,7 @@
             box-shadow: 0 0 10px var(--neon-red);
         }
 
-        input, textarea, select {
+        input, textarea {
             background: #000;
             border: 1px solid var(--neon-cyan);
             color: var(--neon-green);
@@ -203,7 +201,6 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* OVERLAYS */
         #authOverlay, #modalOverlay {
             position: fixed;
             inset: 0;
@@ -217,23 +214,12 @@
         #modalOverlay { display: none; z-index: 10001; }
 
         .terminal-box {
-            width: min(450px, 95vw);
+            width: min(480px, 95vw);
             background: var(--bg-deep);
             border: 2px solid var(--neon-cyan);
             padding: 35px;
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
             position: relative;
-        }
-
-        .terminal-box::after {
-            content: "SECURE_ROOT_ACCESS";
-            position: absolute;
-            top: -12px;
-            right: 15px;
-            background: var(--bg-deep);
-            color: var(--neon-cyan);
-            font-size: 10px;
-            padding: 0 8px;
         }
 
         .matrix-log {
@@ -257,7 +243,7 @@
         <div class="terminal-box">
             <h2 style="font-family: var(--font-head); color: var(--neon-cyan); font-size: 18px; margin-bottom: 10px;">ROOT AUTHORIZATION</h2>
             <p style="font-size: 12px; color: var(--text-main); margin-bottom: 20px;">Enter administrative clearance credentials to mount the student database matrix.</p>
-            <form onsubmit="handleAuth(event)">
+            <form id="authForm">
                 <div style="margin-bottom: 15px;">
                     <label style="font-size: 10px; color: var(--neon-cyan);">IDENTIFIER [USER]</label>
                     <input type="text" id="usernameInput" required autocomplete="off" placeholder="root_user">
@@ -307,17 +293,17 @@
             <p style="font-size: 12px; margin-bottom: 10px;">Transmit global system telemetry or updates directly to active student terminals:</p>
             <div style="display: flex; gap: 10px;">
                 <input type="text" id="broadcastText" placeholder="Enter broadcast message packet...">
-                <button onclick="sendBroadcast()" class="cyber-btn" style="white-space: nowrap;">BROADCAST ⚡</button>
+                <button id="broadcastBtn" class="cyber-btn" style="white-space: nowrap;">BROADCAST ⚡</button>
             </div>
         </div>
 
         <!-- STUDENT DATABASE TABLE -->
         <div class="terminal-panel" data-title="STUDENT_RECORDS_DB">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                <input type="text" id="searchBox" onkeyup="filterTable()" placeholder="Search records by name or email..." style="max-width: 300px;">
+                <input type="text" id="searchBox" placeholder="Search records by name or email..." style="max-width: 300px;">
                 <div style="display: flex; gap: 10px;">
-                    <button onclick="exportCSV()" class="cyber-btn">📥 EXPORT CSV</button>
-                    <button onclick="loadStudents()" class="cyber-btn">↻ REFRESH DATA</button>
+                    <button id="exportCsvBtn" class="cyber-btn">📥 EXPORT CSV</button>
+                    <button id="refreshBtn" class="cyber-btn">↻ REFRESH DATA</button>
                 </div>
             </div>
             <div style="overflow-x: auto;">
@@ -353,10 +339,10 @@
 
     <!-- EDIT / VIEW MODAL -->
     <div id="modalOverlay">
-        <div class="terminal-box" style="width: min(500px, 95vw);">
+        <div class="terminal-box">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--neon-cyan); padding-bottom: 10px; margin-bottom: 20px;">
                 <h3 id="modalTitle" style="font-family: var(--font-head); color: var(--neon-cyan); font-size: 14px;">DOSSIER</h3>
-                <button onclick="closeModal()" class="cyber-btn" style="padding: 2px 8px;">✕</button>
+                <button id="closeModalBtn" class="cyber-btn" style="padding: 2px 8px;">✕</button>
             </div>
             <div id="modalContent"></div>
         </div>
@@ -390,14 +376,15 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // Check Session Authentication
+        // Check Session Authentication on Load
         if (sessionStorage.getItem("cyber_admin") === "active") {
             document.getElementById("authOverlay").style.display = "none";
             logKernel("Root clearance verified via session token.");
             loadStudents();
         }
 
-        window.handleAuth = function(e) {
+        // Login Handler
+        document.getElementById("authForm").addEventListener("submit", (e) => {
             e.preventDefault();
             const u = document.getElementById("usernameInput").value.trim();
             const p = document.getElementById("passwordInput").value.trim();
@@ -411,9 +398,10 @@
                 alert("ACCESS DENIED: Invalid credentials.");
                 logKernel("Failed authentication attempt.");
             }
-        };
+        });
 
-        window.loadStudents = async function() {
+        // Fetch Student Records from Firestore
+        async function loadStudents() {
             const tbody = document.getElementById("studentTableBody");
             tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--neon-amber);">Fetching cloud clusters...</td></tr>`;
             
@@ -440,7 +428,9 @@
                 tbody.innerHTML = `<tr><td colspan="8" style="color: var(--neon-red);">Error fetching database: ${err.message}</td></tr>`;
                 logKernel(`ERROR: ${err.message}`);
             }
-        };
+        }
+
+        document.getElementById("refreshBtn").addEventListener("click", loadStudents);
 
         function renderTable(data) {
             const tbody = document.getElementById("studentTableBody");
@@ -456,26 +446,39 @@
                         <td>${st.scores?.[3] || 0}%</td>
                         <td>${st.scores?.[4] || 0}%</td>
                         <td>
-                            <button class="cyber-btn" onclick="viewRecord('${st.id}')">VIEW</button>
-                            <button class="cyber-btn" onclick="editRecord('${st.id}')">EDIT</button>
-                            <button class="cyber-btn danger" onclick="deleteRecord('${st.id}')">WIPE</button>
+                            <button class="cyber-btn view-btn" data-id="${st.id}">VIEW</button>
+                            <button class="cyber-btn edit-btn" data-id="${st.id}">EDIT</button>
+                            <button class="cyber-btn danger delete-btn" data-id="${st.id}">WIPE</button>
                         </td>
                     </tr>
                 `;
             });
             tbody.innerHTML = html || `<tr><td colspan="8" style="text-align: center; color: var(--text-main);">No student entries found in cluster.</td></tr>`;
+            
+            // Attach row action listeners dynamically
+            document.querySelectorAll(".view-btn").forEach(btn => {
+                btn.addEventListener("click", () => viewRecord(btn.getAttribute("data-id")));
+            });
+            document.querySelectorAll(".edit-btn").forEach(btn => {
+                btn.addEventListener("click", () => editRecord(btn.getAttribute("data-id")));
+            });
+            document.querySelectorAll(".delete-btn").forEach(btn => {
+                btn.addEventListener("click", () => deleteRecord(btn.getAttribute("data-id")));
+            });
         }
 
-        window.filterTable = function() {
+        // Live Search Filter
+        document.getElementById("searchBox").addEventListener("keyup", () => {
             const query = document.getElementById("searchBox").value.toLowerCase();
             const filtered = studentCache.filter(st => 
                 (st.name && st.name.toLowerCase().includes(query)) || 
                 (st.email && st.email.toLowerCase().includes(query))
             );
             renderTable(filtered);
-        };
+        });
 
-        window.viewRecord = function(id) {
+        // View Record Modal
+        function viewRecord(id) {
             const st = studentCache.find(s => s.id === id);
             if (!st) return;
 
@@ -490,19 +493,21 @@
                 <p>Chapter 02 Score: ${st.scores?.[2] || 0}%</p>
                 <p>Chapter 03 Score: ${st.scores?.[3] || 0}%</p>
                 <p>Chapter 04 Score: ${st.scores?.[4] || 0}%</p>
-                <button onclick="closeModal()" class="cyber-btn" style="width: 100%; margin-top: 20px;">CLOSE DOSSIER</button>
+                <button id="closeDossierBtn" class="cyber-btn" style="width: 100%; margin-top: 20px;">CLOSE DOSSIER</button>
             `;
             document.getElementById("modalOverlay").style.display = "flex";
+            document.getElementById("closeDossierBtn").addEventListener("click", closeModal);
             logKernel(`Viewed record for ID: ${id}`);
-        };
+        }
 
-        window.editRecord = function(id) {
+        // Edit Record Modal
+        function editRecord(id) {
             const st = studentCache.find(s => s.id === id);
             if (!st) return;
 
             document.getElementById("modalTitle").innerText = "DOSSIER // EDIT";
             document.getElementById("modalContent").innerHTML = `
-                <form onsubmit="submitEdit(event, '${st.id}')">
+                <form id="editForm">
                     <div style="margin-bottom: 10px;">
                         <label style="font-size: 10px; color: var(--neon-cyan);">STUDENT NAME</label>
                         <input type="text" id="editName" value="${st.name || ''}" required>
@@ -533,33 +538,34 @@
                 </form>
             `;
             document.getElementById("modalOverlay").style.display = "flex";
-        };
 
-        window.submitEdit = async function(e, id) {
-            e.preventDefault();
-            const name = document.getElementById("editName").value;
-            const xp = parseInt(document.getElementById("editXP").value) || 0;
-            const s1 = parseInt(document.getElementById("e1").value) || 0;
-            const s2 = parseInt(document.getElementById("e2").value) || 0;
-            const s3 = parseInt(document.getElementById("e3").value) || 0;
-            const s4 = parseInt(document.getElementById("e4").value) || 0;
+            document.getElementById("editForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const name = document.getElementById("editName").value;
+                const xp = parseInt(document.getElementById("editXP").value) || 0;
+                const s1 = parseInt(document.getElementById("e1").value) || 0;
+                const s2 = parseInt(document.getElementById("e2").value) || 0;
+                const s3 = parseInt(document.getElementById("e3").value) || 0;
+                const s4 = parseInt(document.getElementById("e4").value) || 0;
 
-            try {
-                await updateDoc(doc(db, "students", id), {
-                    name: name,
-                    totalXP: xp,
-                    scores: { 1: s1, 2: s2, 3: s3, 4: s4 }
-                });
-                alert("Database record updated successfully!");
-                closeModal();
-                logKernel(`Committed updates for student ID: ${id}`);
-                loadStudents();
-            } catch (err) {
-                alert("Update error: " + err.message);
-            }
-        };
+                try {
+                    await updateDoc(doc(db, "students", id), {
+                        name: name,
+                        totalXP: xp,
+                        scores: { 1: s1, 2: s2, 3: s3, 4: s4 }
+                    });
+                    alert("Database record updated successfully!");
+                    closeModal();
+                    logKernel(`Committed updates for student ID: ${id}`);
+                    loadStudents();
+                } catch (err) {
+                    alert("Update error: " + err.message);
+                }
+            });
+        }
 
-        window.deleteRecord = async function(id) {
+        // Delete Record
+        async function deleteRecord(id) {
             if (!confirm("CRITICAL WARNING: Confirm record wipe from cloud storage?")) return;
             try {
                 await deleteDoc(doc(db, "students", id));
@@ -569,9 +575,10 @@
             } catch (err) {
                 alert("Wipe error: " + err.message);
             }
-        };
+        }
 
-        window.sendBroadcast = async function() {
+        // Broadcast System
+        document.getElementById("broadcastBtn").addEventListener("click", async () => {
             const msg = document.getElementById("broadcastText").value.trim();
             if (!msg) {
                 alert("Broadcast packet cannot be empty.");
@@ -588,9 +595,10 @@
             } catch (err) {
                 alert("Broadcast failure: " + err.message);
             }
-        };
+        });
 
-        window.exportCSV = function() {
+        // Export to CSV
+        document.getElementById("exportCsvBtn").addEventListener("click", () => {
             if (studentCache.length === 0) {
                 alert("No records to export.");
                 return;
@@ -606,11 +614,12 @@
             a.download = "dbms_nexus_matrix_report.csv";
             a.click();
             logKernel("Exported student database matrix to CSV.");
-        };
+        });
 
-        window.closeModal = function() {
+        function closeModal() {
             document.getElementById("modalOverlay").style.display = "none";
-        };
+        }
+        document.getElementById("closeModalBtn").addEventListener("click", closeModal);
     </script>
 </body>
 </html>
