@@ -214,11 +214,11 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* FULL SCREEN HACKER LOGIN OVERLAY */
+        /* TRUE FULL-SCREEN HACKER LOGIN OVERLAY */
         #authOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(2, 4, 8, 0.92);
+            background: rgba(2, 4, 8, 0.88);
             z-index: 10000;
             display: flex;
             align-items: center;
@@ -227,7 +227,7 @@
             overflow: hidden;
         }
 
-        /* Full width and height running background code stream */
+        /* Full width and height multi-column background code stream */
         .matrix-bg-stream {
             position: fixed;
             top: 0;
@@ -236,12 +236,13 @@
             height: 100vh;
             font-family: monospace;
             font-size: 11px;
-            color: rgba(0, 255, 102, 0.22);
+            color: rgba(0, 255, 102, 0.28);
             line-height: 1.25;
-            padding: 20px;
+            padding: 15px;
             pointer-events: none;
             z-index: 1;
-            white-space: pre-wrap;
+            column-count: 6;
+            column-gap: 20px;
             word-break: break-all;
             overflow: hidden;
         }
@@ -251,7 +252,7 @@
             background: rgba(2, 8, 16, 0.96);
             border: 2px solid var(--neon-green);
             padding: 35px;
-            box-shadow: 0 0 40px rgba(0, 255, 102, 0.25);
+            box-shadow: 0 0 40px rgba(0, 255, 102, 0.3);
             position: relative;
             z-index: 2;
         }
@@ -312,10 +313,10 @@
 
     <div class="cyber-grid"></div>
 
-    <!-- FULL SCREEN HACKER LOGIN GATEWAY -->
+    <!-- TRUE FULL-SCREEN HACKER LOGIN GATEWAY -->
     <div id="authOverlay">
         <div class="matrix-bg-stream" id="matrixStream">
-            01010111 MTRX_STREAM_FULL_DISPLAY_ACTIVE...
+            01010111 MTRX_STREAM_FULL_SCREEN_ACTIVE // 0x99_SECURE_AUTH // DECRYPTING...
         </div>
         <div class="terminal-box">
             <!-- HACK SYMBOL & TITLE -->
@@ -446,18 +447,18 @@
 
         let studentCache = [];
 
-        // FULL SCREEN HIGH-SPEED HACKER STREAM TICKER
-        const hexChars = "0189ABCDEF<>//_XCORP_ROOT_CONNECT_PACKET_0x99_SECURE_AUTH_MATRIX_STREAM";
+        // TRUE FULL-SCREEN HIGH-SPEED HACKER STREAM TICKER
+        const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED"];
         setInterval(() => {
             const stream = document.getElementById("matrixStream");
             if (stream) {
-                let randomBlock = "";
-                for(let i=0; i<60; i++) {
-                    randomBlock += hexChars.charAt(Math.floor(Math.random() * hexChars.length));
+                let chunk = "";
+                for(let i=0; i<8; i++) {
+                    chunk += hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 8).toUpperCase() + " ";
                 }
-                stream.innerText += "\n" + randomBlock + " // " + Math.random().toString(36).substring(2, 15).toUpperCase();
-                if (stream.innerText.length > 4000) {
-                    stream.innerText = stream.innerText.substring(1200);
+                stream.innerText += "\n" + chunk;
+                if (stream.innerText.length > 5000) {
+                    stream.innerText = stream.innerText.substring(1500);
                 }
             }
         }, 30);
