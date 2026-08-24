@@ -442,7 +442,7 @@
 
         let studentCache = [];
 
-        // MAXIMUM SPEED MATRIX TICKER (1ms Interval)
+        // ULTRA-MAXIMUM SPEED MATRIX TICKER (1ms Interval)
         const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99", "ERR_STACK_TRACE", "0x00FF99"];
         let baseMatrixText = document.getElementById("matrixStream") ? document.getElementById("matrixStream").innerHTML : "";
         
@@ -450,12 +450,12 @@
             const stream = document.getElementById("matrixStream");
             if (stream) {
                 let chunk = "";
-                for(let i=0; i<6; i++) {
+                for(let i=0; i<8; i++) {
                     chunk += hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 10).toUpperCase() + " // " + Math.random().toString(36).substring(2, 10).toUpperCase() + "<br>";
                 }
                 baseMatrixText += chunk;
-                if (baseMatrixText.length > 35000) {
-                    baseMatrixText = baseMatrixText.substring(10000);
+                if (baseMatrixText.length > 40000) {
+                    baseMatrixText = baseMatrixText.substring(12000);
                 }
                 stream.innerHTML = baseMatrixText;
             }
