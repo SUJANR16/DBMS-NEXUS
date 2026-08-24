@@ -214,11 +214,11 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* TRUE FULL-SCREEN HACKER LOGIN OVERLAY */
+        /* FULL VIEWPORT HACKER LOGIN OVERLAY */
         #authOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(2, 4, 8, 0.88);
+            background: rgba(2, 4, 8, 0.86);
             z-index: 10000;
             display: flex;
             align-items: center;
@@ -227,24 +227,25 @@
             overflow: hidden;
         }
 
-        /* Full width and height multi-column background code stream */
+        /* 100% Full-screen filling matrix background stream */
         .matrix-bg-stream {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             font-family: monospace;
             font-size: 11px;
-            color: rgba(0, 255, 102, 0.28);
-            line-height: 1.25;
-            padding: 15px;
+            color: rgba(0, 255, 102, 0.26);
+            line-height: 1.35;
+            padding: 20px;
             pointer-events: none;
             z-index: 1;
-            column-count: 6;
-            column-gap: 20px;
-            word-break: break-all;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
             overflow: hidden;
+            word-break: break-all;
         }
 
         .terminal-box {
@@ -313,10 +314,10 @@
 
     <div class="cyber-grid"></div>
 
-    <!-- TRUE FULL-SCREEN HACKER LOGIN GATEWAY -->
+    <!-- FULL SCREEN HACKER LOGIN GATEWAY -->
     <div id="authOverlay">
         <div class="matrix-bg-stream" id="matrixStream">
-            01010111 MTRX_STREAM_FULL_SCREEN_ACTIVE // 0x99_SECURE_AUTH // DECRYPTING...
+            INITIALIZING_SECURE_MATRIX_STREAM... 01010111 ROOT_ACCESS_ACTIVE
         </div>
         <div class="terminal-box">
             <!-- HACK SYMBOL & TITLE -->
@@ -447,21 +448,21 @@
 
         let studentCache = [];
 
-        // TRUE FULL-SCREEN HIGH-SPEED HACKER STREAM TICKER
-        const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED"];
+        // HIGH-SPEED FULL SCREEN DENSE MATRIX FLOODER
+        const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99"];
         setInterval(() => {
             const stream = document.getElementById("matrixStream");
             if (stream) {
                 let chunk = "";
-                for(let i=0; i<8; i++) {
+                for(let i=0; i<15; i++) {
                     chunk += hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 8).toUpperCase() + " ";
                 }
                 stream.innerText += "\n" + chunk;
-                if (stream.innerText.length > 5000) {
-                    stream.innerText = stream.innerText.substring(1500);
+                if (stream.innerText.length > 8000) {
+                    stream.innerText = stream.innerText.substring(2500);
                 }
             }
-        }, 30);
+        }, 25);
 
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
