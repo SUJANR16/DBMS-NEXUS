@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- FIXED CDN LINK FOR html2pdf -->
+    <!-- html2pdf library for PDF report generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -214,27 +214,65 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        #authOverlay, #modalOverlay {
+        /* HACKER LOGIN OVERLAY WITH RUNNING BACKGROUND CODE STREAM */
+        #authOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(2, 4, 8, 0.96);
+            background: rgba(2, 4, 8, 0.95);
             z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow: hidden;
         }
-        #modalOverlay { display: none; z-index: 10001; }
+
+        /* Running background matrix code feed behind login */
+        .matrix-bg-stream {
+            position: absolute;
+            inset: 0;
+            font-family: monospace;
+            font-size: 11px;
+            color: rgba(0, 255, 102, 0.15);
+            line-height: 1.4;
+            padding: 20px;
+            pointer-events: none;
+            z-index: 1;
+            white-space: pre;
+            overflow: hidden;
+        }
 
         .terminal-box {
-            width: min(600px, 95vw);
-            background: var(--bg-deep);
-            border: 2px solid var(--neon-cyan);
-            padding: 30px;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+            width: min(500px, 95vw);
+            background: rgba(2, 8, 16, 0.95);
+            border: 2px solid var(--neon-green);
+            padding: 35px;
+            box-shadow: 0 0 40px rgba(0, 255, 102, 0.25);
             position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
+            z-index: 2;
+        }
+
+        .terminal-box::before {
+            content: "[ROOT_ACCESS_LOCKED]";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--bg-deep);
+            color: var(--neon-green);
+            font-size: 10px;
+            padding: 0 8px;
+            letter-spacing: 2px;
+        }
+
+        #modalOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 4, 8, 0.96);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
         .matrix-log {
@@ -270,21 +308,33 @@
 
     <div class="cyber-grid"></div>
 
-    <!-- AUTH GATEWAY -->
+    <!-- HACKER LOGIN GATEWAY WITH RUNNING BACKGROUND CODE STREAM -->
     <div id="authOverlay">
+        <div class="matrix-bg-stream" id="matrixStream">
+            INIT_SYS_CORE... 01010111 MTRX_OKAY
+            BYPASSING_FIREWALL... ACCESS_VECTOR_ESTABLISHED
+            LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE
+            LOAD_CLUSTER_STUDENTS... DB_CONNECTED
+            VERIFYING_CREDENTIALS... INSTRUCTOR_GATEWAY_ACTIVE
+        </div>
         <div class="terminal-box">
-            <h2 style="font-family: var(--font-head); color: var(--neon-cyan); font-size: 18px; margin-bottom: 10px;">ROOT AUTHORIZATION</h2>
-            <p style="font-size: 12px; color: var(--text-main); margin-bottom: 20px;">Enter administrative clearance credentials to mount the student database matrix.</p>
+            <!-- HACK SYMBOL & TITLE -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 36px; color: var(--neon-green); text-shadow: 0 0 12px var(--neon-green); margin-bottom: 5px;">💀</div>
+                <h2 style="font-family: var(--font-head); color: var(--neon-green); font-size: 18px; letter-spacing: 2px;">SECURITY OVERRIDE</h2>
+                <p style="font-size: 11px; color: var(--text-main); margin-top: 5px;">Enter administrative clearance credentials to mount the student database matrix.</p>
+            </div>
+
             <form id="authForm">
                 <div style="margin-bottom: 15px;">
-                    <label style="font-size: 10px; color: var(--neon-cyan);">IDENTIFIER [USER]</label>
-                    <input type="text" id="usernameInput" required autocomplete="off" placeholder="root_user">
+                    <label style="font-size: 10px; color: var(--neon-green); font-family: var(--font-head);">IDENTIFIER [USER]</label>
+                    <input type="text" id="usernameInput" required autocomplete="off" placeholder="root_user" style="border-color: var(--neon-green); color: var(--neon-green);">
                 </div>
                 <div style="margin-bottom: 25px;">
-                    <label style="font-size: 10px; color: var(--neon-cyan);">PASSPHRASE [KEY]</label>
-                    <input type="password" id="passwordInput" required autocomplete="new-password" placeholder="••••••••••••">
+                    <label style="font-size: 10px; color: var(--neon-green); font-family: var(--font-head);">PASSPHRASE [KEY]</label>
+                    <input type="password" id="passwordInput" required autocomplete="new-password" placeholder="••••••••••••" style="border-color: var(--neon-green); color: var(--neon-green);">
                 </div>
-                <button type="submit" class="cyber-btn" style="width: 100%; padding: 12px; font-weight: bold;">EXECUTE LOGIN ➔</button>
+                <button type="submit" class="cyber-btn" style="width: 100%; padding: 12px; font-weight: bold; border-color: var(--neon-green); color: var(--neon-green);">EXECUTE LOGIN ➔</button>
             </form>
             <div style="margin-top: 15px; text-align: center;">
                 <a href="index.html" style="color: var(--text-main); font-size: 11px; text-decoration: none;">[← Abort to Student Portal]</a>
@@ -292,12 +342,13 @@
         </div>
     </div>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR WITH LOGOUT BUTTON -->
     <header>
         <a href="index.html" class="brand">&gt; DBMS_NEXUS // ROOT_ADMIN</a>
         <div style="display: flex; gap: 15px; align-items: center;">
             <span style="color: var(--neon-green); font-size: 11px;">● SYSTEM ONLINE</span>
             <a href="index.html" class="cyber-btn">STUDENT VIEW</a>
+            <button onclick="adminLogout()" class="cyber-btn danger">LOGOUT</button>
         </div>
     </header>
 
@@ -395,6 +446,27 @@
 
         let studentCache = [];
 
+        // Simulated background hacker code stream ticker
+        const hackerLines = [
+            "BYPASS_FIREWALL // 01010111",
+            "DECRYPTING_STUDENT_TELEMETRY...",
+            "SOCKET_CONNECTED_PORT_443",
+            "ROOT_ACCESS_VECTOR_STABLE",
+            "LOADING_CLUSTER_INDEX_04",
+            "SECURITY_HASH: SHA-256_VERIFIED",
+            "SYNCING_FIRESTORE_RECORDS..."
+        ];
+        setInterval(() => {
+            const stream = document.getElementById("matrixStream");
+            if (stream) {
+                const randomLine = hackerLines[Math.floor(Math.random() * hackerLines.length)];
+                stream.innerText += "\n" + randomLine;
+                if (stream.innerText.length > 1000) {
+                    stream.innerText = stream.innerText.substring(200);
+                }
+            }
+        }, 600);
+
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
             if (!box) return;
@@ -402,6 +474,13 @@
             box.innerHTML += `<br>[${time}] ${msg}`;
             box.scrollTop = box.scrollHeight;
         }
+
+        // LOGOUT HANDLER
+        window.adminLogout = function() {
+            sessionStorage.removeItem("cyber_admin");
+            alert("Admin session terminated.");
+            window.location.reload();
+        };
 
         if (sessionStorage.getItem("cyber_admin") === "active") {
             document.getElementById("authOverlay").style.display = "none";
