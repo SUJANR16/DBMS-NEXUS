@@ -27,7 +27,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (btn) {
                     btn.className = "chapter-button";
                     btn.innerHTML = `ENTER CHAPTER <span>→</span>`;
-                    btn.onclick = () => window.location.href = `chapter${i}.html`;
+                    // ➔ AUTHENTICATION CHECK BEFORE ENTERING CHAPTER
+                    btn.onclick = () => {
+                        if (!window.currentUser) {
+                            alert("Restricted Access: Please log in or sign up to view the contents inside this chapter.");
+                            if (typeof openAuthModal === 'function') {
+                                openAuthModal();
+                            }
+                            return;
+                        }
+                        window.location.href = `chapter${i}.html`;
+                    };
                 }
                 const status = card.querySelector(".chapter-status");
                 if (status) {
@@ -62,7 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (completed === 4) {
             finalBtn.className = "primary-button";
             finalBtn.innerHTML = `ENTER FINAL ARENA ⚡`;
-            finalBtn.onclick = () => window.location.href = "final.html";
+            finalBtn.onclick = () => {
+                if (!window.currentUser) {
+                    alert("Restricted Access: Please log in or sign up to access the Final Arena.");
+                    if (typeof openAuthModal === 'function') {
+                        openAuthModal();
+                    }
+                    return;
+                }
+                window.location.href = "final.html";
+            };
         } else {
             finalBtn.onclick = () => showToast("Complete all 4 chapters to unlock the Endgame Arena!");
         }
