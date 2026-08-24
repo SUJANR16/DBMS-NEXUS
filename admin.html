@@ -214,11 +214,11 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* FULL VIEWPORT HACKER LOGIN OVERLAY */
+        /* FULL SCREEN HACKER LOGIN OVERLAY */
         #authOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(2, 4, 8, 0.86);
+            background: rgba(2, 4, 8, 0.88);
             z-index: 10000;
             display: flex;
             align-items: center;
@@ -227,7 +227,17 @@
             overflow: hidden;
         }
 
-        /* 100% Full-screen filling matrix background stream */
+        /* FLICKERING MATRIX ANIMATION */
+        @keyframes cyberFlicker {
+            0% { opacity: 0.2; }
+            30% { opacity: 0.4; }
+            33% { opacity: 0.15; }
+            60% { opacity: 0.35; }
+            80% { opacity: 0.1; }
+            100% { opacity: 0.25; }
+        }
+
+        /* Full width and height dynamic flickering background code stream */
         .matrix-bg-stream {
             position: absolute;
             top: 0;
@@ -236,9 +246,9 @@
             height: 100%;
             font-family: monospace;
             font-size: 11px;
-            color: rgba(0, 255, 102, 0.26);
-            line-height: 1.35;
-            padding: 20px;
+            color: rgba(0, 255, 102, 0.35);
+            line-height: 1.3;
+            padding: 15px;
             pointer-events: none;
             z-index: 1;
             display: flex;
@@ -246,6 +256,7 @@
             align-content: flex-start;
             overflow: hidden;
             word-break: break-all;
+            animation: cyberFlicker 0.8s infinite steps(5, start);
         }
 
         .terminal-box {
@@ -317,7 +328,7 @@
     <!-- FULL SCREEN HACKER LOGIN GATEWAY -->
     <div id="authOverlay">
         <div class="matrix-bg-stream" id="matrixStream">
-            INITIALIZING_SECURE_MATRIX_STREAM... 01010111 ROOT_ACCESS_ACTIVE
+            INIT_SYS_MATRIX_STREAM_ACTIVE... 01010111 ROOT_ACCESS_OVERRIDE_SECURE
         </div>
         <div class="terminal-box">
             <!-- HACK SYMBOL & TITLE -->
@@ -448,21 +459,21 @@
 
         let studentCache = [];
 
-        // HIGH-SPEED FULL SCREEN DENSE MATRIX FLOODER
-        const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99"];
+        // ULTRA-FAST CONTINUOUS FLICKERING MATRIX TICKER
+        const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99", "ERR_STACK_TRACE"];
         setInterval(() => {
             const stream = document.getElementById("matrixStream");
             if (stream) {
                 let chunk = "";
-                for(let i=0; i<15; i++) {
+                for(let i=0; i<18; i++) {
                     chunk += hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 8).toUpperCase() + " ";
                 }
                 stream.innerText += "\n" + chunk;
-                if (stream.innerText.length > 8000) {
-                    stream.innerText = stream.innerText.substring(2500);
+                if (stream.innerText.length > 7000) {
+                    stream.innerText = stream.innerText.substring(2000);
                 }
             }
-        }, 25);
+        }, 20);
 
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
