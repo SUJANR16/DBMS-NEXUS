@@ -227,7 +227,7 @@
             overflow: hidden;
         }
 
-        /* STABLE, SMOOTH SCROLLING MATRIX STREAM WITHOUT JUMPING */
+        /* FIXED FULL-SCREEN VIEWPORT MATRIX STREAM (TILL BOTTOM) */
         .matrix-bg-stream {
             position: fixed;
             top: 0;
@@ -236,15 +236,15 @@
             height: 100vh;
             font-family: monospace;
             font-size: 11px;
-            color: rgba(0, 255, 102, 0.22);
-            line-height: 1.4;
+            color: rgba(0, 255, 102, 0.25);
+            line-height: 1.35;
             padding: 20px;
             pointer-events: none;
             z-index: 1;
-            column-count: 4;
-            column-gap: 30px;
+            column-count: 5;
+            column-gap: 20px;
             overflow: hidden;
-            opacity: 0.85;
+            word-break: break-all;
         }
 
         .terminal-box {
@@ -321,7 +321,10 @@
             LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE<br>
             LOAD_CLUSTER_STUDENTS... DB_CONNECTED<br>
             VERIFYING_CREDENTIALS... INSTRUCTOR_GATEWAY_ACTIVE<br>
-            SYS_OVERRIDE_0x99 // DECRYPTING_PACKETS...
+            SYS_OVERRIDE_0x99 // DECRYPTING_PACKETS...<br>
+            01010111 MTRX_STREAM_FULL_DISPLAY_ACTIVE // 0x99_SECURE_AUTH // DECRYPTING...<br>
+            BYPASS_FW // 01011101 // HASH_SHA256 // SOCKET_ESTABLISHED // DECRYPT_PKT<br>
+            DB_CLUSTER // SYS_OVERRIDE // ACCESS_GRANTED // PACKET_0x99 // ERR_STACK_TRACE
         </div>
         <div class="terminal-box">
             <!-- HACK SYMBOL & TITLE -->
@@ -452,7 +455,7 @@
 
         let studentCache = [];
 
-        // SMOOTH, NON-JUMPING BACKGROUND MATRIX GENERATOR
+        // SMOOTH CONTINUOUS MATRIX STREAM TICKER
         const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99", "ERR_STACK_TRACE"];
         let baseMatrixText = document.getElementById("matrixStream") ? document.getElementById("matrixStream").innerHTML : "";
         
@@ -461,12 +464,12 @@
             if (stream) {
                 let chunk = hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 8).toUpperCase() + " // " + Math.random().toString(36).substring(2, 8).toUpperCase() + "<br>";
                 baseMatrixText += chunk;
-                if (baseMatrixText.length > 5000) {
-                    baseMatrixText = baseMatrixText.substring(1000);
+                if (baseMatrixText.length > 8000) {
+                    baseMatrixText = baseMatrixText.substring(2000);
                 }
                 stream.innerHTML = baseMatrixText;
             }
-        }, 80);
+        }, 60);
 
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
