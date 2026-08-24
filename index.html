@@ -1,540 +1,540 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DBMS NEXUS | Interactive Learning Platform</title>
-    <meta name="description" content="DBMS NEXUS - Interactive Database Management System Learning Platform">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS NEXUS | Interactive Learning Platform</title>
+    <meta name="description" content="DBMS NEXUS - Interactive Database Management System Learning Platform">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <!-- LOADING SCREEN -->
 <div id="loadingScreen" class="loading-screen">
-    <div class="loader-core">
-        <div class="loader-ring ring-one"></div>
-        <div class="loader-ring ring-two"></div>
-        <div class="loader-ring ring-three"></div>
-        <div class="loader-center">
-            <span>DB</span>
-        </div>
-    </div>
-    <div class="loading-text">
-        <span>INITIALIZING</span>
-        <strong>DBMS NEXUS</strong>
-        <small>DATABASE LEARNING SYSTEM</small>
-    </div>
-    <div class="loading-progress">
-        <div id="loadingBar"></div>
-    </div>
+    <div class="loader-core">
+        <div class="loader-ring ring-one"></div>
+        <div class="loader-ring ring-two"></div>
+        <div class="loader-ring ring-three"></div>
+        <div class="loader-center">
+            <span>DB</span>
+        </div>
+    </div>
+    <div class="loading-text">
+        <span>INITIALIZING</span>
+        <strong>DBMS NEXUS</strong>
+        <small>DATABASE LEARNING SYSTEM</small>
+    </div>
+    <div class="loading-progress">
+        <div id="loadingBar"></div>
+    </div>
 </div>
 
 <!-- BACKGROUND EFFECTS -->
 <div class="background-effects">
-    <div class="grid-background"></div>
-    <div class="orb orb-one"></div>
-    <div class="orb orb-two"></div>
-    <div class="orb orb-three"></div>
+    <div class="grid-background"></div>
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
+    <div class="orb orb-three"></div>
 </div>
 
 <!-- NAVBAR -->
 <header class="navbar">
-    <a href="#home" class="brand">
-        <div class="brand-logo"><span>DB</span></div>
-        <div class="brand-text">
-            <strong>DBMS</strong>
-            <span>NEXUS</span>
-        </div>
-    </a>
+    <a href="#home" class="brand">
+        <div class="brand-logo"><span>DB</span></div>
+        <div class="brand-text">
+            <strong>DBMS</strong>
+            <span>NEXUS</span>
+        </div>
+    </a>
 
-    <nav class="desktop-nav">
-        <a href="#home">HOME</a>
-        <a href="#chapters">CHAPTERS</a>
-        <a href="#arena">ARENA</a>
-        <a href="#about">ABOUT</a>
-        <a href="admin.html" style="color: var(--accent);">ADMIN</a>
-    </nav>
+    <nav class="desktop-nav">
+        <a href="#home">HOME</a>
+        <a href="#chapters">CHAPTERS</a>
+        <a href="#arena">ARENA</a>
+        <a href="#about">ABOUT</a>
+        <a href="admin.html" style="color: var(--accent);">ADMIN</a>
+    </nav>
 
-    <div class="nav-actions">
-        <span id="navUserDisplay" style="display: none; font-family: var(--font-tech); font-size: 11px; color: var(--primary); margin-right: 8px;"></span>
-        <button id="navAuthBtn" onclick="openAuthModal()" class="primary-button" style="min-height: 36px; padding: 0 14px; font-size: 11px;">
-            LOGIN / SIGNUP
-        </button>
-        <button class="icon-button" id="progressButton" title="Progress">
-            <span>◈</span>
-        </button>
-        <button class="icon-button" id="settingsButton" title="Settings">
-            <span>⚙</span>
-        </button>
-        <button class="menu-button" id="menuButton">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
+    <div class="nav-actions">
+        <span id="navUserDisplay" style="display: none; font-family: var(--font-tech); font-size: 11px; color: var(--primary); margin-right: 8px;"></span>
+        <button id="navAuthBtn" onclick="openAuthModal()" class="primary-button" style="min-height: 36px; padding: 0 14px; font-size: 11px;">
+            LOGIN / SIGNUP
+        </button>
+        <button class="icon-button" id="progressButton" title="Progress">
+            <span>◈</span>
+        </button>
+        <button class="icon-button" id="settingsButton" title="Settings">
+            <span>⚙</span>
+        </button>
+        <button class="menu-button" id="menuButton">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
 </header>
 
 <!-- GLOBAL BROADCAST ANNOUNCEMENT BANNER -->
 <div id="globalAnnouncementBanner" style="display: none; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary); padding: 12px 20px; border-radius: 8px; margin: 20px auto 0 auto; max-width: 1100px; text-align: center; font-family: var(--font-tech); font-size: 12px; color: var(--primary); z-index: 100; position: relative;">
-    <strong style="color: #fff;">📢 SYSTEM ANNOUNCEMENT:</strong> <span id="announcementText"></span>
+    <strong style="color: #fff;">📢 SYSTEM ANNOUNCEMENT:</strong> <span id="announcementText"></span>
 </div>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-    <a href="#home">HOME</a>
-    <a href="#chapters">CHAPTERS</a>
-    <a href="#arena">TRAINING ARENA</a>
-    <a href="#about">ABOUT</a>
-    <a href="admin.html">ADMIN PANEL</a>
-    <a href="javascript:void(0)" onclick="openAuthModal()">ACCOUNT PORTAL</a>
+    <a href="#home">HOME</a>
+    <a href="#chapters">CHAPTERS</a>
+    <a href="#arena">TRAINING ARENA</a>
+    <a href="#about">ABOUT</a>
+    <a href="admin.html">ADMIN PANEL</a>
+    <a href="javascript:void(0)" onclick="openAuthModal()">ACCOUNT PORTAL</a>
 </div>
 
 <main>
 
 <!-- HERO -->
 <section id="home" class="hero-section">
-    <div class="hero-content">
-        <div class="hero-status">
-            <span class="status-dot"></span>
-            <span>DATABASE CORE ONLINE</span>
-        </div>
+    <div class="hero-content">
+        <div class="hero-status">
+            <span class="status-dot"></span>
+            <span>DATABASE CORE ONLINE</span>
+        </div>
 
-        <h1 class="hero-title">
-            <span>ENTER THE</span>
-            <strong>DBMS NEXUS</strong>
-        </h1>
+        <h1 class="hero-title">
+            <span>ENTER THE</span>
+            <strong>DBMS NEXUS</strong>
+        </h1>
 
-        <p class="hero-description">
-            An interactive futuristic learning platform for Database Management Systems.
-        </p>
+        <p class="hero-description">
+            An interactive futuristic learning platform for Database Management Systems.
+        </p>
 
-        <p class="creator-line">
-            <span>CREATED & DESIGNED BY</span>
-            <strong>SUJAN R</strong>
-            <span>URK24CS1187</span>
-        </p>
+        <p class="creator-line">
+            <span>CREATED & DESIGNED BY</span>
+            <strong>SUJAN R</strong>
+            <span>URK24CS1187</span>
+        </p>
 
-        <div class="hero-buttons">
-            <button class="primary-button" id="enterNexusButton">
-                <span>ENTER THE NEXUS</span>
-                <span class="button-arrow">→</span>
-            </button>
-            <a href="#chapters" class="secondary-button">EXPLORE CHAPTERS</a>
-        </div>
-    </div>
+        <div class="hero-buttons">
+            <button class="primary-button" id="enterNexusButton">
+                <span>ENTER THE NEXUS</span>
+                <span class="button-arrow">→</span>
+            </button>
+            <a href="#chapters" class="secondary-button">EXPLORE CHAPTERS</a>
+        </div>
+    </div>
 
-    <!-- HERO VISUAL -->
-    <div class="hero-visual">
-        <div class="core-system">
-            <div class="core-ring core-ring-one"></div>
-            <div class="core-ring core-ring-two"></div>
-            <div class="core-ring core-ring-three"></div>
-            <div class="core-center">
-                <span>DB</span>
-                <small>CORE</small>
-            </div>
-        </div>
+    <!-- HERO VISUAL -->
+    <div class="hero-visual">
+        <div class="core-system">
+            <div class="core-ring core-ring-one"></div>
+            <div class="core-ring core-ring-two"></div>
+            <div class="core-ring core-ring-three"></div>
+            <div class="core-center">
+                <span>DB</span>
+                <small>CORE</small>
+            </div>
+        </div>
 
-        <div class="floating-node node-one"><span>SQL</span></div>
-        <div class="floating-node node-two"><span>DB</span></div>
-        <div class="floating-node node-three"><span>KEY</span></div>
-        <div class="floating-node node-four"><span>QUERY</span></div>
-    </div>
+        <div class="floating-node node-one"><span>SQL</span></div>
+        <div class="floating-node node-two"><span>DB</span></div>
+        <div class="floating-node node-three"><span>KEY</span></div>
+        <div class="floating-node node-four"><span>QUERY</span></div>
+    </div>
 </section>
 
 <!-- PLATFORM FEATURES -->
 <section class="features-section">
-    <div class="section-heading">
-        <span class="section-label">THE SYSTEM</span>
-        <h2>LEARN. PRACTICE. MASTER.</h2>
-        <p>Every chapter is designed as an interactive learning experience instead of ordinary study notes.</p>
-    </div>
+    <div class="section-heading">
+        <span class="section-label">THE SYSTEM</span>
+        <h2>LEARN. PRACTICE. MASTER.</h2>
+        <p>Every chapter is designed as an interactive learning experience instead of ordinary study notes.</p>
+    </div>
 
-    <div class="feature-grid">
-        <article class="feature-card">
-            <div class="feature-icon">📖</div>
-            <h3>LEARN</h3>
-            <p>Simplified explanations with diagrams and real-world relational database examples.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">🧠</div>
-            <h3>MEMORISE</h3>
-            <p>Smart memory keywords, execution sequences, and quick exam revision anchors.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">🎮</div>
-            <h3>PLAY</h3>
-            <p>Chapter-specific games that turn query routing, algebraic slicing, and joins into interactive challenges.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">📷</div>
-            <h3>NEXUS LENS</h3>
-            <p>Upload lecture slides or schema screenshots for optical analysis and concept breakdowns.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">🎬</div>
-            <h3>BATTLE QUIZ</h3>
-            <p>Animated chapter quizzes with instant feedback, streak XP, and anti-cheat locks.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">🏆</div>
-            <h3>MASTER</h3>
-            <p>Complete all four chapters to unlock the Endgame Grand DBMS Arena.</p>
-        </article>
-    </div>
+    <div class="feature-grid">
+        <article class="feature-card">
+            <div class="feature-icon">📖</div>
+            <h3>LEARN</h3>
+            <p>Simplified explanations with diagrams and real-world relational database examples.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>MEMORISE</h3>
+            <p>Smart memory keywords, execution sequences, and quick exam revision anchors.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">🎮</div>
+            <h3>PLAY</h3>
+            <p>Chapter-specific games that turn query routing, algebraic slicing, and joins into interactive challenges.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">📷</div>
+            <h3>NEXUS LENS</h3>
+            <p>Upload lecture slides or schema screenshots for optical analysis and concept breakdowns.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">🎬</div>
+            <h3>BATTLE QUIZ</h3>
+            <p>Animated chapter quizzes with instant feedback, streak XP, and anti-cheat locks.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">🏆</div>
+            <h3>MASTER</h3>
+            <p>Complete all four chapters to unlock the Endgame Grand DBMS Arena.</p>
+        </article>
+    </div>
 </section>
 
 <!-- CHAPTERS -->
 <section id="chapters" class="chapters-section">
-    <div class="section-heading">
-        <span class="section-label">LEARNING PATH</span>
-        <h2>DATABASE KNOWLEDGE CORE</h2>
-        <p>Complete each chapter to unlock the next protocol.</p>
-    </div>
+    <div class="section-heading">
+        <span class="section-label">LEARNING PATH</span>
+        <h2>DATABASE KNOWLEDGE CORE</h2>
+        <p>Complete each chapter to unlock the next protocol.</p>
+    </div>
 
-    <!-- PROGRESS BAR -->
-    <div class="overall-progress-card">
-        <div class="progress-info">
-            <div>
-                <span>OVERALL PROGRESS</span>
-                <strong id="overallProgressText">0%</strong>
-            </div>
-            <div>
-                <span>CHAPTERS</span>
-                <strong id="chapterCountText">0 / 4</strong>
-            </div>
-        </div>
-        <div class="progress-track">
-            <div class="progress-fill" id="overallProgressBar"></div>
-        </div>
-    </div>
+    <!-- PROGRESS BAR -->
+    <div class="overall-progress-card">
+        <div class="progress-info">
+            <div>
+                <span>OVERALL PROGRESS</span>
+                <strong id="overallProgressText">0%</strong>
+            </div>
+            <div>
+                <span>CHAPTERS</span>
+                <strong id="chapterCountText">0 / 4</strong>
+            </div>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="overallProgressBar"></div>
+        </div>
+    </div>
 
-    <!-- CHAPTER GRID -->
-    <div class="chapter-grid">
+    <!-- CHAPTER GRID -->
+    <div class="chapter-grid">
 
-        <!-- CHAPTER 01 -->
-        <article class="chapter-card chapter-unlocked" data-chapter="1">
-            <div class="chapter-number">01</div>
-            <div class="chapter-status unlocked-status">
-                <span class="status-dot"></span> AVAILABLE
-            </div>
-            <div class="chapter-icon">🗄️</div>
-            <h3>DATABASE SYSTEM FUNDAMENTALS</h3>
-            <p>Applications, purpose, view of data, abstraction levels, DDL/DML, engine, architecture, and DBA.</p>
-            <div class="chapter-topics">
-                <span>ABSTRACTION</span><span>ENGINE</span><span>DBA</span>
-            </div>
-            <div class="chapter-progress">
-                <div class="mini-progress-track">
-                    <div class="mini-progress-fill" id="chapterProgress1"></div>
-                </div>
-                <span id="chapterProgressText1">0%</span>
-            </div>
-            <button class="chapter-button" onclick="window.location.href='chapter1.html'">
-                ENTER CHAPTER <span>→</span>
-            </button>
-        </article>
+        <!-- CHAPTER 01 -->
+        <article class="chapter-card chapter-unlocked" data-chapter="1">
+            <div class="chapter-number">01</div>
+            <div class="chapter-status unlocked-status">
+                <span class="status-dot"></span> AVAILABLE
+            </div>
+            <div class="chapter-icon">🗄️</div>
+            <h3>DATABASE SYSTEM FUNDAMENTALS</h3>
+            <p>Applications, purpose, view of data, abstraction levels, DDL/DML, engine, architecture, and DBA.</p>
+            <div class="chapter-topics">
+                <span>ABSTRACTION</span><span>ENGINE</span><span>DBA</span>
+            </div>
+            <div class="chapter-progress">
+                <div class="mini-progress-track">
+                    <div class="mini-progress-fill" id="chapterProgress1"></div>
+                </div>
+                <span id="chapterProgressText1">0%</span>
+            </div>
+            <button class="chapter-button" onclick="window.location.href='chapter1.html'">
+                ENTER CHAPTER <span>→</span>
+            </button>
+        </article>
 
-        <!-- CHAPTER 02 -->
-        <article class="chapter-card chapter-locked" data-chapter="2">
-            <div class="chapter-number">02</div>
-            <div class="chapter-status locked-status">
-                <span>🔒</span> LOCKED
-            </div>
-            <div class="chapter-icon">🔗</div>
-            <h3>RELATIONAL DATABASES</h3>
-            <p>Relational structure, schema, superkeys, candidate keys, foreign keys, schema diagrams, and relational algebra.</p>
-            <div class="chapter-topics">
-                <span>SCHEMA</span><span>KEYS</span><span>ALGEBRA</span>
-            </div>
-            <div class="chapter-progress">
-                <div class="mini-progress-track">
-                    <div class="mini-progress-fill" id="chapterProgress2"></div>
-                </div>
-                <span id="chapterProgressText2">LOCKED</span>
-            </div>
-            <button class="chapter-button locked-button">🔒 LOCKED</button>
-        </article>
+        <!-- CHAPTER 02 -->
+        <article class="chapter-card chapter-locked" data-chapter="2">
+            <div class="chapter-number">02</div>
+            <div class="chapter-status locked-status">
+                <span>🔒</span> LOCKED
+            </div>
+            <div class="chapter-icon">🔗</div>
+            <h3>RELATIONAL DATABASES</h3>
+            <p>Relational structure, schema, superkeys, candidate keys, foreign keys, schema diagrams, and relational algebra.</p>
+            <div class="chapter-topics">
+                <span>SCHEMA</span><span>KEYS</span><span>ALGEBRA</span>
+            </div>
+            <div class="chapter-progress">
+                <div class="mini-progress-track">
+                    <div class="mini-progress-fill" id="chapterProgress2"></div>
+                </div>
+                <span id="chapterProgressText2">LOCKED</span>
+            </div>
+            <button class="chapter-button locked-button">🔒 LOCKED</button>
+        </article>
 
-        <!-- CHAPTER 03 -->
-        <article class="chapter-card chapter-locked" data-chapter="3">
-            <div class="chapter-number">03</div>
-            <div class="chapter-status locked-status">
-                <span>🔒</span> LOCKED
-            </div>
-            <div class="chapter-icon">💻</div>
-            <h3>SQL QUERY LANGUAGE</h3>
-            <p>SQL overview, data definition, basic query structure, aggregates, set ops, NULL, GROUP BY, and subqueries.</p>
-            <div class="chapter-topics">
-                <span>SQL</span><span>AGGREGATES</span><span>SUBQUERIES</span>
-            </div>
-            <div class="chapter-progress">
-                <div class="mini-progress-track">
-                    <div class="mini-progress-fill" id="chapterProgress3"></div>
-                </div>
-                <span id="chapterProgressText3">LOCKED</span>
-            </div>
-            <button class="chapter-button locked-button">🔒 LOCKED</button>
-        </article>
+        <!-- CHAPTER 03 -->
+        <article class="chapter-card chapter-locked" data-chapter="3">
+            <div class="chapter-number">03</div>
+            <div class="chapter-status locked-status">
+                <span>🔒</span> LOCKED
+            </div>
+            <div class="chapter-icon">💻</div>
+            <h3>SQL QUERY LANGUAGE</h3>
+            <p>SQL overview, data definition, basic query structure, aggregates, set ops, NULL, GROUP BY, and subqueries.</p>
+            <div class="chapter-topics">
+                <span>SQL</span><span>AGGREGATES</span><span>SUBQUERIES</span>
+            </div>
+            <div class="chapter-progress">
+                <div class="mini-progress-track">
+                    <div class="mini-progress-fill" id="chapterProgress3"></div>
+                </div>
+                <span id="chapterProgressText3">LOCKED</span>
+            </div>
+            <button class="chapter-button locked-button">🔒 LOCKED</button>
+        </article>
 
-        <!-- CHAPTER 04 -->
-        <article class="chapter-card chapter-locked" data-chapter="4">
-            <div class="chapter-number">04</div>
-            <div class="chapter-status locked-status">
-                <span>🔒</span> LOCKED
-            </div>
-            <div class="chapter-icon">🛡️</div>
-            <h3>DATABASE CONTROL CENTER</h3>
-            <p>Join expressions, views, ACID transactions, integrity constraints, indices, and GRANT/REVOKE authorization.</p>
-            <div class="chapter-topics">
-                <span>JOINS</span><span>VIEWS</span><span>SECURITY</span>
-            </div>
-            <div class="chapter-progress">
-                <div class="mini-progress-track">
-                    <div class="mini-progress-fill" id="chapterProgress4"></div>
-                </div>
-                <span id="chapterProgressText4">LOCKED</span>
-            </div>
-            <button class="chapter-button locked-button">🔒 LOCKED</button>
-        </article>
+        <!-- CHAPTER 04 -->
+        <article class="chapter-card chapter-locked" data-chapter="4">
+            <div class="chapter-number">04</div>
+            <div class="chapter-status locked-status">
+                <span>🔒</span> LOCKED
+            </div>
+            <div class="chapter-icon">🛡️</div>
+            <h3>DATABASE CONTROL CENTER</h3>
+            <p>Join expressions, views, ACID transactions, integrity constraints, indices, and GRANT/REVOKE authorization.</p>
+            <div class="chapter-topics">
+                <span>JOINS</span><span>VIEWS</span><span>SECURITY</span>
+            </div>
+            <div class="chapter-progress">
+                <div class="mini-progress-track">
+                    <div class="mini-progress-fill" id="chapterProgress4"></div>
+                </div>
+                <span id="chapterProgressText4">LOCKED</span>
+            </div>
+            <button class="chapter-button locked-button">🔒 LOCKED</button>
+        </article>
 
-    </div>
+    </div>
 </section>
 
 <!-- TRAINING ARENA -->
 <section id="arena" class="arena-section">
-    <div class="arena-container">
-        <div class="arena-content">
-            <span class="section-label">TRAINING SYSTEM</span>
-            <h2>⚡ ENTER THE <strong>TRAINING ARENA</strong></h2>
-            <p>Test your understanding through memory challenges, operator slicing games, practice queries, and animated quizzes.</p>
-            <div class="arena-features">
-                <span>🧠 MEMORY</span>
-                <span>🎮 GAMES</span>
-                <span>📷 LENS</span>
-                <span>🎬 QUIZ</span>
-            </div>
-            <button class="primary-button arena-button" onclick="document.getElementById('chapters').scrollIntoView({behavior:'smooth'})">
-                START TRAINING →
-            </button>
-        </div>
+    <div class="arena-container">
+        <div class="arena-content">
+            <span class="section-label">TRAINING SYSTEM</span>
+            <h2>⚡ ENTER THE <strong>TRAINING ARENA</strong></h2>
+            <p>Test your understanding through memory challenges, operator slicing games, practice queries, and animated quizzes.</p>
+            <div class="arena-features">
+                <span>🧠 MEMORY</span>
+                <span>🎮 GAMES</span>
+                <span>📷 LENS</span>
+                <span>🎬 QUIZ</span>
+            </div>
+            <button class="primary-button arena-button" onclick="document.getElementById('chapters').scrollIntoView({behavior:'smooth'})">
+                START TRAINING →
+            </button>
+        </div>
 
-        <div class="arena-visual">
-            <div class="arena-core">
-                <div class="arena-ring"></div>
-                <div class="arena-inner">
-                    <span>⚡</span>
-                    <small>TRAINING</small>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div class="arena-visual">
+            <div class="arena-core">
+                <div class="arena-ring"></div>
+                <div class="arena-inner">
+                    <span>⚡</span>
+                    <small>TRAINING</small>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- FINAL ARENA -->
 <section class="final-arena-section">
-    <div class="final-arena-card">
-        <div class="final-lock">🔒</div>
-        <div class="final-arena-content">
-            <span class="section-label">ENDGAME</span>
-            <h2>FINAL DBMS <strong>ARENA</strong></h2>
-            <p>Complete all four chapters to unlock the ultimate composite DBMS challenge.</p>
-            <div class="final-stages">
-                <span>01 FUNDAMENTALS</span>
-                <span>02 ALGEBRA</span>
-                <span>03 SQL</span>
-                <span>04 SECURITY</span>
-            </div>
-            <button class="final-arena-button" id="finalArenaButton">
-                🔒 COMPLETE ALL CHAPTERS
-            </button>
-        </div>
-    </div>
+    <div class="final-arena-card">
+        <div class="final-lock">🔒</div>
+        <div class="final-arena-content">
+            <span class="section-label">ENDGAME</span>
+            <h2>FINAL DBMS <strong>ARENA</strong></h2>
+            <p>Complete all four chapters to unlock the ultimate composite DBMS challenge.</p>
+            <div class="final-stages">
+                <span>01 FUNDAMENTALS</span>
+                <span>02 ALGEBRA</span>
+                <span>03 SQL</span>
+                <span>04 SECURITY</span>
+            </div>
+            <button class="final-arena-button" id="finalArenaButton">
+                🔒 COMPLETE ALL CHAPTERS
+            </button>
+        </div>
+    </div>
 </section>
 
 <!-- ABOUT / SYSTEM BLUEPRINT -->
 <section id="about" class="about-section">
-    <div class="section-heading">
-        <span class="section-label">SYSTEM BLUEPRINT</span>
-        <h2>HOW DBMS NEXUS WAS MADE</h2>
-        <p>Explore the architecture, educational techniques, and prompt specifications behind DBMS NEXUS.</p>
-    </div>
+    <div class="section-heading">
+        <span class="section-label">SYSTEM BLUEPRINT</span>
+        <h2>HOW DBMS NEXUS WAS MADE</h2>
+        <p>Explore the architecture, educational techniques, and prompt specifications behind DBMS NEXUS.</p>
+    </div>
 
-    <div class="about-grid">
-        <article class="about-card">
-            <span>01</span>
-            <h3>CONCEPT</h3>
-            <p>Transforms traditional slide-based DBMS course material into an interactive cyberpunk lab.</p>
-        </article>
-        <article class="about-card">
-            <span>02</span>
-            <h3>TECHNOLOGY</h3>
-            <p>Pure HTML5, CSS3 Glassmorphism, Web Speech API, and modular JavaScript engines without external dependencies.</p>
-        </article>
-        <article class="about-card">
-            <span>03</span>
-            <h3>PEDAGOGY</h3>
-            <p>Built-in memory mnemonics (P-L-V, S-F-W-G-H-O), interactive operator minigames, and active retrieval quizzes.</p>
-        </article>
-        <article class="about-card">
-            <span>04</span>
-            <h3>INTELLIGENCE</h3>
-            <p>Optical image recognition via Nexus Lens, customizable voice readouts, and exam anti-cheat mode.</p>
-        </article>
-    </div>
+    <div class="about-grid">
+        <article class="about-card">
+            <span>01</span>
+            <h3>CONCEPT</h3>
+            <p>Transforms traditional slide-based DBMS course material into an interactive cyberpunk lab.</p>
+        </article>
+        <article class="about-card">
+            <span>02</span>
+            <h3>TECHNOLOGY</h3>
+            <p>Pure HTML5, CSS3 Glassmorphism, Web Speech API, and modular JavaScript engines without external dependencies.</p>
+        </article>
+        <article class="about-card">
+            <span>03</span>
+            <h3>PEDAGOGY</h3>
+            <p>Built-in memory mnemonics (P-L-V, S-F-W-G-H-O), interactive operator minigames, and active retrieval quizzes.</p>
+        </article>
+        <article class="about-card">
+            <span>04</span>
+            <h3>INTELLIGENCE</h3>
+            <p>Optical image recognition via Nexus Lens, customizable voice readouts, and exam anti-cheat mode.</p>
+        </article>
+    </div>
 
-    <button class="prompt-button" id="promptButton">
-        🤖 VIEW DEVELOPMENT PROMPT SPECIFICATION
-    </button>
+    <button class="prompt-button" id="promptButton">
+        🤖 VIEW DEVELOPMENT PROMPT SPECIFICATION
+    </button>
 </section>
 
 <!-- CREATOR -->
 <section class="creator-section">
-    <div class="creator-card">
-        <div class="creator-avatar">SR</div>
-        <div class="creator-info">
-            <span>CREATED & DESIGNED BY</span>
-            <h2>SUJAN R</h2>
-            <strong>URK24CS1187</strong>
-        </div>
-        <div class="creator-badge">
-            DBMS<small>NEXUS</small>
-        </div>
-    </div>
+    <div class="creator-card">
+        <div class="creator-avatar">SR</div>
+        <div class="creator-info">
+            <span>CREATED & DESIGNED BY</span>
+            <h2>SUJAN R</h2>
+            <strong>URK24CS1187</strong>
+        </div>
+        <div class="creator-badge">
+            DBMS<small>NEXUS</small>
+        </div>
+    </div>
 </section>
 
 </main>
 
 <!-- FOOTER -->
 <footer class="footer">
-    <div class="footer-brand">
-        <strong>DBMS NEXUS</strong>
-        <span>Interactive Database Management System Learning Platform</span>
-    </div>
-    <div class="footer-right">
-        <span>SUJAN R</span>
-        <span>URK24CS1187</span>
-        <span>© 2026 DBMS NEXUS</span>
-    </div>
+    <div class="footer-brand">
+        <strong>DBMS NEXUS</strong>
+        <span>Interactive Database Management System Learning Platform</span>
+    </div>
+    <div class="footer-right">
+        <span>SUJAN R</span>
+        <span>URK24CS1187</span>
+        <span>© 2026 DBMS NEXUS</span>
+    </div>
 </footer>
 
 <!-- AUTHENTICATION MODAL -->
 <div class="modal-overlay" id="authModal">
-    <div class="isolated-modal-card" style="width: min(440px, 95vw); padding: 30px; text-align: left; background: var(--panel); border: 1px solid var(--border); border-radius: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 234, 255, 0.2); padding-bottom: 10px; margin-bottom: 20px;">
-            <span style="font-family: var(--font-tech); font-size: 10px; color: var(--primary); letter-spacing: 2px;">STUDENT ACCESS PORTAL</span>
-            <button onclick="closeAuthModal()" style="background: none; border: none; color: #fff; font-size: 22px; cursor: pointer;">×</button>
-        </div>
+    <div class="isolated-modal-card" style="width: min(440px, 95vw); padding: 30px; text-align: left; background: var(--panel); border: 1px solid var(--border); border-radius: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 234, 255, 0.2); padding-bottom: 10px; margin-bottom: 20px;">
+            <span style="font-family: var(--font-tech); font-size: 10px; color: var(--primary); letter-spacing: 2px;">STUDENT ACCESS PORTAL</span>
+            <button onclick="closeAuthModal()" style="background: none; border: none; color: #fff; font-size: 22px; cursor: pointer;">×</button>
+        </div>
 
-        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button id="authTabLogin" onclick="switchAuthMode('login')" class="primary-button" style="flex: 1; font-size: 11px;">SIGN IN</button>
-            <button id="authTabSignup" onclick="switchAuthMode('signup')" class="secondary-button" style="flex: 1; font-size: 11px;">REGISTER</button>
-        </div>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button id="authTabLogin" onclick="switchAuthMode('login')" class="primary-button" style="flex: 1; font-size: 11px;">SIGN IN</button>
+            <button id="authTabSignup" onclick="switchAuthMode('signup')" class="secondary-button" style="flex: 1; font-size: 11px;">REGISTER</button>
+        </div>
 
-        <form id="authForm" onsubmit="submitAuthForm(event)">
-            <div id="nameFieldGroup" style="display: none; margin-bottom: 14px;">
-                <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">FULL NAME</label>
-                <input type="text" id="authName" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
-            </div>
+        <form id="authForm" onsubmit="submitAuthForm(event)">
+            <div id="nameFieldGroup" style="display: none; margin-bottom: 14px;">
+                <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">FULL NAME</label>
+                <input type="text" id="authName" style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+            </div>
 
-            <div style="margin-bottom: 14px;">
-                <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">STUDENT EMAIL</label>
-                <input type="email" id="authEmail" required style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
-            </div>
+            <div style="margin-bottom: 14px;">
+                <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">STUDENT EMAIL</label>
+                <input type="email" id="authEmail" required style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+            </div>
 
-            <div style="margin-bottom: 20px;">
-                <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">PASSWORD</label>
-                <input type="password" id="authPassword" required style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
-            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="font-size: 11px; color: var(--muted); font-family: var(--font-tech);">PASSWORD</label>
+                <input type="password" id="authPassword" required style="width: 100%; padding: 10px; border-radius: 8px; background: #02050d; border: 1px solid var(--border); color: #fff; margin-top: 4px;">
+            </div>
 
-            <button type="submit" id="authSubmitBtn" class="primary-button" style="width: 100%; font-size: 13px;">
-                AUTHENTICATE ➔
-            </button>
-        </form>
-    </div>
+            <button type="submit" id="authSubmitBtn" class="primary-button" style="width: 100%; font-size: 13px;">
+                AUTHENTICATE ➔
+            </button>
+        </form>
+    </div>
 </div>
 
 <!-- CHAPTER LOCK MODAL -->
 <div class="modal-overlay" id="lockModal">
-    <div class="lock-modal">
-        <button class="modal-close" data-close-modal>×</button>
-        <div class="modal-lock-icon">🔒</div>
-        <div class="unlock-scanner"><div class="scanner-line"></div></div>
-        <span class="modal-label">ACCESS RESTRICTED</span>
-        <h2>CHAPTER LOCKED</h2>
-        <p>Complete and master the previous chapter quiz to unlock this learning protocol.</p>
-        <button class="modal-action-button" data-close-modal>UNDERSTOOD</button>
-    </div>
+    <div class="lock-modal">
+        <button class="modal-close" data-close-modal>×</button>
+        <div class="modal-lock-icon">🔒</div>
+        <div class="unlock-scanner"><div class="scanner-line"></div></div>
+        <span class="modal-label">ACCESS RESTRICTED</span>
+        <h2>CHAPTER LOCKED</h2>
+        <p>Complete and master the previous chapter quiz to unlock this learning protocol.</p>
+        <button class="modal-action-button" data-close-modal>UNDERSTOOD</button>
+    </div>
 </div>
 
 <!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settingsModal">
-    <div class="settings-modal">
-        <button class="modal-close" data-close-modal>×</button>
-        <span class="modal-label">SYSTEM SETTINGS</span>
-        <h2>NEXUS CONTROL</h2>
-        <div class="setting-row">
-            <div>
-                <strong>Voice Engine Gender</strong>
-                <small>Select speech synthesis profile</small>
-            </div>
-            <select onchange="NexusVoice.setGender(this.value)" style="background: var(--panel); color: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; font-family: var(--font-tech); font-size: 10px;">
-                <option value="female">Female Voice</option>
-                <option value="male">Male Voice</option>
-            </select>
-        </div>
-        <div class="setting-row">
-            <div>
-                <strong>Student Identification</strong>
-                <small>SUJAN R · URK24CS1187</small>
-            </div>
-            <span class="setting-active">AUTHENTICATED</span>
-        </div>
-        <button class="reset-button" id="resetProgressButton">↻ RESET ALL PROGRESS</button>
-    </div>
+    <div class="settings-modal">
+        <button class="modal-close" data-close-modal>×</button>
+        <span class="modal-label">SYSTEM SETTINGS</span>
+        <h2>NEXUS CONTROL</h2>
+        <div class="setting-row">
+            <div>
+                <strong>Voice Engine Gender</strong>
+                <small>Select speech synthesis profile</small>
+            </div>
+            <select onchange="NexusVoice.setGender(this.value)" style="background: var(--panel); color: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; font-family: var(--font-tech); font-size: 10px;">
+                <option value="female">Female Voice</option>
+                <option value="male">Male Voice</option>
+            </select>
+        </div>
+        <div class="setting-row">
+            <div>
+                <strong>Student Identification</strong>
+                <small>SUJAN R · URK24CS1187</small>
+            </div>
+            <span class="setting-active">AUTHENTICATED</span>
+        </div>
+        <button class="reset-button" id="resetProgressButton">↻ RESET ALL PROGRESS</button>
+    </div>
 </div>
 
 <!-- PROGRESS MODAL -->
 <div class="modal-overlay" id="progressModal">
-    <div class="progress-modal">
-        <button class="modal-close" data-close-modal>×</button>
-        <span class="modal-label">STUDENT PROGRESS</span>
-        <h2>YOUR NEXUS STATUS</h2>
-        <div class="progress-dashboard">
-            <div class="stat-box">
-                <strong id="modalChapterCount">0/4</strong>
-                <span>CHAPTERS</span>
-            </div>
-            <div class="stat-box">
-                <strong id="modalOverallScore">0%</strong>
-                <span>PROGRESS</span>
-            </div>
-            <div class="stat-box">
-                <strong id="modalLevel">01</strong>
-                <span>LEVEL</span>
-            </div>
-        </div>
-        <div class="progress-list">
-            <div><span>CHAPTER 01</span><strong id="modalProgress1">0%</strong></div>
-            <div><span>CHAPTER 02</span><strong id="modalProgress2">🔒</strong></div>
-            <div><span>CHAPTER 03</span><strong id="modalProgress3">🔒</strong></div>
-            <div><span>CHAPTER 04</span><strong id="modalProgress4">🔒</strong></div>
-        </div>
-    </div>
+    <div class="progress-modal">
+        <button class="modal-close" data-close-modal>×</button>
+        <span class="modal-label">STUDENT PROGRESS</span>
+        <h2>YOUR NEXUS STATUS</h2>
+        <div class="progress-dashboard">
+            <div class="stat-box">
+                <strong id="modalChapterCount">0/4</strong>
+                <span>CHAPTERS</span>
+            </div>
+            <div class="stat-box">
+                <strong id="modalOverallScore">0%</strong>
+                <span>PROGRESS</span>
+            </div>
+            <div class="stat-box">
+                <strong id="modalLevel">01</strong>
+                <span>LEVEL</span>
+            </div>
+        </div>
+        <div class="progress-list">
+            <div><span>CHAPTER 01</span><strong id="modalProgress1">0%</strong></div>
+            <div><span>CHAPTER 02</span><strong id="modalProgress2">🔒</strong></div>
+            <div><span>CHAPTER 03</span><strong id="modalProgress3">🔒</strong></div>
+            <div><span>CHAPTER 04</span><strong id="modalProgress4">🔒</strong></div>
+        </div>
+    </div>
 </div>
 
 <!-- PROMPT MODAL -->
 <div class="modal-overlay" id="promptModal">
-    <div class="prompt-modal" style="width: min(750px, 95vw);">
-        <button class="modal-close" data-close-modal>×</button>
-        <span class="modal-label">SYSTEM BLUEPRINT</span>
-        <h2>DEVELOPMENT SPECIFICATION PROMPT</h2>
-        <p class="prompt-intro">The exact prompt utilized to architect, design, and code DBMS NEXUS:</p>
-        <div class="prompt-preview">
-            <code>
+    <div class="prompt-modal" style="width: min(750px, 95vw);">
+        <button class="modal-close" data-close-modal>×</button>
+        <span class="modal-label">SYSTEM BLUEPRINT</span>
+        <h2>DEVELOPMENT SPECIFICATION PROMPT</h2>
+        <p class="prompt-intro">The exact prompt utilized to architect, design, and code DBMS NEXUS:</p>
+        <div class="prompt-preview">
+            <code>
 Build a futuristic, dark-neon cyberpunk Database Management System interactive learning platform named "DBMS NEXUS" authored by SUJAN R (URK24CS1187).
 
 Include 4 complete curriculum chapters:
@@ -552,16 +552,16 @@ Features Required:
 - Nexus Lens optical slide/screenshot analyzer
 - Anti-cheat exam protection that disables AI during tests
 - Final Grand Arena composite examination covering all modules
-            </code>
-        </div>
-        <button class="modal-action-button" id="copyPromptButton">📋 COPY PROMPT TO CLIPBOARD</button>
-    </div>
+            </code>
+        </div>
+        <button class="modal-action-button" id="copyPromptButton">📋 COPY PROMPT TO CLIPBOARD</button>
+    </div>
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast">
-    <span id="toastIcon">✓</span>
-    <span id="toastMessage">System ready</span>
+    <span id="toastIcon">✓</span>
+    <span id="toastMessage">System ready</span>
 </div>
 
 <!-- SCRIPTS -->
@@ -573,67 +573,67 @@ Features Required:
 <script src="script.js"></script>
 
 <script type="module">
-    import { getDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    let authMode = "login";
-    window.switchAuthMode = function(mode) {
-        authMode = mode;
-        const nameGroup = document.getElementById("nameFieldGroup");
-        const submitBtn = document.getElementById("authSubmitBtn");
-        const tabLogin = document.getElementById("authTabLogin");
-        const tabSignup = document.getElementById("authTabSignup");
+    let authMode = "login";
+    window.switchAuthMode = function(mode) {
+        authMode = mode;
+        const nameGroup = document.getElementById("nameFieldGroup");
+        const submitBtn = document.getElementById("authSubmitBtn");
+        const tabLogin = document.getElementById("authTabLogin");
+        const tabSignup = document.getElementById("authTabSignup");
 
-        if (mode === "signup") {
-            nameGroup.style.display = "block";
-            submitBtn.innerText = "CREATE STUDENT PROFILE ➔";
-            tabSignup.className = "primary-button";
-            tabLogin.className = "secondary-button";
-        } else {
-            nameGroup.style.display = "none";
-            submitBtn.innerText = "AUTHENTICATE ➔";
-            tabLogin.className = "primary-button";
-            tabSignup.className = "secondary-button";
-        }
-    };
+        if (mode === "signup") {
+            nameGroup.style.display = "block";
+            submitBtn.innerText = "CREATE STUDENT PROFILE ➔";
+            tabSignup.className = "primary-button";
+            tabLogin.className = "secondary-button";
+        } else {
+            nameGroup.style.display = "none";
+            submitBtn.innerText = "AUTHENTICATE ➔";
+            tabLogin.className = "primary-button";
+            tabSignup.className = "secondary-button";
+        }
+    };
 
-    window.submitAuthForm = function(e) {
-        e.preventDefault();
-        const email = document.getElementById("authEmail").value;
-        const pass = document.getElementById("authPassword").value;
-        const name = document.getElementById("authName").value;
+    window.submitAuthForm = function(e) {
+        e.preventDefault();
+        const email = document.getElementById("authEmail").value;
+        const pass = document.getElementById("authPassword").value;
+        const name = document.getElementById("authName").value;
 
-        if (authMode === "signup") {
-            window.handleSignup(email, pass, name);
-        } else {
-            window.handleLogin(email, pass);
-        }
-    };
+        if (authMode === "signup") {
+            window.handleSignup(email, pass, name);
+        } else {
+            window.handleLogin(email, pass);
+        }
+    };
 
-    // Real-time listener for global announcements from Admin Panel
-    async function checkGlobalAnnouncement() {
-        try {
-            if (typeof db !== 'undefined') {
-                const snap = await getDoc(doc(db, "system", "announcement"));
-                if (snap.exists()) {
-                    const data = snap.data();
-                    if (data && data.message) {
-                        const banner = document.getElementById("globalAnnouncementBanner");
-                        const textSpan = document.getElementById("announcementText");
-                        if (banner && textSpan) {
-                            textSpan.innerText = data.message;
-                            banner.style.display = "block";
-                        }
-                    }
-                }
-            }
-        } catch (err) {
-            console.error("Error fetching announcement:", err);
-        }
-    }
+    // Real-time listener for global announcements from Admin Panel
+    async function checkGlobalAnnouncement() {
+        try {
+            if (typeof db !== 'undefined') {
+                const snap = await getDoc(doc(db, "system", "announcement"));
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if (data && data.message) {
+                        const banner = document.getElementById("globalAnnouncementBanner");
+                        const textSpan = document.getElementById("announcementText");
+                        if (banner && textSpan) {
+                            textSpan.innerText = data.message;
+                            banner.style.display = "block";
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            console.error("Error fetching announcement:", err);
+        }
+    }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(checkGlobalAnnouncement, 1200);
-    });
+    document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(checkGlobalAnnouncement, 1200);
+    });
 </script>
 
 </body>
