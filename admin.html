@@ -227,7 +227,7 @@
             overflow: hidden;
         }
 
-        /* FULL VIEWPORT HEIGHT & WIDTH MATRIX STREAM */
+        /* FULL VIEWPORT HEIGHT & WIDTH MAX-DENSITY MATRIX STREAM */
         .matrix-bg-stream {
             position: fixed;
             top: 0;
@@ -237,12 +237,12 @@
             font-family: monospace;
             font-size: 11px;
             color: rgba(0, 255, 102, 0.32);
-            line-height: 1.2;
-            padding: 10px;
+            line-height: 1.15;
+            padding: 5px;
             pointer-events: none;
             z-index: 1;
-            column-count: 7;
-            column-gap: 15px;
+            column-count: 8;
+            column-gap: 10px;
             overflow: hidden;
             word-break: break-all;
         }
@@ -316,7 +316,7 @@
     <!-- FULL SCREEN HACKER LOGIN GATEWAY -->
     <div id="authOverlay">
         <div class="matrix-bg-stream" id="matrixStream">
-            INITIALIZING_SECURE_MATRIX_STREAM... 01010111 ROOT_ACCESS_ACTIVE<br>
+            INIT_SYS_STREAM... 01010111 ROOT_ACCESS_ACTIVE<br>
             BYPASSING_FIREWALL... ACCESS_VECTOR_ESTABLISHED<br>
             LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE<br>
             LOAD_CLUSTER_STUDENTS... DB_CONNECTED<br>
@@ -329,7 +329,12 @@
             01010111 MTRX_STREAM_FULL_DISPLAY_ACTIVE // 0x99_SECURE_AUTH // DECRYPTING...<br>
             BYPASS_FW // 01011101 // HASH_SHA256 // SOCKET_ESTABLISHED // DECRYPT_PKT<br>
             DB_CLUSTER // SYS_OVERRIDE // ACCESS_GRANTED // PACKET_0x99 // ERR_STACK_TRACE<br>
-            SYSTEM_TELEMETRY_ONLINE // SECURE_CLUSTER_LOADED // AUTH_GATEWAY_READY
+            SYSTEM_TELEMETRY_ONLINE // SECURE_CLUSTER_LOADED // AUTH_GATEWAY_READY<br>
+            INIT_SYS_STREAM... 01010111 ROOT_ACCESS_ACTIVE<br>
+            BYPASSING_FIREWALL... ACCESS_VECTOR_ESTABLISHED<br>
+            LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE<br>
+            LOAD_CLUSTER_STUDENTS... DB_CONNECTED<br>
+            VERIFYING_CREDENTIALS... INSTRUCTOR_GATEWAY_ACTIVE
         </div>
         <div class="terminal-box">
             <!-- HACK SYMBOL & TITLE -->
@@ -460,7 +465,7 @@
 
         let studentCache = [];
 
-        // BLAZING FAST ULTRA-DENSE MATRIX STREAM TICKER (10ms Interval)
+        // MAX-SPEED, HIGH-DENSITY MATRIX TICKER (5ms Interval)
         const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99", "ERR_STACK_TRACE", "0x00FF99"];
         let baseMatrixText = document.getElementById("matrixStream") ? document.getElementById("matrixStream").innerHTML : "";
         
@@ -468,16 +473,16 @@
             const stream = document.getElementById("matrixStream");
             if (stream) {
                 let chunk = "";
-                for(let i=0; i<3; i++) {
+                for(let i=0; i<4; i++) {
                     chunk += hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 10).toUpperCase() + " // " + Math.random().toString(36).substring(2, 10).toUpperCase() + "<br>";
                 }
                 baseMatrixText += chunk;
-                if (baseMatrixText.length > 15000) {
-                    baseMatrixText = baseMatrixText.substring(4000);
+                if (baseMatrixText.length > 25000) {
+                    baseMatrixText = baseMatrixText.substring(8000);
                 }
                 stream.innerHTML = baseMatrixText;
             }
-        }, 10);
+        }, 5);
 
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
