@@ -10,11 +10,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* =========================================================
+           LIGHT THEME OVERRIDES (Student Portal Only)
+        ========================================================= */
+        body.light-mode {
+            --bg: #f4f7fb;
+            --panel: #ffffff;
+            --primary: #0077cc;
+            --accent: #00aa55;
+            --text: #2b3e50;
+            --muted: #64748b;
+            --border: rgba(0, 119, 204, 0.2);
+            color: var(--text);
+            background-color: var(--bg);
+        }
+
+        body.light-mode .navbar,
+        body.light-mode .chapter-card,
+        body.light-mode .feature-card,
+        body.light-mode .about-card,
+        body.light-mode .overall-progress-card {
+            background: var(--panel);
+            border-color: var(--border);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        body.light-mode input,
+        body.light-mode textarea,
+        body.light-mode select {
+            background: #f8fafc;
+            color: #111;
+            border-color: #cbd5e1;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- LOADING SCREEN -->
 <div id="loadingScreen" class="loading-screen">
     <div class="loader-core">
         <div class="loader-ring ring-one"></div>
@@ -34,7 +67,6 @@
     </div>
 </div>
 
-<!-- BACKGROUND EFFECTS -->
 <div class="background-effects">
     <div class="grid-background"></div>
     <div class="orb orb-one"></div>
@@ -42,7 +74,6 @@
     <div class="orb orb-three"></div>
 </div>
 
-<!-- NAVBAR -->
 <header class="navbar">
     <a href="#home" class="brand">
         <div class="brand-logo"><span>DB</span></div>
@@ -61,6 +92,8 @@
     </nav>
 
     <div class="nav-actions">
+        <!-- THEME TOGGLE BUTTON -->
+        <button id="themeToggleBtn" class="secondary-button" style="min-height: 36px; padding: 0 12px; font-size: 11px;" title="Toggle Theme">☀ THEME</button>
         <span id="navUserDisplay" style="display: none; font-family: var(--font-tech); font-size: 11px; color: var(--primary); margin-right: 8px;"></span>
         <button id="navAuthBtn" onclick="openAuthModal()" class="primary-button" style="min-height: 36px; padding: 0 14px; font-size: 11px;">
             LOGIN / SIGNUP
@@ -77,12 +110,10 @@
     </div>
 </header>
 
-<!-- GLOBAL BROADCAST ANNOUNCEMENT BANNER -->
 <div id="globalAnnouncementBanner" style="display: none; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--primary); padding: 12px 20px; border-radius: 8px; margin: 20px auto 0 auto; max-width: 1100px; text-align: center; font-family: var(--font-tech); font-size: 12px; color: var(--primary); z-index: 100; position: relative;">
     <strong style="color: #fff;">📢 SYSTEM ANNOUNCEMENT:</strong> <span id="announcementText"></span>
 </div>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="#home">HOME</a>
     <a href="#chapters">CHAPTERS</a>
@@ -90,11 +121,11 @@
     <a href="#about">ABOUT</a>
     <a href="admin.html">ADMIN PANEL</a>
     <a href="javascript:void(0)" onclick="openAuthModal()">ACCOUNT PORTAL</a>
+    <button id="mobileThemeToggleBtn" class="secondary-button" style="width: 100%; margin-top: 15px; font-size: 11px;">☀ TOGGLE THEME</button>
 </div>
 
 <main>
 
-<!-- HERO -->
 <section id="home" class="hero-section">
     <div class="hero-content">
         <div class="hero-status">
@@ -126,7 +157,6 @@
         </div>
     </div>
 
-    <!-- HERO VISUAL -->
     <div class="hero-visual">
         <div class="core-system">
             <div class="core-ring core-ring-one"></div>
@@ -145,7 +175,6 @@
     </div>
 </section>
 
-<!-- PLATFORM FEATURES -->
 <section class="features-section">
     <div class="section-heading">
         <span class="section-label">THE SYSTEM</span>
@@ -187,7 +216,6 @@
     </div>
 </section>
 
-<!-- CHAPTERS -->
 <section id="chapters" class="chapters-section">
     <div class="section-heading">
         <span class="section-label">LEARNING PATH</span>
@@ -195,7 +223,6 @@
         <p>Complete each chapter to unlock the next protocol.</p>
     </div>
 
-    <!-- PROGRESS BAR -->
     <div class="overall-progress-card">
         <div class="progress-info">
             <div>
@@ -212,10 +239,7 @@
         </div>
     </div>
 
-    <!-- CHAPTER GRID -->
     <div class="chapter-grid">
-
-        <!-- CHAPTER 01 -->
         <article class="chapter-card chapter-unlocked" data-chapter="1">
             <div class="chapter-number">01</div>
             <div class="chapter-status unlocked-status">
@@ -238,7 +262,6 @@
             </button>
         </article>
 
-        <!-- CHAPTER 02 -->
         <article class="chapter-card chapter-locked" data-chapter="2">
             <div class="chapter-number">02</div>
             <div class="chapter-status locked-status">
@@ -259,7 +282,6 @@
             <button class="chapter-button locked-button">🔒 LOCKED</button>
         </article>
 
-        <!-- CHAPTER 03 -->
         <article class="chapter-card chapter-locked" data-chapter="3">
             <div class="chapter-number">03</div>
             <div class="chapter-status locked-status">
@@ -280,7 +302,6 @@
             <button class="chapter-button locked-button">🔒 LOCKED</button>
         </article>
 
-        <!-- CHAPTER 04 -->
         <article class="chapter-card chapter-locked" data-chapter="4">
             <div class="chapter-number">04</div>
             <div class="chapter-status locked-status">
@@ -300,11 +321,9 @@
             </div>
             <button class="chapter-button locked-button">🔒 LOCKED</button>
         </article>
-
     </div>
 </section>
 
-<!-- TRAINING ARENA -->
 <section id="arena" class="arena-section">
     <div class="arena-container">
         <div class="arena-content">
@@ -334,7 +353,6 @@
     </div>
 </section>
 
-<!-- FINAL ARENA -->
 <section class="final-arena-section">
     <div class="final-arena-card">
         <div class="final-lock">🔒</div>
@@ -355,7 +373,6 @@
     </div>
 </section>
 
-<!-- ABOUT / SYSTEM BLUEPRINT -->
 <section id="about" class="about-section">
     <div class="section-heading">
         <span class="section-label">SYSTEM BLUEPRINT</span>
@@ -391,7 +408,6 @@
     </button>
 </section>
 
-<!-- CREATOR -->
 <section class="creator-section">
     <div class="creator-card">
         <div class="creator-avatar">SR</div>
@@ -408,7 +424,6 @@
 
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
     <div class="footer-brand">
         <strong>DBMS NEXUS</strong>
@@ -421,7 +436,6 @@
     </div>
 </footer>
 
-<!-- AUTHENTICATION MODAL -->
 <div class="modal-overlay" id="authModal">
     <div class="isolated-modal-card" style="width: min(440px, 95vw); padding: 30px; text-align: left; background: var(--panel); border: 1px solid var(--border); border-radius: 16px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 234, 255, 0.2); padding-bottom: 10px; margin-bottom: 20px;">
@@ -457,7 +471,6 @@
     </div>
 </div>
 
-<!-- CHAPTER LOCK MODAL -->
 <div class="modal-overlay" id="lockModal">
     <div class="lock-modal">
         <button class="modal-close" data-close-modal>×</button>
@@ -470,7 +483,6 @@
     </div>
 </div>
 
-<!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settingsModal">
     <div class="settings-modal">
         <button class="modal-close" data-close-modal>×</button>
@@ -497,7 +509,6 @@
     </div>
 </div>
 
-<!-- PROGRESS MODAL -->
 <div class="modal-overlay" id="progressModal">
     <div class="progress-modal">
         <button class="modal-close" data-close-modal>×</button>
@@ -526,7 +537,6 @@
     </div>
 </div>
 
-<!-- PROMPT MODAL -->
 <div class="modal-overlay" id="promptModal">
     <div class="prompt-modal" style="width: min(750px, 95vw);">
         <button class="modal-close" data-close-modal>×</button>
@@ -558,13 +568,11 @@ Features Required:
     </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
     <span id="toastIcon">✓</span>
     <span id="toastMessage">System ready</span>
 </div>
 
-<!-- SCRIPTS -->
 <script type="module" src="js/auth.js"></script>
 <script src="js/progress.js"></script>
 <script src="js/voice.js"></script>
@@ -609,7 +617,6 @@ Features Required:
         }
     };
 
-    // Real-time listener for global announcements from Admin Panel
     async function checkGlobalAnnouncement() {
         try {
             if (typeof db !== 'undefined') {
@@ -633,7 +640,33 @@ Features Required:
 
     document.addEventListener("DOMContentLoaded", () => {
         setTimeout(checkGlobalAnnouncement, 1200);
+
+        // Theme Toggle Controller
+        const savedTheme = localStorage.getItem("dbms_nexus_theme");
+        if (savedTheme === "light") {
+            document.body.classList.add("light-mode");
+            updateThemeButtonText(true);
+        }
+
+        const toggleBtns = [document.getElementById("themeToggleBtn"), document.getElementById("mobileThemeToggleBtn")];
+        toggleBtns.forEach(btn => {
+            if (btn) {
+                btn.addEventListener("click", () => {
+                    const isLight = document.body.classList.toggle("light-mode");
+                    localStorage.setItem("dbms_nexus_theme", isLight ? "light" : "dark");
+                    updateThemeButtonText(isLight);
+                });
+            }
+        });
     });
+
+    function updateThemeButtonText(isLight) {
+        const desktopBtn = document.getElementById("themeToggleBtn");
+        const mobileBtn = document.getElementById("mobileThemeToggleBtn");
+        const label = isLight ? "☾ DARK MODE" : "☀ LIGHT MODE";
+        if (desktopBtn) desktopBtn.innerText = label;
+        if (mobileBtn) mobileBtn.innerText = label;
+    }
 </script>
 
 </body>
