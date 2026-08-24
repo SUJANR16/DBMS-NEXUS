@@ -657,10 +657,15 @@
             document.getElementById("downloadPdfBtn").addEventListener("click", () => {
                 const element = document.getElementById("pdfReportContent");
                 const opt = {
-                    margin:       10,
+                    margin:       [10, 10, 10, 10],
                     filename:     `DBMS_NEXUS_Report_${st.name || 'Student'}.pdf`,
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, backgroundColor: '#020408' },
+                    html2canvas:  { 
+                        scale: 2, 
+                        backgroundColor: '#020408',
+                        useCORS: true,
+                        windowWidth: element.scrollWidth 
+                    },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 html2pdf().from(element).set(opt).save().then(() => {
