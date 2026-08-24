@@ -583,72 +583,72 @@
 
             document.getElementById("modalTitle").innerText = "STUDENT TELEMETRY DOSSIER";
             document.getElementById("modalContent").innerHTML = `
-                <div id="pdfReportContent" style="padding: 25px; background: #020408; color: #c0d8e0; border: 2px solid #00f3ff; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00f3ff; padding-bottom: 12px; margin-bottom: 20px;">
+                <div id="pdfReportContent" style="padding: 15px; background: #020408; color: #c0d8e0; border: 2px solid #00f3ff; border-radius: 6px; font-size: 11px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00f3ff; padding-bottom: 8px; margin-bottom: 12px;">
                         <div>
-                            <h2 style="color: #00f3ff; font-family: monospace; font-size: 18px; letter-spacing: 2px;">DBMS NEXUS</h2>
-                            <p style="font-size: 10px; color: #00ff66; margin-top: 2px;">OFFICIAL ACADEMIC PERFORMANCE REPORT</p>
+                            <h2 style="color: #00f3ff; font-family: monospace; font-size: 16px; letter-spacing: 2px;">DBMS NEXUS</h2>
+                            <p style="font-size: 9px; color: #00ff66; margin-top: 2px;">OFFICIAL ACADEMIC PERFORMANCE REPORT</p>
                         </div>
-                        <div style="text-align: right; font-size: 10px; color: #78909c;">
+                        <div style="text-align: right; font-size: 9px; color: #78909c;">
                             <div>TIMESTAMP: ${new Date().toLocaleDateString()}</div>
                             <div>SECURITY CLEARANCE: ACTIVE</div>
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: rgba(0,243,255,0.03); border: 1px solid rgba(0,243,255,0.2); padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(0,243,255,0.03); border: 1px solid rgba(0,243,255,0.2); padding: 10px; border-radius: 4px; margin-bottom: 12px;">
                         <div>
-                            <p style="font-size: 10px; color: #78909c;">STUDENT NAME</p>
-                            <p style="font-size: 14px; font-weight: bold; color: #fff; margin-top: 2px;">${st.name || 'Anonymous'}</p>
+                            <p style="font-size: 9px; color: #78909c;">STUDENT NAME</p>
+                            <p style="font-size: 12px; font-weight: bold; color: #fff; margin-top: 2px;">${st.name || 'Anonymous'}</p>
                         </div>
                         <div>
-                            <p style="font-size: 10px; color: #78909c;">EMAIL ADDRESS</p>
-                            <p style="font-size: 13px; font-weight: bold; color: #fff; margin-top: 2px;">${st.email}</p>
+                            <p style="font-size: 9px; color: #78909c;">EMAIL ADDRESS</p>
+                            <p style="font-size: 11px; font-weight: bold; color: #fff; margin-top: 2px;">${st.email}</p>
                         </div>
                         <div>
-                            <p style="font-size: 10px; color: #78909c;">ACCUMULATED XP</p>
-                            <p style="font-size: 14px; font-weight: bold; color: #00ff66; margin-top: 2px;">${st.totalXP || 0} XP</p>
+                            <p style="font-size: 9px; color: #78909c;">ACCUMULATED XP</p>
+                            <p style="font-size: 12px; font-weight: bold; color: #00ff66; margin-top: 2px;">${st.totalXP || 0} XP</p>
                         </div>
                         <div>
-                            <p style="font-size: 10px; color: #78909c;">OVERALL MASTERY</p>
-                            <p style="font-size: 14px; font-weight: bold; color: #00f3ff; margin-top: 2px;">${avgScore}%</p>
+                            <p style="font-size: 9px; color: #78909c;">OVERALL MASTERY</p>
+                            <p style="font-size: 12px; font-weight: bold; color: #00f3ff; margin-top: 2px;">${avgScore}%</p>
                         </div>
                     </div>
 
-                    <p style="color: #00f3ff; font-family: monospace; font-size: 12px; margin-bottom: 15px; letter-spacing: 1px;">MODULE BREAKDOWN & PROGRESS MATRIX:</p>
+                    <p style="color: #00f3ff; font-family: monospace; font-size: 11px; margin-bottom: 10px; letter-spacing: 1px;">MODULE BREAKDOWN & PROGRESS MATRIX:</p>
                     
-                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                    <div style="font-size: 10px; margin-bottom: 2px; display: flex; justify-content: space-between;">
                         <span>Chapter 01: Architecture & Abstraction</span>
                         <span style="color: #00ff66; font-weight: bold;">${c1}%</span>
                     </div>
-                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c1}%;"></div></div>
+                    <div class="progress-bar-container" style="height: 8px; margin-bottom: 8px;"><div class="progress-fill" style="width: ${c1}%;"></div></div>
 
-                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                    <div style="font-size: 10px; margin-bottom: 2px; display: flex; justify-content: space-between;">
                         <span>Chapter 02: Relational Algebra & Keys</span>
                         <span style="color: #00ff66; font-weight: bold;">${c2}%</span>
                     </div>
-                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c2}%;"></div></div>
+                    <div class="progress-bar-container" style="height: 8px; margin-bottom: 8px;"><div class="progress-fill" style="width: ${c2}%;"></div></div>
 
-                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                    <div style="font-size: 10px; margin-bottom: 2px; display: flex; justify-content: space-between;">
                         <span>Chapter 03: SQL Queries & Aggregations</span>
                         <span style="color: #00ff66; font-weight: bold;">${c3}%</span>
                     </div>
-                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c3}%;"></div></div>
+                    <div class="progress-bar-container" style="height: 8px; margin-bottom: 8px;"><div class="progress-fill" style="width: ${c3}%;"></div></div>
 
-                    <div style="font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between;">
+                    <div style="font-size: 10px; margin-bottom: 2px; display: flex; justify-content: space-between;">
                         <span>Chapter 04: Advanced SQL & Security</span>
                         <span style="color: #00ff66; font-weight: bold;">${c4}%</span>
                     </div>
-                    <div class="progress-bar-container"><div class="progress-fill" style="width: ${c4}%;"></div></div>
+                    <div class="progress-bar-container" style="height: 8px; margin-bottom: 10px;"><div class="progress-fill" style="width: ${c4}%;"></div></div>
 
-                    <div style="margin-top: 25px; border-top: 1px dashed rgba(0,243,255,0.3); padding-top: 10px; display: flex; justify-content: space-between; font-size: 9px; color: #78909c;">
+                    <div style="margin-top: 15px; border-top: 1px dashed rgba(0,243,255,0.3); padding-top: 8px; display: flex; justify-content: space-between; font-size: 8px; color: #78909c;">
                         <span>DBMS NEXUS CERTIFIED TELEMETRY</span>
                         <span>INSTRUCTOR VERIFIED</span>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button id="downloadPdfBtn" class="cyber-btn pdf-btn" style="flex: 1; padding: 12px; font-size: 12px;">📥 DOWNLOAD OFFICIAL PDF REPORT</button>
-                    <button id="closeDossierBtn" class="cyber-btn" style="padding: 12px; font-size: 12px;">CLOSE</button>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button id="downloadPdfBtn" class="cyber-btn pdf-btn" style="flex: 1; padding: 10px; font-size: 11px;">📥 DOWNLOAD OFFICIAL PDF REPORT</button>
+                    <button id="closeDossierBtn" class="cyber-btn" style="padding: 10px; font-size: 11px;">CLOSE</button>
                 </div>
             `;
 
@@ -657,7 +657,7 @@
             document.getElementById("downloadPdfBtn").addEventListener("click", () => {
                 const element = document.getElementById("pdfReportContent");
                 const opt = {
-                    margin:       [10, 10, 10, 10],
+                    margin:       [5, 5, 5, 5],
                     filename:     `DBMS_NEXUS_Report_${st.name || 'Student'}.pdf`,
                     image:        { type: 'jpeg', quality: 0.98 },
                     html2canvas:  { 
