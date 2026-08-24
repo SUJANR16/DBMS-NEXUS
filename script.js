@@ -4,6 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (ls) ls.classList.add("hidden");
     }, 600);
 
+    // MOBILE MENU TOGGLE FIX FOR PHONE VIEW
+    const menuBtn = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (menuBtn && mobileMenu) {
+        menuBtn.onclick = () => {
+            mobileMenu.classList.toggle("active");
+        };
+        mobileMenu.querySelectorAll("a").forEach(link => {
+            link.onclick = () => mobileMenu.classList.remove("active");
+        });
+    }
+
     const unlocked = ProgressManager.getUnlocked();
     const scores = ProgressManager.getProgress();
     let totalScore = 0;
@@ -27,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (btn) {
                     btn.className = "chapter-button";
                     btn.innerHTML = `ENTER CHAPTER <span>→</span>`;
-                    // ➔ AUTHENTICATION CHECK BEFORE ENTERING CHAPTER
+                    // AUTHENTICATION CHECK BEFORE ENTERING CHAPTER
                     btn.onclick = () => {
                         if (!window.currentUser) {
                             alert("Restricted Access: Please log in or sign up to view the contents inside this chapter.");
