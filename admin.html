@@ -214,33 +214,37 @@
             box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* FULL VIEWPORT HACKER LOGIN OVERLAY */
+        /* FULL SCREEN HACKER LOGIN OVERLAY */
         #authOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(2, 4, 8, 0.88);
+            background: rgba(2, 4, 8, 0.90);
             z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow: hidden;
         }
 
-        /* Full screen multi-column data stream covering entire vertical space */
+        /* STABLE, SMOOTH SCROLLING MATRIX STREAM WITHOUT JUMPING */
         .matrix-bg-stream {
-            position: absolute;
-            inset: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             font-family: monospace;
-            font-size: 10px;
-            color: rgba(0, 255, 102, 0.28);
-            line-height: 1.2;
-            padding: 15px;
+            font-size: 11px;
+            color: rgba(0, 255, 102, 0.22);
+            line-height: 1.4;
+            padding: 20px;
             pointer-events: none;
             z-index: 1;
-            column-count: 5;
-            column-gap: 15px;
-            word-break: break-all;
+            column-count: 4;
+            column-gap: 30px;
             overflow: hidden;
+            opacity: 0.85;
         }
 
         .terminal-box {
@@ -312,7 +316,12 @@
     <!-- FULL SCREEN HACKER LOGIN GATEWAY -->
     <div id="authOverlay">
         <div class="matrix-bg-stream" id="matrixStream">
-            INIT_SYS_MATRIX_STREAM_ACTIVE... 01010111 ROOT_ACCESS_OVERRIDE_SECURE
+            INITIALIZING_SECURE_MATRIX_STREAM... 01010111 ROOT_ACCESS_ACTIVE<br>
+            BYPASSING_FIREWALL... ACCESS_VECTOR_ESTABLISHED<br>
+            LISTENING_ON_PORT_443... ENCRYPTED_HANDSHAKE<br>
+            LOAD_CLUSTER_STUDENTS... DB_CONNECTED<br>
+            VERIFYING_CREDENTIALS... INSTRUCTOR_GATEWAY_ACTIVE<br>
+            SYS_OVERRIDE_0x99 // DECRYPTING_PACKETS...
         </div>
         <div class="terminal-box">
             <!-- HACK SYMBOL & TITLE -->
@@ -443,21 +452,21 @@
 
         let studentCache = [];
 
-        // HIGH-SPEED STABLE MULTI-COLUMN STREAM
+        // SMOOTH, NON-JUMPING BACKGROUND MATRIX GENERATOR
         const hackerWords = ["BYPASS_FW", "ROOT_ACCESS", "01011101", "HASH_SHA256", "SOCKET_ESTABLISHED", "DECRYPT_PKT", "DB_CLUSTER", "SYS_OVERRIDE", "ACCESS_GRANTED", "PACKET_0x99", "ERR_STACK_TRACE"];
+        let baseMatrixText = document.getElementById("matrixStream") ? document.getElementById("matrixStream").innerHTML : "";
+        
         setInterval(() => {
             const stream = document.getElementById("matrixStream");
             if (stream) {
-                let chunk = "";
-                for(let i=0; i<12; i++) {
-                    chunk += hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 8).toUpperCase() + " ";
+                let chunk = hackerWords[Math.floor(Math.random() * hackerWords.length)] + "_" + Math.random().toString(16).substring(2, 8).toUpperCase() + " // " + Math.random().toString(36).substring(2, 8).toUpperCase() + "<br>";
+                baseMatrixText += chunk;
+                if (baseMatrixText.length > 5000) {
+                    baseMatrixText = baseMatrixText.substring(1000);
                 }
-                stream.innerText += "\n" + chunk;
-                if (stream.innerText.length > 5000) {
-                    stream.innerText = stream.innerText.substring(1500);
-                }
+                stream.innerHTML = baseMatrixText;
             }
-        }, 25);
+        }, 80);
 
         function logKernel(msg) {
             const box = document.getElementById("auditLog");
